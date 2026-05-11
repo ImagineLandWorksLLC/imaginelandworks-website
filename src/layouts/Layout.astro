@@ -1,0 +1,35 @@
+---
+import "@assets/css/app.css";
+import Navbar from "@components/NavBar.astro";
+import NavFooter from "@components/NavFooter.astro";
+---
+
+<!doctype html>
+<html lang="en" data-theme="imagine-landworks">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro Basics</title>
+  </head>
+  <body>
+    <header>
+      <Navbar />
+    </header>
+    <main>
+      <slot />
+    </main>
+    <NavFooter />
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

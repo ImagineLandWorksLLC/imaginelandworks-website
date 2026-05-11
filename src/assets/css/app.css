@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "imagine-landworks";
+  default: true;
+  color-scheme: light;
+
+  /* Base colors */
+  --color-base-100: #FFFFFF; /* Pure white */
+  --color-base-200: #F5F5F5; /* Soft gray */
+  --color-base-300: #E8E8E8; /* Light gray */
+  --color-base-content: #2A2A2A; /* Charcoal text */
+
+  /* Primary (Deep Forest Green) */
+  --color-primary: #1F3D2B;
+  --color-primary-content: #FFFFFF;
+
+  /* Secondary (Fresh Leaf Green) */
+  --color-secondary: #4FAF4F;
+  --color-secondary-content: #FFFFFF;
+
+  /* Accent (Warm Earth Brown) */
+  --color-accent: #A67C52;
+  --color-accent-content: #FFFFFF;
+
+  /* Status colors */
+  --color-info: #4FAF4F;
+  --color-info-content: #FFFFFF;
+
+  --color-success: #4FAF4F;
+  --color-success-content: #FFFFFF;
+
+  --color-warning: #A67C52;
+  --color-warning-content: #FFFFFF;
+
+  --color-error: #B33A3A;
+  --color-error-content: #FFFFFF;
+
+  /* Text colors */
+  --color-text-primary: #1F3D2B;   /* Headings */
+  --color-text-secondary: #4FAF4F; /* Subtle accents */
+  --color-text-neutral: #2A2A2A;   /* Body text */
+}
+
+/* -------------------------------------------------------
+   LOCAL FONTS
+   ------------------------------------------------------- */
+
+/* Oswald 700 (Headings) */
+@font-face {
+  font-family: 'Oswald';
+  src: url('/fonts/oswald/Oswald-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Poppins 400 (Body) */
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* -------------------------------------------------------
+   BASE TYPOGRAPHY
+   ------------------------------------------------------- */
+
+html {
+  font-size: 100%; /* 16px */
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  color: var(--fallback-bc, #1f1f1f); /* DaisyUI-safe text color */
+}
+
+/* -------------------------------------------------------
+   HEADINGS
+   ------------------------------------------------------- */
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+
+/* Type Scale — Perfect Fourth (1.333) */
+h1 { font-size: 4.210rem; } /* ~67px */
+h2 { font-size: 3.158rem; } /* ~50px */
+h3 { font-size: 2.369rem; } /* ~38px */
+h4 { font-size: 1.777rem; } /* ~28px */
+h5 { font-size: 1.333rem; } /* ~21px */
+
+p {
+  margin: 0 0 1em;
+}
+
+small {
+  font-size: 0.750rem; /* 12px */
+}
+
+/* -------------------------------------------------------
+   RESPONSIVE TYPE
+   ------------------------------------------------------- */
+
+@media (max-width: 600px) {
+  html {
+    font-size: 90%;
+  }
+}
+
