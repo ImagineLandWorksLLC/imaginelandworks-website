@@ -4,25 +4,335 @@ import Navbar from "@components/NavBar.astro";
 import NavFooter from "@components/NavFooter.astro";
 import type { PageFrontmatter } from "@components/SEO.astro";
 
-type Props = PageFrontmatter;
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
 
-const { title, description, image, canonical, noindex } = Astro.props;
+type Props = PageFrontmatter & {
+  headings?: Heading[];
+};
+
+const { title, description, image, canonical, noindex, headings = [] } = Astro.props;
+const tocHeadings = headings.filter(h => h.depth === 2);
+const hasToc = tocHeadings.length > 0;
 ---
 
 <BaseLayout title={title} description={description} image={image} canonical={canonical} noindex={noindex}>
   <header>
     <Navbar />
   </header>
-  <main class="legal-content">
-    <slot />
-  </main>
+
+  <div class:list={["legal-page", { "has-toc": hasToc }]}>
+    {hasToc && (
+      <aside class="toc-sidebar" aria-label="Table of contents">
+        <div class="toc-inner">
+          <p class="toc-label">Contents</p>
+          <nav>
+            <ol class="toc-list">
+              {tocHeadings.map(h => (
+                <li>
+                  <a href={`#${h.slug}`} class="toc-link">{h.text}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </div>
+      </aside>
+    )}
+
+    <main class="legal-content">
+      <div class="doc-type-badge">Legal</div>
+      <slot />
+    </main>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
   <NavFooter />
 </BaseLayout>
 
 <style>
-  .legal-content {
+  /* ---- Page shell ---- */
+  .legal-page {
+    max-width: 860px;
     margin-inline: auto;
     padding-inline: 2rem;
-    max-width: 860px;
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+  }
+
+  .legal-page.has-toc {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 3rem;
+    max-width: 1120px;
+    align-items: start;
+  }
+
+  /* ---- TOC sidebar ---- */
+  .toc-sidebar {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 5rem);
+    overflow-y: auto;
+  }
+
+  .toc-inner {
+    padding: 0;
+  }
+
+  .toc-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 0.6rem 0.75rem;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+  }
+
+  .toc-list li {
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-link {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-base-content);
+    text-decoration: none;
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    line-height: 1.4;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    opacity: 0.6;
+    box-shadow: inset 2px 0 0 var(--color-base-300);
+  }
+
+  .toc-link:hover {
+    opacity: 1;
+    background: var(--color-base-200);
+    box-shadow: inset 2px 0 0 var(--color-base-content);
+  }
+
+  .toc-link.active {
+    opacity: 1;
+    color: var(--color-primary);
+    background: oklch(from var(--color-secondary) l c h / 0.1);
+    box-shadow: inset 3px 0 0 var(--color-secondary);
+  }
+
+  /* ---- Document type badge ---- */
+  .doc-type-badge {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    padding: 0.2em 0.65em;
+    border-radius: 3px;
+    margin-bottom: 0.75rem;
+  }
+
+  /* ---- Scoped heading scale ---- */
+  .legal-content :global(h1) {
+    font-size: 2.2rem;
+    color: var(--color-primary);
+    margin-bottom: 0.2em;
+    line-height: 1.15;
+  }
+
+  .legal-content :global(h2) {
+    font-size: 1.15rem;
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 0.6rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--color-base-300);
+  }
+
+  .legal-content :global(h3) {
+    font-size: 1rem;
+    color: var(--color-primary);
+    margin-top: 1.25rem;
+    margin-bottom: 0.35rem;
+  }
+
+  /* Replace heavy dividers with spacing only */
+  .legal-content :global(hr) {
+    display: none;
+  }
+
+  /* Preamble text (company name, location, effective date) */
+  .legal-content :global(h1 + p),
+  .legal-content :global(h1 + p + p) {
+    font-size: 0.875rem;
+    color: var(--color-base-content);
+    opacity: 0.6;
+    margin-bottom: 0.25em;
+  }
+
+  /* Space before first section */
+  .legal-content :global(h2:first-of-type) {
+    margin-top: 2rem;
+  }
+
+  /* Lists */
+  .legal-content :global(ul),
+  .legal-content :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1em;
+  }
+
+  .legal-content :global(li) {
+    margin-bottom: 0.35em;
+  }
+
+  /* Links */
+  .legal-content :global(a) {
+    color: var(--color-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .legal-content :global(strong) {
+    color: var(--color-primary);
+  }
+
+  /* Footer acknowledgement line */
+  .legal-content :global(p:last-child) {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-base-300);
+    font-size: 0.875rem;
+    opacity: 0.7;
+  }
+
+  /* ---- Back to top ---- */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(0.5rem);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* ---- Mobile ---- */
+  @media (max-width: 768px) {
+    .legal-page,
+    .legal-page.has-toc {
+      display: block;
+      max-width: 100%;
+      padding-inline: 1.25rem;
+      padding-top: 1.75rem;
+    }
+
+    .toc-sidebar {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      background: var(--color-base-200);
+      border-radius: 8px;
+      padding: 1rem 1rem 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .toc-label {
+      margin-left: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .toc-link {
+      box-shadow: none;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .toc-link:hover,
+    .toc-link.active {
+      box-shadow: none;
+    }
+
+    .legal-content :global(h1) {
+      font-size: 1.75rem;
+    }
+
+    .back-to-top {
+      bottom: 1.25rem;
+      right: 1.25rem;
+    }
   }
 </style>
+
+<script>
+  // Back-to-top visibility
+  const btn = document.getElementById("back-to-top");
+
+  window.addEventListener("scroll", () => {
+    btn?.classList.toggle("visible", window.scrollY > 400);
+  }, { passive: true });
+
+  btn?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // TOC active section via IntersectionObserver
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>(".toc-link");
+  const sectionHeadings = document.querySelectorAll<HTMLElement>(".legal-content h2");
+
+  if (tocLinks.length && sectionHeadings.length) {
+    const observer = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            tocLinks.forEach(l => l.classList.remove("active"));
+            const link = document.querySelector<HTMLAnchorElement>(
+              `.toc-link[href="#${entry.target.id}"]`
+            );
+            link?.classList.add("active");
+          }
+        }
+      },
+      { rootMargin: "-5% 0px -80% 0px" }
+    );
+
+    sectionHeadings.forEach(h => observer.observe(h));
+  }
+</script>
