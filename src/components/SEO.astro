@@ -1,0 +1,51 @@
+---
+export interface PageFrontmatter {
+  title?: string;
+  description?: string;
+  /** Absolute URL or site-relative path to the OG share image */
+  image?: string;
+  /** Override the canonical URL (defaults to the current page URL) */
+  canonical?: string;
+  noindex?: boolean;
+}
+
+type Props = PageFrontmatter;
+
+const SITE_NAME = "Imagine Land Works";
+const DEFAULT_TITLE = SITE_NAME;
+
+const {
+  title = DEFAULT_TITLE,
+  description,
+  image,
+  canonical = Astro.url.href,
+  noindex = false,
+} = Astro.props;
+
+const resolvedImage = image
+  ? new URL(image, Astro.site).href
+  : undefined;
+---
+
+<title>{title}</title>
+
+{description && <meta name="description" content={description} />}
+{noindex
+  ? <meta name="robots" content="noindex, nofollow" />
+  : <meta name="robots" content="index, follow" />
+}
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph -->
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+{description && <meta property="og:description" content={description} />}
+{resolvedImage && <meta property="og:image" content={resolvedImage} />}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content={resolvedImage ? "summary_large_image" : "summary"} />
+<meta name="twitter:title" content={title} />
+{description && <meta name="twitter:description" content={description} />}
+{resolvedImage && <meta name="twitter:image" content={resolvedImage} />}

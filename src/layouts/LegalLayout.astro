@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Navbar from "@components/NavBar.astro";
+import NavFooter from "@components/NavFooter.astro";
+import type { PageFrontmatter } from "@components/SEO.astro";
+
+type Props = PageFrontmatter;
+
+const { title, description, image, canonical, noindex } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} image={image} canonical={canonical} noindex={noindex}>
+  <header>
+    <Navbar />
+  </header>
+  <main class="legal-content">
+    <slot />
+  </main>
+  <NavFooter />
+</BaseLayout>
+
+<style>
+  .legal-content {
+    margin-inline: auto;
+    padding-inline: 2rem;
+    max-width: 860px;
+  }
+</style>
