@@ -8,9 +8,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-   alias: {
-      '@assets': 'src/assets',
-   },
+   site: 'https://imaginelandworks.com',
    integrations: [mdx(), sitemap()],
    vite: {
       plugins: [tailwindcss()],
