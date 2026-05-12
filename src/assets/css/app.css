@@ -46,7 +46,6 @@
 /* -------------------------------------------------------
    LOCAL FONTS
    ------------------------------------------------------- */
-
 /* Oswald 700 (Headings) */
 @font-face {
   font-family: 'Oswald';
@@ -68,50 +67,39 @@
 /* -------------------------------------------------------
    BASE TYPOGRAPHY
    ------------------------------------------------------- */
+@layer base {
+  body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--fallback-bc, #1f1f1f);
+  }
 
-html {
-  font-size: 100%; /* 16px */
-}
+  h1, h2, h3, h4, h5 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 0.5em;
+  }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  color: var(--fallback-bc, #1f1f1f); /* DaisyUI-safe text color */
-}
+  h1 { font-size: 4.210rem; }
+  h2 { font-size: 3.158rem; }
+  h3 { font-size: 2.369rem; }
+  h4 { font-size: 1.777rem; }
+  h5 { font-size: 1.333rem; }
 
-/* -------------------------------------------------------
-   HEADINGS
-   ------------------------------------------------------- */
+  p {
+    margin: 0 0 1em;
+  }
 
-h1, h2, h3, h4, h5 {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0 0 0.5em;
-}
-
-/* Type Scale — Perfect Fourth (1.333) */
-h1 { font-size: 4.210rem; } /* ~67px */
-h2 { font-size: 3.158rem; } /* ~50px */
-h3 { font-size: 2.369rem; } /* ~38px */
-h4 { font-size: 1.777rem; } /* ~28px */
-h5 { font-size: 1.333rem; } /* ~21px */
-
-p {
-  margin: 0 0 1em;
-}
-
-small {
-  font-size: 0.750rem; /* 12px */
+  small {
+    font-size: 0.750rem;
+  }
 }
 
 /* -------------------------------------------------------
    RESPONSIVE TYPE
    ------------------------------------------------------- */
-
 @media (max-width: 600px) {
   html {
     font-size: 90%;
