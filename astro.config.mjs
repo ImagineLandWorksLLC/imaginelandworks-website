@@ -14,5 +14,11 @@ export default defineConfig({
    integrations: [mdx(), sitemap()],
    vite: {
       plugins: [tailwindcss()],
+      server: {
+         watch: {
+            usePolling: true,
+            interval: 500,
+         },
+      },
    }
 });
