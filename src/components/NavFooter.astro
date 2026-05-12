@@ -5,94 +5,102 @@ import InstagramIcon from "../assets/icons/instagram-brands-solid-full.svg";
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-base-200 text-base-content pt-12 pb-6">
-  <div class="container mx-auto px-6">
-    <!-- Main Footer Grid -->
-    <div class="footer sm:footer-horizontal p-0">
+<footer class="bg-primary text-primary-content">
+
+  <!-- Main grid -->
+  <div class="container mx-auto px-8 py-20">
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] lg:gap-8">
+
       <!-- Brand -->
-      <aside class="flex flex-col gap-4 max-w-sm">
+      <div class="sm:col-span-2 lg:col-span-1 flex flex-col gap-6">
         <img
           src="/images/ImagineLandWorks.svg"
-          alt="ImagineLandWorks Logo"
-          class="w-40 md:w-60 lg:w-72 h-auto mx-auto"
+          alt="ImagineLandWorks"
+          class="w-56 h-auto"
         />
-        <p class="text-sm leading-relaxed">
-          Providing creative services since 2026
+        <p class="text-sm leading-relaxed opacity-45 max-w-[28ch]">
+          Professional land clearing and site preparation serving the region since 2026.
         </p>
-      </aside>
+      </div>
 
-      <!-- Services -->
-      <nav>
-        <h6 class="footer-title">Services</h6>
-        <a class="link link-hover" href="/services">Land Clearing</a>
-        <a class="link link-hover" href="/services">Site Prep</a>
-        <a class="link link-hover" href="/services">Demo</a>
-        <a class="link link-hover" href="/services">Mulching</a>
-        <a class="link link-hover" href="/services">Bush Hogging</a>
-        <a class="link link-hover" href="/services">Tree Work</a>
-        <a class="link link-hover" href="/services">Excavation</a>
-        <a class="link link-hover" href="/services">Pond Cleaning</a>
+      <!-- Clearing & Prep -->
+      <nav class="flex flex-col">
+        <h6 class="text-secondary text-[0.65rem] font-semibold uppercase tracking-[0.14em] pb-3 mb-4 border-b border-white/10">
+          Clearing &amp; Prep
+        </h6>
+        <div class="flex flex-col gap-2.5">
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/services">Land Clearing</a>
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/services">Site Preparation</a>
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/services">Demolition</a>
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/services">Bush Hogging</a>
+        </div>
+      </nav>
+
+      <!-- Earthworks -->
+      <nav class="flex flex-col">
+        <h6 class="text-secondary text-[0.65rem] font-semibold uppercase tracking-[0.14em] pb-3 mb-4 border-b border-white/10">
+          Earthworks
+        </h6>
+        <div class="flex flex-col gap-2.5">
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/services">Excavation</a>
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/services">Mulching</a>
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/services">Tree Work</a>
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/services">Pond Cleaning</a>
+        </div>
       </nav>
 
       <!-- Company -->
-      <nav>
-        <h6 class="footer-title">Company</h6>
-        <a class="link link-hover" href="/about">About us</a>
-        <a class="link link-hover" href="/contact">Contact</a>
-        <a class="link link-hover">Jobs</a>
-        <a class="link link-hover">Press kit</a>
+      <nav class="flex flex-col">
+        <h6 class="text-secondary text-[0.65rem] font-semibold uppercase tracking-[0.14em] pb-3 mb-4 border-b border-white/10">
+          Company
+        </h6>
+        <div class="flex flex-col gap-2.5">
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/about">About Us</a>
+          <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/contact">Contact</a>
+        </div>
       </nav>
-    </div>
 
-    <!-- Bottom Bar -->
-    <div
-      class="mt-10 border-t border-base-300 pt-4 flex flex-col sm:flex-row items-center justify-between gap-4"
-    >
-      <!-- Left: Copyright -->
-      <span class="text-sm opacity-80 leading-none flex items-center">
-        © {year} Imagineland Works. All rights reserved.
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="border-t border-white/[0.08]">
+    <div class="container mx-auto px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+
+      <!-- Copyright -->
+      <span class="text-xs opacity-35 tracking-wide text-center sm:text-left">
+        &copy; {year} Imagineland Works. All rights reserved.
       </span>
 
-      <!-- Middle: Legal Links -->
-      <div class="flex gap-6 text-sm opacity-80 leading-none items-center">
-        <a href="/terms" class="link link-hover">Terms of Use</a>
-        <a href="/privacy" class="link link-hover">Privacy Policy</a>
+      <!-- Legal -->
+      <div class="flex gap-6 text-xs opacity-40">
+        <a href="/terms" class="hover:opacity-100 transition-opacity">Terms of Use</a>
+        <a href="/privacy" class="hover:opacity-100 transition-opacity">Privacy Policy</a>
       </div>
 
-      <!-- Right: Social Icons -->
-      <div class="flex gap-4 items-center">
-        <!-- Facebook -->
+      <!-- Social icons -->
+      <div class="flex gap-2.5">
         <a
           href="https://www.facebook.com/imaginelandworks"
           target="_blank"
           rel="noopener noreferrer"
-          class="hover:opacity-80 transition-opacity flex items-center"
+          aria-label="Facebook"
+          class="w-9 h-9 rounded-full flex items-center justify-center ring-1 ring-white/20 bg-white/[0.06] hover:bg-white/15 hover:ring-white/35 transition-all duration-200"
         >
-          <img
-            src={FacebookIcon.src}
-            alt="Facebook"
-            width="22"
-            height="22"
-            class="w-5.5 h-5.5"
-          />
+          <img src={FacebookIcon.src} alt="" aria-hidden="true" class="w-[1.05rem] h-[1.05rem] invert opacity-65" />
         </a>
-
-        <!-- Instagram -->
         <a
           href="https://www.instagram.com/imaginelandworks"
           target="_blank"
           rel="noopener noreferrer"
-          class="hover:opacity-80 transition-opacity flex items-center"
+          aria-label="Instagram"
+          class="w-9 h-9 rounded-full flex items-center justify-center ring-1 ring-white/20 bg-white/[0.06] hover:bg-white/15 hover:ring-white/35 transition-all duration-200"
         >
-          <img
-            src={InstagramIcon.src}
-            alt="Instagram"
-            width="22"
-            height="22"
-            class="w-5.5 h-5.5"
-          />
+          <img src={InstagramIcon.src} alt="" aria-hidden="true" class="w-[1.05rem] h-[1.05rem] invert opacity-65" />
         </a>
       </div>
+
     </div>
   </div>
+
 </footer>
