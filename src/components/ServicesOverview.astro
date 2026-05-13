@@ -1,0 +1,121 @@
+---
+import {
+  faPersonDigging,
+  faLeaf,
+  faTree,
+  faWater,
+  faFire,
+  faRulerCombined,
+  faHammer,
+  faTractor,
+} from "@fortawesome/free-solid-svg-icons";
+import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+
+export interface Service {
+  title: string;
+  description: string;
+  icon: string;
+  featured?: boolean;
+}
+
+interface Props {
+  services: Service[];
+}
+
+const { services } = Astro.props;
+
+const iconMap: Record<string, IconDefinition> = {
+  digging: faPersonDigging,
+  leaf: faLeaf,
+  tree: faTree,
+  water: faWater,
+  fire: faFire,
+  "ruler-combined": faRulerCombined,
+  hammer: faHammer,
+  tractor: faTractor,
+};
+
+function getIconSvg(iconName: string): string {
+  const faIcon = iconMap[iconName];
+  if (!faIcon) return "";
+  const [width, height, , , path] = faIcon.icon;
+  const pathD = Array.isArray(path) ? path.join(" ") : path;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" fill="currentColor" class="size-8"><path d="${pathD}" /></svg>`;
+}
+---
+
+<section class="bg-base-200 py-20">
+  <div class="container mx-auto px-6">
+
+    <!-- Section header -->
+    <div class="text-center mb-14">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        What We Do
+      </p>
+      <h2 class="text-primary font-heading">Our Services</h2>
+      <p class="text-base-content/70 max-w-xl mx-auto mt-2">
+        From raw land to build-ready sites — Imagine Land Works handles every
+        phase of your project with professional equipment and local expertise.
+      </p>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {services.map((service) => (
+        <div
+          class:list={[
+            "card bg-base-100 shadow-md rounded-lg overflow-hidden transition-shadow duration-200 hover:shadow-xl",
+            service.featured && "border-l-4 border-primary",
+          ]}
+        >
+          <div class="card-body gap-4 p-7">
+
+            <!-- Icon -->
+            <div
+              class:list={[
+                "flex items-center justify-center rounded-lg w-14 h-14",
+                service.featured
+                  ? "bg-primary/10 text-primary"
+                  : "bg-base-200 text-secondary",
+              ]}
+            >
+              <Fragment set:html={getIconSvg(service.icon)} />
+            </div>
+
+            <!-- Title -->
+            <h3 class="card-title font-heading text-primary text-2xl leading-tight">
+              {service.title}
+            </h3>
+
+            <!-- Description -->
+            <p class="text-base-content/70 text-sm leading-relaxed flex-grow">
+              {service.description}
+            </p>
+
+            <!-- CTA -->
+            <div class="card-actions mt-2">
+              <a
+                href="/services"
+                class:list={[
+                  "btn btn-sm",
+                  service.featured ? "btn-primary" : "btn-ghost btn-primary text-primary",
+                ]}
+              >
+                Learn More →
+              </a>
+            </div>
+
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="text-center mt-14">
+      <a href="/services" class="btn btn-primary btn-lg">
+        View All Services
+      </a>
+    </div>
+
+  </div>
+</section>
