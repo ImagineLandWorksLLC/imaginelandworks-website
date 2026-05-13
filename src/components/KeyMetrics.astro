@@ -1,16 +1,6 @@
 ---
-import {
-  faTractor,
-  faClipboardCheck,
-  faCalendarDays,
-  faMedal,
-  faShieldHalved,
-  faStar,
-  faBolt,
-  faLeaf,
-} from "@fortawesome/free-solid-svg-icons";
-import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import type { Metric } from "@data/metrics";
+import { iconSvg } from "@utils/icons";
 
 interface Props {
   metrics: Metric[];
@@ -18,25 +8,6 @@ interface Props {
 }
 
 const { metrics, heading } = Astro.props;
-
-const iconMap: Record<string, IconDefinition> = {
-  "tractor":         faTractor,
-  "clipboard-check": faClipboardCheck,
-  "calendar-days":   faCalendarDays,
-  "medal":           faMedal,
-  "shield-halved":   faShieldHalved,
-  "star":            faStar,
-  "bolt":            faBolt,
-  "leaf":            faLeaf,
-};
-
-function iconSvg(name: string): string {
-  const fa = iconMap[name];
-  if (!fa) return "";
-  const [w, h, , , path] = fa.icon;
-  const d = Array.isArray(path) ? path.join(" ") : path;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="size-6" aria-hidden="true"><path d="${d}" /></svg>`;
-}
 ---
 
 <section class="bg-base-100 py-20">

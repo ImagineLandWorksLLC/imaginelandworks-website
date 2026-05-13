@@ -1,41 +1,12 @@
 ---
-import {
-  faPersonDigging,
-  faLeaf,
-  faTree,
-  faWater,
-  faFire,
-  faRulerCombined,
-  faHammer,
-  faTractor,
-} from "@fortawesome/free-solid-svg-icons";
-import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import type { Service } from "@data/services";
+import { iconSvg } from "@utils/icons";
 
 interface Props {
   services: Service[];
 }
 
 const { services } = Astro.props;
-
-const iconMap: Record<string, IconDefinition> = {
-  digging: faPersonDigging,
-  leaf: faLeaf,
-  tree: faTree,
-  water: faWater,
-  fire: faFire,
-  "ruler-combined": faRulerCombined,
-  hammer: faHammer,
-  tractor: faTractor,
-};
-
-function getIconSvg(iconName: string): string {
-  const faIcon = iconMap[iconName];
-  if (!faIcon) return "";
-  const [width, height, , , path] = faIcon.icon;
-  const pathD = Array.isArray(path) ? path.join(" ") : path;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" fill="currentColor" class="size-8"><path d="${pathD}" /></svg>`;
-}
 ---
 
 <section class="bg-base-100 py-20">
@@ -73,7 +44,7 @@ function getIconSvg(iconName: string): string {
                   : "bg-base-200 text-secondary",
               ]}
             >
-              <Fragment set:html={getIconSvg(service.icon)} />
+              <Fragment set:html={iconSvg(service.icon, "size-8")} />
             </div>
 
             <!-- Title -->

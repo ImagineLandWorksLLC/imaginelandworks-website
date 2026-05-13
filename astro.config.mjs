@@ -14,6 +14,7 @@ export default defineConfig({
       resolve: {
          alias: {
             "@data": "/src/data",
+            "@utils": "/src/utils",
          },
       },
       plugins: [tailwindcss()],

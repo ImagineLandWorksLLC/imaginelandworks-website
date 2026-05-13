@@ -1,33 +1,12 @@
 ---
-import {
-  faHelmetSafety,
-  faCalendarDays,
-  faTractor,
-  faClipboardCheck,
-} from "@fortawesome/free-solid-svg-icons";
-import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import type { ProcessStep } from "@data/processSteps";
+import { iconSvg } from "@utils/icons";
 
 interface Props {
   steps: ProcessStep[];
 }
 
 const { steps } = Astro.props;
-
-const iconMap: Record<string, IconDefinition> = {
-  "helmet-safety":   faHelmetSafety,
-  "calendar-days":   faCalendarDays,
-  "tractor":         faTractor,
-  "clipboard-check": faClipboardCheck,
-};
-
-function iconSvg(name: string): string {
-  const fa = iconMap[name];
-  if (!fa) return "";
-  const [w, h, , , path] = fa.icon;
-  const d = Array.isArray(path) ? path.join(" ") : path;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="size-8"><path d="${d}" /></svg>`;
-}
 ---
 
 <section class="bg-base-200 py-20">
@@ -65,7 +44,7 @@ function iconSvg(name: string): string {
               class="w-20 h-20 rounded-full bg-primary flex items-center justify-center
                      text-primary-content mb-6 ring-4 ring-base-100 shadow-md"
             >
-              <Fragment set:html={iconSvg(step.icon)} />
+              <Fragment set:html={iconSvg(step.icon, "size-8")} />
             </div>
 
             <!-- Step label -->
