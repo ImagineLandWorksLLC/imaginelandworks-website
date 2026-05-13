@@ -19,19 +19,19 @@ const pathD = Array.isArray(path) ? path.join(" ") : path;
 const phoneSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="size-5 shrink-0"><path d="${pathD}" /></svg>`;
 ---
 
-<section class="bg-secondary py-20">
+<section class="bg-accent py-20">
   <div class="container mx-auto px-6">
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12">
 
       <!-- Copy -->
       <div class="flex-1 max-w-2xl space-y-5">
-        <p class="text-primary font-heading text-xl uppercase tracking-widest">
+        <p class="text-accent-content/70 font-heading text-xl uppercase tracking-widest">
           {subheadline}
         </p>
-        <h2 class="text-secondary-content font-heading leading-tight">
+        <h2 class="text-accent-content font-heading leading-tight">
           {headline}
         </h2>
-        <p class="text-secondary-content/80 text-lg leading-relaxed">
+        <p class="text-accent-content/80 text-lg leading-relaxed">
           {body}
         </p>
       </div>
@@ -45,15 +45,15 @@ const phoneSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}
         <!-- Phone box -->
         <a
           href={`tel:${phone.replace(/\D/g, "")}`}
-          class="flex items-center gap-3 bg-secondary-content/10 border border-secondary-content/20
-                 rounded-xl px-5 py-4 text-secondary-content hover:bg-secondary-content/20
+          class="flex items-center gap-3 bg-accent-content/10 border border-accent-content/20
+                 rounded-xl px-5 py-4 text-accent-content hover:bg-accent-content/20
                  transition-colors duration-200 no-underline"
         >
-          <span class="text-accent">
+          <span class="text-accent-content">
             <Fragment set:html={phoneSvg} />
           </span>
           <div class="flex flex-col leading-tight">
-            <span class="text-secondary-content/60 text-xs uppercase tracking-wider">
+            <span class="text-accent-content/60 text-xs uppercase tracking-wider">
               {phoneLabel}
             </span>
             <span class="font-heading text-2xl">{phone}</span>
