@@ -6,9 +6,21 @@ interface Props {
   cities: ServiceCity[];
   ctaLabel?: string;
   ctaHref?: string;
+  strokeColor?: string;
+  fillColor?: string;
+  width?: number;
+  height?: number;
 }
 
-const { cities, ctaLabel, ctaHref } = Astro.props;
+const {
+  cities,
+  ctaLabel,
+  ctaHref,
+  strokeColor = "var(--color-primary)",
+  fillColor = "var(--color-base-300)",
+  width,
+  height,
+} = Astro.props;
 
 const [w, h, , , path] = faLocationDot.icon;
 const pinD = Array.isArray(path) ? path.join(" ") : path;
@@ -24,26 +36,21 @@ const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" 
         <div class="card bg-base-100 border border-base-300 shadow-md rounded-2xl overflow-hidden w-full max-w-md">
           <div class="card-body p-6">
 
-            <!--
-              Simplified Florida silhouette (not geographically precise).
-              Polk County service region highlighted in the center.
-              City dots positioned relative to that region.
-            -->
             <svg
-              viewBox="0 0 200 270"
+              viewBox="0 0 400 400"
               xmlns="http://www.w3.org/2000/svg"
               aria-label="Map showing Imagine Land Works service area in central Florida"
               role="img"
-              class="w-full h-auto"
+              class={width || height ? undefined : "w-full h-auto"}
+              width={width}
+              height={height}
             >
-              <!-- Subtle dot-grid background -->
               <defs>
-                <pattern id="dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
-                  <circle cx="1.5" cy="1.5" r="1" fill="#d1d5db" opacity="0.5" />
+                <pattern id="dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1.2" fill="var(--color-base-content)" opacity="0.12" />
                 </pattern>
-                <!-- Glow filter for service region -->
                 <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feGaussianBlur stdDeviation="6" result="blur" />
                   <feMerge>
                     <feMergeNode in="blur" />
                     <feMergeNode in="SourceGraphic" />
@@ -51,93 +58,69 @@ const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" 
                 </filter>
               </defs>
 
-              <rect width="200" height="270" fill="url(#dots)" />
+              <rect width="400" height="400" fill="url(#dots)" />
 
               <!-- Florida state silhouette -->
               <path
-                d="
-                  M 18,18
-                  L 182,18
-                  L 182,70
-                  L 177,100
-                  L 172,130
-                  L 168,158
-                  L 162,185
-                  L 150,212
-                  L 120,255
-                  L 95,250
-                  L 78,228
-                  L 70,202
-                  L 65,180
-                  L 70,162
-                  L 78,148
-                  L 65,138
-                  L 70,125
-                  L 58,118
-                  L 60,108
-                  L 50,95
-                  L 44,78
-                  L 30,55
-                  L 22,38
-                  Z
-                "
-                fill="#E8E8E8"
-                stroke="#d1d5db"
-                stroke-width="1.5"
+                d="M310 40h-40l-20 10-30-5-25 10-20 20-15 5-10 15 5 20-10 15-20 10-10 20 5 20-10 15 5 20 20 10 10 20 20 10 10 20 20 10 10 20 15 10 10 20 20 10 10-10 5-20 10-10 5-20 10-10 5-20 10-10 5-20 10-10 5-20 10-10 5-20-10-20-20-10-10-20-20-10-10-20z"
+                fill={fillColor}
+                stroke={strokeColor}
+                stroke-width="4"
                 stroke-linejoin="round"
+                stroke-linecap="round"
               />
 
               <!-- Polk County / service region highlight -->
               <ellipse
-                cx="118"
-                cy="138"
-                rx="34"
+                cx="192"
+                cy="170"
+                rx="38"
                 ry="24"
-                fill="#4FAF4F"
+                fill="var(--color-secondary)"
                 opacity="0.18"
                 filter="url(#glow)"
               />
               <ellipse
-                cx="118"
-                cy="138"
-                rx="34"
+                cx="192"
+                cy="170"
+                rx="38"
                 ry="24"
                 fill="none"
-                stroke="#4FAF4F"
-                stroke-width="1.5"
+                stroke="var(--color-secondary)"
+                stroke-width="2"
                 opacity="0.5"
-                stroke-dasharray="4 3"
+                stroke-dasharray="6 4"
               />
 
               <!-- City dots -->
               <!-- Lakeland (primary — larger dot) -->
-              <circle cx="112" cy="140" r="5"  fill="#A67C52" stroke="white" stroke-width="1.5" />
+              <circle cx="190" cy="173" r="7" fill="var(--color-accent)" stroke="var(--color-base-100)" stroke-width="2" />
               <!-- Auburndale -->
-              <circle cx="128" cy="128" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <circle cx="205" cy="160" r="5" fill="var(--color-primary)" stroke="var(--color-base-100)" stroke-width="2" />
               <!-- Winter Haven -->
-              <circle cx="140" cy="138" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <circle cx="218" cy="173" r="5" fill="var(--color-primary)" stroke="var(--color-base-100)" stroke-width="2" />
               <!-- Bartow -->
-              <circle cx="112" cy="154" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <circle cx="188" cy="188" r="5" fill="var(--color-primary)" stroke="var(--color-base-100)" stroke-width="2" />
               <!-- Polk City -->
-              <circle cx="122" cy="118" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <circle cx="192" cy="148" r="5" fill="var(--color-primary)" stroke="var(--color-base-100)" stroke-width="2" />
               <!-- Mulberry -->
-              <circle cx="98"  cy="152" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <circle cx="172" cy="184" r="5" fill="var(--color-primary)" stroke="var(--color-base-100)" stroke-width="2" />
               <!-- Plant City (outside Polk, slightly west) -->
-              <circle cx="82"  cy="130" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <circle cx="154" cy="162" r="5" fill="var(--color-primary)" stroke="var(--color-base-100)" stroke-width="2" />
               <!-- Haines City (SE Polk) -->
-              <circle cx="138" cy="152" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <circle cx="214" cy="188" r="5" fill="var(--color-primary)" stroke="var(--color-base-100)" stroke-width="2" />
 
               <!-- City label: Lakeland only -->
-              <text x="120" y="142" font-size="7" fill="#1F3D2B" font-family="sans-serif" font-weight="700">
+              <text x="200" y="175" font-size="11" fill="var(--color-primary)" font-family="sans-serif" font-weight="700">
                 Lakeland
               </text>
 
               <!-- Legend -->
-              <g transform="translate(10, 248)">
-                <circle cx="5" cy="5" r="4"  fill="#A67C52" stroke="white" stroke-width="1" />
-                <text x="13" y="9" font-size="7" fill="#555" font-family="sans-serif">Primary city</text>
-                <circle cx="80" cy="5" r="3" fill="#1F3D2B" stroke="white" stroke-width="1" />
-                <text x="88" y="9" font-size="7" fill="#555" font-family="sans-serif">Service city</text>
+              <g transform="translate(14, 365)">
+                <circle cx="7" cy="5" r="6" fill="var(--color-accent)" stroke="var(--color-base-100)" stroke-width="1.5" />
+                <text x="18" y="9" font-size="10" fill="var(--color-base-content)" font-family="sans-serif">Primary city</text>
+                <circle cx="115" cy="5" r="5" fill="var(--color-primary)" stroke="var(--color-base-100)" stroke-width="1.5" />
+                <text x="126" y="9" font-size="10" fill="var(--color-base-content)" font-family="sans-serif">Service city</text>
               </g>
             </svg>
 
