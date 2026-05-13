@@ -4,5 +4,9 @@ description: "Imagine Land Works offers land clearing, excavation, site preparat
 layout: "@layouts/DefaultLayout.astro"
 ---
 
+import { serviceSections } from "@data/serviceSections";
+import ServiceSection from "@components/services/ServiceSection.astro";
 
-Hello World
+{serviceSections.map((section, i) => (
+  <ServiceSection section={section} reversed={i % 2 !== 0} />
+))}

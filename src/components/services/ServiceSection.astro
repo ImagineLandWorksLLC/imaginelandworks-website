@@ -1,0 +1,80 @@
+---
+import type { ServiceSectionData } from "@data/serviceSections";
+
+interface Props {
+  section: ServiceSectionData;
+  reversed?: boolean;
+}
+
+const { section, reversed = false } = Astro.props;
+---
+
+<section
+  id={section.anchor}
+  class:list={[
+    "py-20 scroll-mt-20",
+    reversed ? "bg-base-200" : "bg-base-100",
+  ]}
+>
+  <div class="container mx-auto px-6">
+    <div
+      class:list={[
+        "flex flex-col items-center gap-12 lg:gap-20",
+        reversed ? "lg:flex-row-reverse" : "lg:flex-row",
+      ]}
+    >
+
+      <!-- Copy -->
+      <div class="flex-1 space-y-6">
+        <p class="text-secondary font-heading text-xl uppercase tracking-widest">
+          {section.eyebrow}
+        </p>
+        <h2 class="text-primary font-heading leading-tight">
+          {section.title}
+        </h2>
+        <p class="text-base-content/70 text-lg leading-relaxed">
+          {section.description}
+        </p>
+
+        <ul class="space-y-3">
+          {section.capabilities.map((item) => (
+            <li class="flex items-start gap-3 text-base-content/80">
+              <span class="mt-1.5 size-2 rounded-full bg-secondary shrink-0"></span>
+              {item}
+            </li>
+          ))}
+        </ul>
+
+        <a href="/contact" class="btn btn-primary btn-lg mt-2">
+          {section.cta}
+        </a>
+      </div>
+
+      <!-- Image placeholder -->
+      <div class="flex-1 w-full">
+        <div
+          class:list={[
+            "border-2 border-dashed border-base-300 rounded-2xl",
+            "flex flex-col items-center justify-center gap-3",
+            "min-h-80 text-base-content/40 text-sm text-center p-8",
+            reversed ? "bg-base-300" : "bg-base-200",
+          ]}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="size-12 text-base-content/20"
+          >
+            <path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21h18M3 10.5h18M3 6.75l9-4.5 9 4.5" />
+          </svg>
+          <p class="font-heading text-base text-base-content/30 uppercase tracking-wider">
+            Image Placeholder
+          </p>
+          <p class="text-xs">{section.imagePlaceholder}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
