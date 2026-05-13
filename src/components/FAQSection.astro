@@ -1,0 +1,42 @@
+---
+import type { FAQ } from "@data/faqs";
+
+interface Props {
+  faqs: FAQ[];
+}
+
+const { faqs } = Astro.props;
+---
+
+<section class="bg-base-100 py-20">
+  <div class="container mx-auto px-6">
+
+    <!-- Section header -->
+    <div class="text-center mb-14">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        FAQ
+      </p>
+      <h2 class="text-primary font-heading leading-tight">
+        Common Questions
+      </h2>
+    </div>
+
+    <!-- Accordion -->
+    <div class="max-w-2xl mx-auto flex flex-col gap-3">
+      {faqs.map((faq, i) => (
+        <div class="collapse collapse-plus bg-base-200 border border-base-300 rounded-xl">
+          <input type="checkbox" />
+          <div class="collapse-title font-heading text-primary text-lg pr-10">
+            {faq.question}
+          </div>
+          <div class="collapse-content">
+            <p class="text-base-content/70 leading-relaxed pt-1">
+              {faq.answer}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

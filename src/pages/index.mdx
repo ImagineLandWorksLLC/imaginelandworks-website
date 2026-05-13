@@ -13,12 +13,14 @@ import Testimonials from "@components/Testimonials.astro";
 import ServiceArea from "@components/ServiceArea.astro";
 import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
 import JobberForm from "@components/JobberForm.astro";
+import FAQSection from "@components/FAQSection.astro";
 import { services } from "@data/services";
 import { reviews } from "@data/reviews";
 import { processSteps } from "@data/processSteps";
 import { metrics } from "@data/metrics";
 import { serviceCities } from "@data/serviceArea";
 import { contact } from "@data/contact";
+import { faqs } from "@data/faqs";
 
 <HomeHero
   title="Landworks Done Right"
@@ -56,3 +58,4 @@ import { contact } from "@data/contact";
   ctaLabel="See If We Service Your Area"
   ctaHref="/book"
 />
+<FAQSection faqs={faqs} />
