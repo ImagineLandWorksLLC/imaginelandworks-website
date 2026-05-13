@@ -11,6 +11,11 @@ export default defineConfig({
    site: 'https://imaginelandworks.com',
    integrations: [mdx(), sitemap()],
    vite: {
+      resolve: {
+         alias: {
+            "@data": "/src/data",
+         },
+      },
       plugins: [tailwindcss()],
       server: {
          watch: {

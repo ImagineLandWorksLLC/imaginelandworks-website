@@ -6,61 +6,9 @@ layout: "@layouts/DefaultLayout.astro"
 
 import HomeHero from "@components/HomeHero.astro";
 import ServicesOverview from "@components/ServicesOverview.astro";
+import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
 import JobberForm from "@components/JobberForm.astro";
-
-export const services = [
-  {
-    title: "Excavation",
-    description:
-      "Precision digging for foundations, utilities, ponds, and drainage systems using professional-grade equipment.",
-    icon: "digging",
-    featured: true,
-  },
-  {
-    title: "Mulching",
-    description:
-      "Professional mulching services to suppress weeds, retain moisture, and enhance the health and appearance of your landscape.",
-    icon: "leaf",
-  },
-  {
-    title: "Tree Work",
-    description:
-      "Expert tree trimming, removal, and maintenance to keep your property safe and your trees healthy.",
-    icon: "tree",
-  },
-  {
-    title: "Pond Cleaning",
-    description:
-      "Complete pond cleaning and maintenance — debris removal, sediment clearing, and shoreline cleanup to restore your water feature.",
-    icon: "water",
-  },
-  {
-    title: "Land Clearing",
-    description:
-      "Full removal of trees, brush, and vegetation to prepare your property for construction, farming, or development.",
-    icon: "fire",
-    featured: true,
-  },
-  {
-    title: "Site Preparation",
-    description:
-      "Complete groundwork services — grading, compacting, and leveling — so your site is build-ready from day one.",
-    icon: "ruler-combined",
-    featured: true,
-  },
-  {
-    title: "Demolition",
-    description:
-      "Safe and efficient demolition of structures, concrete slabs, and outbuildings, followed by full debris removal.",
-    icon: "hammer",
-  },
-  {
-    title: "Bush Hogging",
-    description:
-      "Heavy-duty brush mowing for overgrown fields, fence lines, and right-of-ways — fast results on even the toughest terrain.",
-    icon: "tractor",
-  },
-];
+import { services } from "@data/services";
 
 <HomeHero
   title="Landworks Done Right"
@@ -70,4 +18,12 @@ export const services = [
   imageAlt="Imagine Land Works excavator on a job site"
 />
 <ServicesOverview services={services} />
-<JobberForm />
+<FreeEstimateCTA
+  headline="Get Your Free Land Clearing Estimate"
+  subheadline="No Obligation. No Guesswork."
+  body="Whether you're prepping a lot, clearing brush, or planning a full excavation project, we'll give you a straight, honest estimate — fast. Serving Lakeland and surrounding areas."
+  ctaLabel="Request a Free Estimate"
+  ctaHref="/book"
+  phone="(863) 555-0190"
+  phoneLabel="Call Us Today"
+/>

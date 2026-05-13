@@ -1,14 +1,14 @@
 ---
-import DefaultLayout from "@layouts/DefaultLayout.astro";
+import BookingLayout from "@layouts/BookingLayout.astro";
 import JobberForm from "@components/JobberForm.astro";
 ---
 
-<DefaultLayout
+<BookingLayout
   title="Get a Free Quote - Land Clearing & Excavation | Imagine Land Works"
   description="Request a free quote from Imagine Land Works in Lakeland, Florida. We specialize in land clearing, excavation, site preparation, and property improvement. Fast response, competitive pricing."
 >
-  <div class="flex flex-col items-center px-4 py-12">
+  <div class="flex flex-col items-center px-4 py-12 h-full">
     <h1 class="text-6xl font-extrabold text-center mb-8">Get a Quote</h1>
     <JobberForm />
   </div>
-</DefaultLayout>
+</BookingLayout>
