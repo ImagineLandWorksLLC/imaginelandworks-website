@@ -1,5 +1,6 @@
 ---
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { contact } from "@data/contact";
 
 function iconSvg(icon: typeof faPhone, cls = "size-4") {
   const [w, h, , , path] = icon.icon;
@@ -33,11 +34,11 @@ function iconSvg(icon: typeof faPhone, cls = "size-4") {
 
     <div class="hidden lg:flex items-center gap-4">
       <a
-        href="tel:8635550190"
+        href={`tel:${contact.phone.raw}`}
         class="flex items-center gap-2 text-sm font-medium opacity-60 hover:opacity-100 transition-opacity"
       >
         <Fragment set:html={iconSvg(faPhone, "size-3.5")} />
-        (863) 555-0190
+        {contact.phone.display}
       </a>
       <a href="/book" class="btn btn-primary btn-sm">Get a Quote</a>
     </div>
@@ -70,11 +71,11 @@ function iconSvg(icon: typeof faPhone, cls = "size-4") {
     <div class="divider my-0"></div>
 
     <a
-      href="tel:8635550190"
+      href={`tel:${contact.phone.raw}`}
       class="flex items-center gap-2 px-4 py-2 text-sm font-medium opacity-60 hover:opacity-100 transition-opacity"
     >
       <Fragment set:html={iconSvg(faPhone, "size-3.5")} />
-      (863) 555-0190
+      {contact.phone.display}
     </a>
 
     <div class="px-4 pt-2 pb-1">

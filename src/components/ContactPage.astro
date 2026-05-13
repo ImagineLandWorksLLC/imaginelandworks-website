@@ -8,6 +8,7 @@ import {
   faCalendarCheck,
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
+import { contact } from "@data/contact";
 
 function iconSvg(icon: typeof faPhone, cls = "size-5") {
   const [w, h, , , path] = icon.icon;
@@ -48,38 +49,6 @@ function brandIconSvg(key: keyof typeof brandIcons, cls = "size-5") {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" fill="currentColor" class="${cls}" aria-hidden="true"><path d="${path}" /></svg>`;
 }
 
-const socialLinks = [
-  {
-    key: "facebook" as const,
-    label: "Facebook",
-    href: "https://www.facebook.com/imaginelandworks",
-  },
-  {
-    key: "instagram" as const,
-    label: "Instagram",
-    href: "https://www.instagram.com/imaginelandworks",
-  },
-  {
-    key: "tiktok" as const,
-    label: "TikTok",
-    href: "https://www.tiktok.com/@imaginelandworks",
-  },
-  {
-    key: "youtube" as const,
-    label: "YouTube",
-    href: "https://www.youtube.com/@imaginelandworks",
-  },
-  {
-    key: "linkedin" as const,
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/imaginelandworks",
-  },
-  {
-    key: "google" as const,
-    label: "Google Business",
-    href: "https://g.page/imaginelandworks",
-  },
-];
 ---
 
 <section class="bg-base-200 py-16 lg:py-24">
@@ -109,9 +78,9 @@ const socialLinks = [
             <!-- Phone -->
             <li class="py-5 first:pt-0">
               <a
-                href="tel:8635550190"
+                href={`tel:${contact.phone.raw}`}
                 class="flex items-center gap-4 group no-underline"
-                aria-label="Call (863) 555-0190"
+                aria-label={`Call ${contact.phone.display}`}
               >
                 <span class="shrink-0 w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-content transition-colors duration-200">
                   <Fragment set:html={iconSvg(faPhone)} />
@@ -119,7 +88,7 @@ const socialLinks = [
                 <div class="min-w-0">
                   <p class="text-xs uppercase tracking-widest text-base-content/50 mb-0.5">Phone</p>
                   <p class="font-heading text-xl text-primary group-hover:text-secondary transition-colors duration-200 mb-0 truncate">
-                    (863) 555-0190
+                    {contact.phone.display}
                   </p>
                 </div>
                 <span class="badge badge-secondary badge-soft ml-auto shrink-0 text-xs">Click to call</span>
@@ -129,9 +98,9 @@ const socialLinks = [
             <!-- Email -->
             <li class="py-5">
               <a
-                href="mailto:contact@imaginelandworks.com"
+                href={`mailto:${contact.email}`}
                 class="flex items-center gap-4 group no-underline"
-                aria-label="Email contact@imaginelandworks.com"
+                aria-label={`Email ${contact.email}`}
               >
                 <span class="shrink-0 w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-content transition-colors duration-200">
                   <Fragment set:html={iconSvg(faEnvelope)} />
@@ -139,7 +108,7 @@ const socialLinks = [
                 <div class="min-w-0">
                   <p class="text-xs uppercase tracking-widest text-base-content/50 mb-0.5">Email</p>
                   <p class="font-heading text-base text-primary group-hover:text-secondary transition-colors duration-200 mb-0 truncate">
-                    contact@imaginelandworks.com
+                    {contact.email}
                   </p>
                 </div>
               </a>
@@ -153,8 +122,8 @@ const socialLinks = [
                 </span>
                 <div>
                   <p class="text-xs uppercase tracking-widest text-base-content/50 mb-0.5">Service Area</p>
-                  <p class="font-heading text-xl text-primary mb-0">Lakeland, FL</p>
-                  <p class="text-sm text-base-content/60 mt-0.5 mb-0">Polk County &amp; surrounding areas</p>
+                  <p class="font-heading text-xl text-primary mb-0">{contact.address.city}, {contact.address.state}</p>
+                  <p class="text-sm text-base-content/60 mt-0.5 mb-0">{contact.address.county} &amp; surrounding areas</p>
                 </div>
               </div>
             </li>
@@ -168,18 +137,14 @@ const socialLinks = [
                 <div class="w-full">
                   <p class="text-xs uppercase tracking-widest text-base-content/50 mb-2">Hours of Operation</p>
                   <div class="flex flex-col gap-1.5">
-                    <div class="flex justify-between gap-4 text-sm">
-                      <span class="text-base-content/70">Mon – Fri</span>
-                      <span class="font-medium text-base-content">7:00 AM – 6:00 PM</span>
-                    </div>
-                    <div class="flex justify-between gap-4 text-sm">
-                      <span class="text-base-content/70">Saturday</span>
-                      <span class="font-medium text-base-content">8:00 AM – 3:00 PM</span>
-                    </div>
-                    <div class="flex justify-between gap-4 text-sm">
-                      <span class="text-base-content/70">Sunday</span>
-                      <span class="font-medium text-base-content/40">Closed</span>
-                    </div>
+                    {contact.hours.map(({ days, hours }) => (
+                      <div class="flex justify-between gap-4 text-sm">
+                        <span class="text-base-content/70">{days}</span>
+                        <span class={`font-medium ${hours ? "text-base-content" : "text-base-content/40"}`}>
+                          {hours ?? "Closed"}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -215,7 +180,7 @@ const socialLinks = [
 
             <!-- Call Now -->
             <a
-              href="tel:8635550190"
+              href={`tel:${contact.phone.raw}`}
               class="btn btn-secondary btn-lg w-full gap-2.5 shadow-sm"
             >
               <Fragment set:html={iconSvg(faPhone, "size-5")} />
@@ -233,7 +198,7 @@ const socialLinks = [
 
             <!-- Book a Job (Jobber) -->
             <a
-              href="https://clienthub.getjobber.com/client_hubs/9b1e8ded-a0cb-4ca0-a3d9-cb0bbed65d9e/public/work_request/new"
+              href={contact.jobber.workRequestUrl}
               target="_blank"
               rel="noopener noreferrer"
               class="btn btn-lg w-full border border-primary-content/30 bg-primary-content/10 text-primary-content hover:bg-primary-content/20 hover:border-primary-content/50 gap-2.5 shadow-sm"
@@ -243,7 +208,7 @@ const socialLinks = [
 
             <!-- Text Us -->
             <a
-              href="sms:8635550190"
+              href={`sms:${contact.phone.raw}`}
               class="btn btn-ghost btn-lg w-full text-primary-content/70 hover:text-primary-content hover:bg-primary-content/10 gap-2.5"
             >
               <Fragment set:html={iconSvg(faCommentDots, "size-5")} />
@@ -263,7 +228,7 @@ const socialLinks = [
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-              {socialLinks.map(({ key, label, href }) => (
+              {contact.social.map(({ key, label, href }) => (
                 <a
                   href={href}
                   target="_blank"

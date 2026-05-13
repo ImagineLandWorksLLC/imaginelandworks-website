@@ -2,8 +2,11 @@
 import FacebookIcon from "../assets/icons/facebook-brands-solid-full.svg";
 import InstagramIcon from "../assets/icons/instagram-brands-solid-full.svg";
 import { faPhone, faEnvelope, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { contact } from "@data/contact";
 
 const year = new Date().getFullYear();
+const facebookHref = contact.social.find((s) => s.key === "facebook")!.href;
+const instagramHref = contact.social.find((s) => s.key === "instagram")!.href;
 
 function iconSvg(icon: typeof faPhone, cls = "size-[1.1rem]") {
   const [w, h, , , path] = icon.icon;
@@ -26,7 +29,7 @@ function iconSvg(icon: typeof faPhone, cls = "size-[1.1rem]") {
           class="w-64 h-auto"
         />
         <p class="text-sm leading-relaxed opacity-45 max-w-[28ch]">
-          Professional land clearing and site preparation serving the region since 2026.
+          Professional land clearing and site preparation serving the region since {contact.founding}.
         </p>
       </div>
 
@@ -74,28 +77,28 @@ function iconSvg(icon: typeof faPhone, cls = "size-[1.1rem]") {
         </h6>
         <div class="flex flex-col gap-4">
           <a
-            href="tel:8635550190"
+            href={`tel:${contact.phone.raw}`}
             class="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity no-underline"
           >
             <span class="shrink-0 text-secondary">
               <Fragment set:html={iconSvg(faPhone)} />
             </span>
-            (863) 555-0190
+            {contact.phone.display}
           </a>
           <a
-            href="mailto:contact@imaginelandworks.com"
+            href={`mailto:${contact.email}`}
             class="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity no-underline"
           >
             <span class="shrink-0 text-secondary">
               <Fragment set:html={iconSvg(faEnvelope)} />
             </span>
-            contact@imaginelandworks.com
+            {contact.email}
           </a>
           <div class="flex items-center gap-3 opacity-60">
             <span class="shrink-0 text-secondary">
               <Fragment set:html={iconSvg(faLocationDot)} />
             </span>
-            Lakeland, FL
+            {contact.address.city}, {contact.address.state}
           </div>
         </div>
       </div>
@@ -109,7 +112,7 @@ function iconSvg(icon: typeof faPhone, cls = "size-[1.1rem]") {
 
       <!-- Copyright -->
       <span class="text-xs opacity-35 tracking-wide text-center sm:text-left">
-         &copy; {year} Imagine Land Works, LLC
+         &copy; {year} {contact.legalName}
       </span>
 
       <!-- Legal -->
@@ -121,7 +124,7 @@ function iconSvg(icon: typeof faPhone, cls = "size-[1.1rem]") {
       <!-- Social icons -->
       <div class="flex gap-2.5">
         <a
-          href="https://www.facebook.com/imaginelandworks"
+          href={facebookHref}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Facebook"
@@ -130,7 +133,7 @@ function iconSvg(icon: typeof faPhone, cls = "size-[1.1rem]") {
           <img src={FacebookIcon.src} alt="" aria-hidden="true" class="w-[1.1rem] h-[1.1rem] invert opacity-65" />
         </a>
         <a
-          href="https://www.instagram.com/imaginelandworks"
+          href={instagramHref}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Instagram"

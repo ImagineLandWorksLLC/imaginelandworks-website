@@ -1,6 +1,6 @@
 ---
-title: Home - Imagine Land Works
-description: "Imagine Land Works provides professional land work and outdoor services in Lakeland, Florida, including site preparation, property improvement, and more."
+title: "Land Clearing & Excavation in Lakeland, FL | Imagine Land Works"
+description: "Expert land clearing, excavation, site prep, mulching, and more in Lakeland, FL. Locally owned, licensed & insured. Serving Polk County. Free estimates."
 layout: "@layouts/DefaultLayout.astro"
 ---
 
@@ -18,6 +18,7 @@ import { reviews } from "@data/reviews";
 import { processSteps } from "@data/processSteps";
 import { metrics } from "@data/metrics";
 import { serviceCities } from "@data/serviceArea";
+import { contact } from "@data/contact";
 
 <HomeHero
   title="Landworks Done Right"
@@ -46,7 +47,7 @@ import { serviceCities } from "@data/serviceArea";
   body="Whether you're prepping a lot, clearing brush, or planning a full excavation project, we'll give you a straight, honest estimate — fast. Serving Lakeland and surrounding areas."
   ctaLabel="Request a Free Estimate"
   ctaHref="/book"
-  phone="(863) 555-0190"
+  phone={contact.phone.display}
   phoneLabel="Call Us Today"
 />
 <KeyMetrics metrics={metrics} heading="By the Numbers" />

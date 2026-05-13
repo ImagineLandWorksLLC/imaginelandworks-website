@@ -1,7 +1,7 @@
 ---
-const clienthubId = "9b1e8ded-a0cb-4ca0-a3d9-cb0bbed65d9e-2746986";
-const formUrl =
-  "https://clienthub.getjobber.com/client_hubs/9b1e8ded-a0cb-4ca0-a3d9-cb0bbed65d9e/public/work_request/embedded_work_request_form?form_id=2746986";
+import { contact } from "@data/contact";
+
+const { clienthubId, formUrl } = contact.jobber;
 ---
 
 <link rel="preconnect" href="https://d3ey4dbjkt2f6s.cloudfront.net" />
@@ -24,7 +24,7 @@ const formUrl =
       is:inline
       async
       src="https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js"
-      clienthub_id="9b1e8ded-a0cb-4ca0-a3d9-cb0bbed65d9e-2746986"
+      clienthub_id={clienthubId}
       form_url={formUrl}></script>
   </div>
 </section>
