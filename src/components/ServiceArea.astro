@@ -1,0 +1,198 @@
+---
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import type { ServiceCity } from "@data/serviceArea";
+
+interface Props {
+  cities: ServiceCity[];
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const { cities, ctaLabel, ctaHref } = Astro.props;
+
+const [w, h, , , path] = faLocationDot.icon;
+const pinD = Array.isArray(path) ? path.join(" ") : path;
+const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="size-4 shrink-0 mt-0.5" aria-hidden="true"><path d="${pinD}" /></svg>`;
+---
+
+<section class="bg-base-100 py-20">
+  <div class="container mx-auto px-6">
+    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+
+      <!-- Map (left) -->
+      <div class="w-full lg:w-1/2 flex justify-center">
+        <div class="card bg-base-200 border border-base-300 shadow-md rounded-2xl overflow-hidden w-full max-w-md">
+          <div class="card-body p-6">
+
+            <!--
+              Simplified Florida silhouette (not geographically precise).
+              Polk County service region highlighted in the center.
+              City dots positioned relative to that region.
+            -->
+            <svg
+              viewBox="0 0 200 270"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label="Map showing Imagine Land Works service area in central Florida"
+              role="img"
+              class="w-full h-auto"
+            >
+              <!-- Subtle dot-grid background -->
+              <defs>
+                <pattern id="dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                  <circle cx="1.5" cy="1.5" r="1" fill="#d1d5db" opacity="0.5" />
+                </pattern>
+                <!-- Glow filter for service region -->
+                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <rect width="200" height="270" fill="url(#dots)" />
+
+              <!-- Florida state silhouette -->
+              <path
+                d="
+                  M 18,18
+                  L 182,18
+                  L 182,70
+                  L 177,100
+                  L 172,130
+                  L 168,158
+                  L 162,185
+                  L 150,212
+                  L 120,255
+                  L 95,250
+                  L 78,228
+                  L 70,202
+                  L 65,180
+                  L 70,162
+                  L 78,148
+                  L 65,138
+                  L 70,125
+                  L 58,118
+                  L 60,108
+                  L 50,95
+                  L 44,78
+                  L 30,55
+                  L 22,38
+                  Z
+                "
+                fill="#E8E8E8"
+                stroke="#d1d5db"
+                stroke-width="1.5"
+                stroke-linejoin="round"
+              />
+
+              <!-- Polk County / service region highlight -->
+              <ellipse
+                cx="118"
+                cy="138"
+                rx="34"
+                ry="24"
+                fill="#4FAF4F"
+                opacity="0.18"
+                filter="url(#glow)"
+              />
+              <ellipse
+                cx="118"
+                cy="138"
+                rx="34"
+                ry="24"
+                fill="none"
+                stroke="#4FAF4F"
+                stroke-width="1.5"
+                opacity="0.5"
+                stroke-dasharray="4 3"
+              />
+
+              <!-- City dots -->
+              <!-- Lakeland (primary — larger dot) -->
+              <circle cx="112" cy="140" r="5"  fill="#A67C52" stroke="white" stroke-width="1.5" />
+              <!-- Auburndale -->
+              <circle cx="128" cy="128" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <!-- Winter Haven -->
+              <circle cx="140" cy="138" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <!-- Bartow -->
+              <circle cx="112" cy="154" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <!-- Polk City -->
+              <circle cx="122" cy="118" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <!-- Mulberry -->
+              <circle cx="98"  cy="152" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <!-- Plant City (outside Polk, slightly west) -->
+              <circle cx="82"  cy="130" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+              <!-- Haines City (SE Polk) -->
+              <circle cx="138" cy="152" r="3.5" fill="#1F3D2B" stroke="white" stroke-width="1.5" />
+
+              <!-- City label: Lakeland only -->
+              <text x="120" y="142" font-size="7" fill="#1F3D2B" font-family="sans-serif" font-weight="700">
+                Lakeland
+              </text>
+
+              <!-- Legend -->
+              <g transform="translate(10, 248)">
+                <circle cx="5" cy="5" r="4"  fill="#A67C52" stroke="white" stroke-width="1" />
+                <text x="13" y="9" font-size="7" fill="#555" font-family="sans-serif">Primary city</text>
+                <circle cx="80" cy="5" r="3" fill="#1F3D2B" stroke="white" stroke-width="1" />
+                <text x="88" y="9" font-size="7" fill="#555" font-family="sans-serif">Service city</text>
+              </g>
+            </svg>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Content (right) -->
+      <div class="w-full lg:w-1/2 space-y-8">
+
+        <!-- Header -->
+        <div>
+          <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+            Service Area
+          </p>
+          <h2 class="text-primary font-heading leading-tight">
+            Proudly Serving Lakeland,<br />Polk County & Surrounding Areas.
+          </h2>
+          <p class="text-base-content/70 mt-4 leading-relaxed">
+            Based in Lakeland, we run crews throughout Polk County and into neighboring
+            counties. If you're within driving distance of central Florida, there's a
+            good chance we can get to you.
+          </p>
+        </div>
+
+        <!-- City list -->
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {cities.map((city) => (
+            <li class="flex items-start gap-2.5">
+              <span class="text-accent mt-0.5">
+                <Fragment set:html={pinSvg} />
+              </span>
+              <div class="leading-tight">
+                <span class="font-heading text-primary text-base">{city.name}</span>
+                {city.county && (
+                  <span class="block text-base-content/50 text-xs uppercase tracking-wider">
+                    {city.county}
+                  </span>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <!-- CTA -->
+        {ctaLabel && ctaHref && (
+          <div class="pt-2">
+            <a href={ctaHref} class="btn btn-outline btn-primary">
+              {ctaLabel}
+            </a>
+          </div>
+        )}
+
+      </div>
+
+    </div>
+  </div>
+</section>

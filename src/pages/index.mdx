@@ -5,10 +5,19 @@ layout: "@layouts/DefaultLayout.astro"
 ---
 
 import HomeHero from "@components/HomeHero.astro";
+import ValueProps from "@components/ValueProps.astro";
 import ServicesOverview from "@components/ServicesOverview.astro";
+import HowItWorks from "@components/HowItWorks.astro";
+import KeyMetrics from "@components/KeyMetrics.astro";
+import Testimonials from "@components/Testimonials.astro";
+import ServiceArea from "@components/ServiceArea.astro";
 import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
 import JobberForm from "@components/JobberForm.astro";
 import { services } from "@data/services";
+import { reviews } from "@data/reviews";
+import { processSteps } from "@data/processSteps";
+import { metrics } from "@data/metrics";
+import { serviceCities } from "@data/serviceArea";
 
 <HomeHero
   title="Landworks Done Right"
@@ -17,7 +26,26 @@ import { services } from "@data/services";
   buttonHref="/book"
   imageAlt="Imagine Land Works excavator on a job site"
 />
+<ValueProps items={[
+  { icon: "shield-halved", title: "Licensed & Insured" },
+  { icon: "gears",         title: "Professional Equipment" },
+  { icon: "bolt",          title: "Fast Turnaround" },
+  { icon: "house-chimney", title: "Locally Owned" },
+]} />
 <ServicesOverview services={services} />
+<Testimonials
+  layout="featured"
+  reviews={reviews}
+  ctaLabel="Read More Reviews"
+  ctaHref="https://www.google.com/maps"
+/>
+<HowItWorks steps={processSteps} />
+<KeyMetrics metrics={metrics} heading="By the Numbers" />
+<ServiceArea
+  cities={serviceCities}
+  ctaLabel="See If We Service Your Area"
+  ctaHref="/book"
+/>
 <FreeEstimateCTA
   headline="Get Your Free Land Clearing Estimate"
   subheadline="No Obligation. No Guesswork."

@@ -1,0 +1,64 @@
+---
+import {
+  faShieldHalved,
+  faGears,
+  faBolt,
+  faHouseChimney,
+  faTractor,
+  faMedal,
+  faHandshake,
+  faUserShield,
+  faMapPin,
+  faLeaf,
+} from "@fortawesome/free-solid-svg-icons";
+import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+
+export interface ValueProp {
+  icon: string;
+  title: string;
+}
+
+interface Props {
+  items: ValueProp[];
+}
+
+const { items } = Astro.props;
+
+const iconMap: Record<string, IconDefinition> = {
+  "shield-halved": faShieldHalved,
+  "gears": faGears,
+  "bolt": faBolt,
+  "house-chimney": faHouseChimney,
+  "tractor": faTractor,
+  "medal": faMedal,
+  "handshake": faHandshake,
+  "user-shield": faUserShield,
+  "map-pin": faMapPin,
+  "leaf": faLeaf,
+};
+
+function getIconSvg(name: string): string {
+  const faIcon = iconMap[name];
+  if (!faIcon) return "";
+  const [w, h, , , path] = faIcon.icon;
+  const d = Array.isArray(path) ? path.join(" ") : path;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="size-7"><path d="${d}" /></svg>`;
+}
+---
+
+<section class="bg-base-200 border-y border-base-300">
+  <div class="container mx-auto px-6 py-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-base-300">
+      {items.map((item) => (
+        <div class="flex items-center gap-4 px-6 py-5 first:pl-0 last:pr-0">
+          <span class="text-accent shrink-0">
+            <Fragment set:html={getIconSvg(item.icon)} />
+          </span>
+          <span class="font-heading text-primary text-base uppercase tracking-wide leading-tight">
+            {item.title}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

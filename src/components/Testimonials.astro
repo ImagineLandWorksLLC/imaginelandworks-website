@@ -1,0 +1,248 @@
+---
+import { faStar, faStarHalfStroke, faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
+import type { Review } from "@data/reviews";
+
+export type TestimonialLayout = "grid" | "featured" | "badge";
+
+interface Props {
+  layout?: TestimonialLayout;
+  reviews: Review[];
+  totalReviews?: number;    // used by badge layout
+  averageRating?: number;   // used by badge layout
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const {
+  layout = "grid",
+  reviews,
+  totalReviews,
+  averageRating,
+  ctaLabel,
+  ctaHref,
+} = Astro.props;
+
+// --- SVG helpers ---
+function makeSvg(fa: typeof faStar, cls: string): string {
+  const [w, h, , , path] = fa.icon;
+  const d = Array.isArray(path) ? path.join(" ") : path;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="${cls}" aria-hidden="true"><path d="${d}" /></svg>`;
+}
+
+const solidStar   = makeSvg(faStar,           "size-5");
+const halfStar    = makeSvg(faStarHalfStroke, "size-5");
+const quoteLeft   = makeSvg(faQuoteLeft,      "size-7");
+const solidStarLg = makeSvg(faStar,           "size-6");
+
+function starsHtml(rating: number, large = false): string {
+  const star  = large ? solidStarLg : solidStar;
+  const half  = large ? makeSvg(faStarHalfStroke, "size-6") : halfStar;
+  const empty = large
+    ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" class="size-6 opacity-20" aria-hidden="true"><path d="${(faStar.icon[4] as string)}"/></svg>`
+    : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" class="size-5 opacity-20" aria-hidden="true"><path d="${(faStar.icon[4] as string)}"/></svg>`;
+
+  return Array.from({ length: 5 }, (_, i) => {
+    const pos = i + 1;
+    if (rating >= pos)           return star;
+    if (rating >= pos - 0.5)     return half;
+    return empty;
+  }).join("");
+}
+---
+
+{layout === "grid" && (
+  <section class="bg-base-200 py-20">
+    <div class="container mx-auto px-6">
+
+      <!-- Header -->
+      <div class="text-center mb-14">
+        <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+          What Clients Say
+        </p>
+        <h2 class="text-primary font-heading">Real Work. Real Results.</h2>
+      </div>
+
+      <!-- Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {reviews.map((r) => (
+          <div class="card bg-base-100 shadow-md border border-base-300 rounded-xl">
+            <div class="card-body p-8 gap-5">
+
+              <!-- Quote mark -->
+              <span class="text-accent/30">
+                <Fragment set:html={quoteLeft} />
+              </span>
+
+              <!-- Review text -->
+              <p class="text-base-content/80 text-sm leading-relaxed flex-grow italic">
+                "{r.text}"
+              </p>
+
+              <!-- Stars -->
+              <div
+                class="flex items-center gap-0.5 text-accent"
+                aria-label={`${r.rating} out of 5 stars`}
+              >
+                <Fragment set:html={starsHtml(r.rating)} />
+              </div>
+
+              <!-- Reviewer -->
+              <div class="flex items-center justify-between pt-3 border-t border-base-300">
+                <div>
+                  <p class="font-heading text-primary text-base leading-tight">{r.name}</p>
+                  {r.source && (
+                    <p class="text-base-content/40 text-xs uppercase tracking-wider mt-0.5">{r.source}</p>
+                  )}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA -->
+      {ctaLabel && ctaHref && (
+        <div class="text-center mt-12">
+          <a href={ctaHref} class="btn btn-outline btn-primary btn-lg">
+            {ctaLabel}
+          </a>
+        </div>
+      )}
+
+    </div>
+  </section>
+)}
+
+{layout === "featured" && reviews.length > 0 && (
+  <section class="bg-primary py-20">
+    <div class="container mx-auto px-6">
+
+      <!-- Featured review -->
+      <div class="max-w-3xl mx-auto text-center space-y-8">
+
+        <!-- Quote mark -->
+        <span class="text-primary-content/20 flex justify-center">
+          <Fragment set:html={makeSvg(faQuoteLeft, "size-12")} />
+        </span>
+
+        <!-- Review text -->
+        <blockquote class="font-heading text-primary-content text-2xl md:text-3xl leading-snug">
+          "{reviews[0].text}"
+        </blockquote>
+
+        <!-- Stars -->
+        <div
+          class="flex items-center justify-center gap-1 text-accent"
+          aria-label={`${reviews[0].rating} out of 5 stars`}
+        >
+          <Fragment set:html={starsHtml(reviews[0].rating, true)} />
+        </div>
+
+        <!-- Reviewer -->
+        <div class="space-y-1">
+          <p class="font-heading text-primary-content text-xl uppercase tracking-wide">
+            {reviews[0].name}
+          </p>
+          {reviews[0].source && (
+            <p class="text-primary-content/50 text-sm uppercase tracking-widest">
+              {reviews[0].source}
+            </p>
+          )}
+        </div>
+
+      </div>
+
+      <!-- Supporting reviews -->
+      {reviews.length > 1 && (
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-14">
+          {reviews.slice(1).map((r) => (
+            <div class="bg-primary-content/10 border border-primary-content/15 rounded-xl p-7 space-y-4">
+              <span class="text-primary-content/25">
+                <Fragment set:html={makeSvg(faQuoteLeft, "size-6")} />
+              </span>
+              <p class="text-primary-content/85 text-sm leading-relaxed italic">
+                "{r.text}"
+              </p>
+              <div class="flex items-center gap-1 text-accent" aria-label={`${r.rating} out of 5 stars`}>
+                <Fragment set:html={starsHtml(r.rating)} />
+              </div>
+              <div class="border-t border-primary-content/15 pt-3">
+                <p class="font-heading text-primary-content text-base uppercase tracking-wide leading-tight">{r.name}</p>
+                {r.source && (
+                  <p class="text-primary-content/40 text-xs uppercase tracking-widest mt-0.5">{r.source}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <!-- CTA -->
+      {ctaLabel && ctaHref && (
+        <div class="text-center mt-12">
+          <a href={ctaHref} class="btn btn-secondary btn-lg">
+            {ctaLabel}
+          </a>
+        </div>
+      )}
+
+    </div>
+  </section>
+)}
+
+{layout === "badge" && (
+  <section class="bg-base-100 border-y border-base-300 py-10">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16">
+
+        <!-- Rating badge -->
+        <div class="flex flex-col items-center gap-2">
+          <p class="font-heading text-primary text-6xl leading-none">
+            {averageRating?.toFixed(1) ?? "5.0"}
+          </p>
+          <div
+            class="flex items-center gap-0.5 text-accent"
+            aria-label={`${averageRating ?? 5} out of 5 stars`}
+          >
+            <Fragment set:html={starsHtml(averageRating ?? 5, true)} />
+          </div>
+          {totalReviews && (
+            <p class="text-base-content/50 text-xs uppercase tracking-widest">
+              Based on {totalReviews} reviews
+            </p>
+          )}
+        </div>
+
+        <!-- Divider -->
+        <div class="hidden sm:block w-px h-20 bg-base-300"></div>
+
+        <!-- Review snippets -->
+        <div class="flex flex-col gap-4 max-w-sm">
+          {reviews.slice(0, 2).map((r) => (
+            <div class="space-y-1">
+              <div class="flex items-center gap-1 text-accent">
+                <Fragment set:html={starsHtml(r.rating)} />
+              </div>
+              <p class="text-base-content/70 text-sm italic leading-snug">
+                "{r.text}"
+              </p>
+              <p class="text-primary font-heading text-sm">{r.name}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- CTA -->
+        {ctaLabel && ctaHref && (
+          <>
+            <div class="hidden sm:block w-px h-20 bg-base-300"></div>
+            <a href={ctaHref} class="btn btn-outline btn-primary">
+              {ctaLabel}
+            </a>
+          </>
+        )}
+
+      </div>
+    </div>
+  </section>
+)}

@@ -1,0 +1,102 @@
+---
+import {
+  faHelmetSafety,
+  faCalendarDays,
+  faTractor,
+  faClipboardCheck,
+} from "@fortawesome/free-solid-svg-icons";
+import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import type { ProcessStep } from "@data/processSteps";
+
+interface Props {
+  steps: ProcessStep[];
+}
+
+const { steps } = Astro.props;
+
+const iconMap: Record<string, IconDefinition> = {
+  "helmet-safety":   faHelmetSafety,
+  "calendar-days":   faCalendarDays,
+  "tractor":         faTractor,
+  "clipboard-check": faClipboardCheck,
+};
+
+function iconSvg(name: string): string {
+  const fa = iconMap[name];
+  if (!fa) return "";
+  const [w, h, , , path] = fa.icon;
+  const d = Array.isArray(path) ? path.join(" ") : path;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="size-8"><path d="${d}" /></svg>`;
+}
+---
+
+<section class="bg-base-100 py-20">
+  <div class="container mx-auto px-6">
+
+    <!-- Section header -->
+    <div class="text-center mb-16">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        Our Process
+      </p>
+      <h2 class="text-primary font-heading leading-tight">
+        From Walk-Through to Ready.
+      </h2>
+      <p class="text-base-content/70 max-w-xl mx-auto mt-3">
+        Four steps. No surprises. Every job runs the same clean process —
+        so you always know what's happening and what comes next.
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="relative">
+
+      <!-- Horizontal connector line (lg desktop only, at icon center) -->
+      <div
+        aria-hidden="true"
+        class="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-0.5 bg-base-300 z-0"
+      ></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-6">
+        {steps.map((step) => (
+          <div class="relative flex flex-col items-center text-center z-10">
+
+            <!-- Icon circle -->
+            <div
+              class="w-20 h-20 rounded-full bg-primary flex items-center justify-center
+                     text-primary-content mb-6 ring-4 ring-base-100 shadow-md"
+            >
+              <Fragment set:html={iconSvg(step.icon)} />
+            </div>
+
+            <!-- Step label -->
+            <span class="font-heading text-secondary text-sm uppercase tracking-widest mb-1">
+              Step {step.number}
+            </span>
+
+            <!-- Title -->
+            <h4 class="font-heading text-primary uppercase mb-3">
+              {step.title}
+            </h4>
+
+            <!-- Description -->
+            <p class="text-base-content/70 text-sm leading-relaxed max-w-[240px]">
+              {step.description}
+            </p>
+
+          </div>
+        ))}
+      </div>
+
+    </div>
+
+    <!-- Divider rule with accent -->
+    <div class="flex items-center gap-4 mt-16 max-w-xs mx-auto">
+      <div class="flex-1 h-px bg-base-300"></div>
+      <span class="text-accent font-heading text-sm uppercase tracking-widest whitespace-nowrap">
+        Landworks Done Right
+      </span>
+      <div class="flex-1 h-px bg-base-300"></div>
+    </div>
+
+  </div>
+</section>

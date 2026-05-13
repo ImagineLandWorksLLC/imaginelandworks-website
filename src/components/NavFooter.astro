@@ -1,15 +1,22 @@
 ---
 import FacebookIcon from "../assets/icons/facebook-brands-solid-full.svg";
 import InstagramIcon from "../assets/icons/instagram-brands-solid-full.svg";
+import { faPhone, faEnvelope, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const year = new Date().getFullYear();
+
+function iconSvg(icon: typeof faPhone, cls = "size-4") {
+  const [w, h, , , path] = icon.icon;
+  const d = Array.isArray(path) ? path.join(" ") : path;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="${cls}"><path d="${d}" /></svg>`;
+}
 ---
 
 <footer class="bg-primary text-primary-content">
 
   <!-- Main grid -->
   <div class="container mx-auto px-8 py-20">
-    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] lg:gap-8">
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] lg:gap-8">
 
       <!-- Brand -->
       <div class="sm:col-span-2 lg:col-span-1 flex flex-col gap-6">
@@ -59,6 +66,39 @@ const year = new Date().getFullYear();
           <a class="text-sm opacity-60 hover:opacity-100 transition-opacity" href="/contact">Contact</a>
         </div>
       </nav>
+
+      <!-- Get in touch -->
+      <div class="flex flex-col">
+        <h6 class="text-secondary text-[0.65rem] font-semibold uppercase tracking-[0.14em] pb-3 mb-4 border-b border-white/10">
+          Get in touch
+        </h6>
+        <div class="flex flex-col gap-4">
+          <a
+            href="tel:8635550190"
+            class="flex items-center gap-3 text-sm opacity-60 hover:opacity-100 transition-opacity no-underline"
+          >
+            <span class="shrink-0 text-secondary">
+              <Fragment set:html={iconSvg(faPhone)} />
+            </span>
+            (863) 555-0190
+          </a>
+          <a
+            href="mailto:contact@imaginelandworks.com"
+            class="flex items-center gap-3 text-sm opacity-60 hover:opacity-100 transition-opacity no-underline"
+          >
+            <span class="shrink-0 text-secondary">
+              <Fragment set:html={iconSvg(faEnvelope)} />
+            </span>
+            contact@imaginelandworks.com
+          </a>
+          <div class="flex items-center gap-3 text-sm opacity-60">
+            <span class="shrink-0 text-secondary">
+              <Fragment set:html={iconSvg(faLocationDot)} />
+            </span>
+            Lakeland, FL
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>

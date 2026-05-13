@@ -1,0 +1,87 @@
+---
+import {
+  faTractor,
+  faClipboardCheck,
+  faCalendarDays,
+  faMedal,
+  faShieldHalved,
+  faStar,
+  faBolt,
+  faLeaf,
+} from "@fortawesome/free-solid-svg-icons";
+import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import type { Metric } from "@data/metrics";
+
+interface Props {
+  metrics: Metric[];
+  heading?: string;
+}
+
+const { metrics, heading } = Astro.props;
+
+const iconMap: Record<string, IconDefinition> = {
+  "tractor":         faTractor,
+  "clipboard-check": faClipboardCheck,
+  "calendar-days":   faCalendarDays,
+  "medal":           faMedal,
+  "shield-halved":   faShieldHalved,
+  "star":            faStar,
+  "bolt":            faBolt,
+  "leaf":            faLeaf,
+};
+
+function iconSvg(name: string): string {
+  const fa = iconMap[name];
+  if (!fa) return "";
+  const [w, h, , , path] = fa.icon;
+  const d = Array.isArray(path) ? path.join(" ") : path;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="size-6" aria-hidden="true"><path d="${d}" /></svg>`;
+}
+---
+
+<section class="bg-base-200 py-20">
+  <div class="container mx-auto px-6">
+
+    {heading && (
+      <div class="text-center mb-14">
+        <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+          {heading}
+        </p>
+        <div class="w-12 h-0.5 bg-accent mx-auto mt-3"></div>
+      </div>
+    )}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4
+                divide-y sm:divide-y-0 divide-base-300
+                sm:[&>*:nth-child(odd)]:border-r sm:[&>*:nth-child(odd)]:border-base-300
+                lg:[&>*:nth-child(odd)]:border-r-0
+                lg:divide-x lg:divide-base-300">
+      {metrics.map((m) => (
+        <div class="flex flex-col items-center text-center px-8 py-10 gap-3">
+
+          {m.icon && (
+            <span class="text-accent">
+              <Fragment set:html={iconSvg(m.icon)} />
+            </span>
+          )}
+
+          <p class="font-heading text-primary leading-none" style="font-size: clamp(3rem, 6vw, 4rem);">
+            {m.stat}
+          </p>
+
+          <p class="font-heading text-secondary text-sm uppercase tracking-widest leading-tight">
+            {m.label}
+          </p>
+
+          {m.description && (
+            <p class="text-base-content/55 text-xs leading-relaxed max-w-[180px]">
+              {m.description}
+            </p>
+          )}
+
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
