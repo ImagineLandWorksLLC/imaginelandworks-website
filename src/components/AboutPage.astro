@@ -1,0 +1,232 @@
+---
+import {
+  faTractor,
+  faShieldHalved,
+  faHandshake,
+  faLeaf,
+  faMedal,
+  faUserShield,
+  faMapPin,
+} from "@fortawesome/free-solid-svg-icons";
+
+function iconSvg(icon: typeof faTractor, cls = "size-8") {
+  const [w, h, , , path] = icon.icon;
+  const d = Array.isArray(path) ? path.join(" ") : path;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="${cls}" aria-hidden="true"><path d="${d}" /></svg>`;
+}
+
+const values = [
+  {
+    icon: faShieldHalved,
+    title: "Integrity",
+    body: "We say what we mean and do what we say. Every quote is honest, every timeline is realistic, and every job is completed the right way — no shortcuts.",
+  },
+  {
+    icon: faMedal,
+    title: "Quality",
+    body: "We take pride in the outcome of every project, from a small lot clearing to a full site preparation. Good enough isn't good enough.",
+  },
+  {
+    icon: faHandshake,
+    title: "Transparency",
+    body: "No hidden fees, no surprise change orders. You'll know exactly what to expect before we ever break ground.",
+  },
+  {
+    icon: faUserShield,
+    title: "Safety",
+    body: "We operate fully licensed and insured, follow best practices on every job site, and treat your property with the care it deserves.",
+  },
+  {
+    icon: faLeaf,
+    title: "Responsibility",
+    body: "We're mindful of the land we work on — clearing what needs to be cleared, preserving what matters, and leaving the site better than we found it.",
+  },
+];
+---
+
+<!-- ───────────────────────────────────────────────
+     1. HERO
+     ─────────────────────────────────────────────── -->
+<section class="relative overflow-hidden bg-primary py-24 lg:py-32">
+
+  <!-- Decorative contour rings -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <div class="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full border border-primary-content/10"></div>
+    <div class="absolute -bottom-20 -left-20 w-[380px] h-[380px] rounded-full border border-primary-content/8"></div>
+    <div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full border border-primary-content/8"></div>
+    <div class="absolute -top-24 -right-24 w-[440px] h-[440px] rounded-full border border-primary-content/10"></div>
+    <!-- Faint silhouette accent bar -->
+    <div class="absolute bottom-0 left-0 right-0 h-1 bg-accent/40"></div>
+  </div>
+
+  <div class="container mx-auto px-6 relative z-10 text-center max-w-3xl">
+    <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-4">
+      About Imagine Land Works
+    </p>
+    <h1 class="text-primary-content font-heading leading-tight mb-6">
+      Built on Integrity.<br />Driven by Results.
+    </h1>
+    <p class="text-primary-content/75 text-lg leading-relaxed mb-10">
+      We transform overgrown, raw land into cleared, graded, and ready-to-build
+      spaces — delivering professional land clearing, site preparation, and
+      excavation for homeowners, builders, and landowners across Central Florida.
+    </p>
+    <a href="/book" class="btn btn-secondary btn-lg shadow-lg">
+      Request a Quote
+    </a>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────────────────
+     2. COMPANY STORY
+     ─────────────────────────────────────────────── -->
+<section class="bg-base-100 py-20 lg:py-28">
+  <div class="container mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto">
+
+      <!-- Photo placeholder -->
+      <div class="relative">
+        <div
+          class="w-full aspect-[4/3] rounded-2xl bg-base-200 border-2 border-dashed border-base-300
+                 flex flex-col items-center justify-center gap-4 text-base-content/40"
+        >
+          <span class="text-base-content/25">
+            <Fragment set:html={iconSvg(faTractor, "size-16")} />
+          </span>
+          <p class="font-heading text-sm uppercase tracking-widest text-center px-6 mb-0">
+            Owner / Team Photo
+          </p>
+          <p class="text-xs text-base-content/30 text-center px-8 mb-0">
+            Replace with a photo of the owner or crew on a job site
+          </p>
+        </div>
+        <!-- Accent corner decoration -->
+        <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl bg-accent/15 -z-10"></div>
+        <div class="absolute -top-4 -left-4 w-16 h-16 rounded-xl bg-secondary/10 -z-10"></div>
+      </div>
+
+      <!-- Story copy -->
+      <div class="space-y-6">
+        <div>
+          <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">Our Story</p>
+          <h2 class="text-primary font-heading leading-tight">
+            A Company Built<br />for This Land
+          </h2>
+        </div>
+
+        <p class="text-base-content/75 leading-relaxed">
+          Imagine Land Works was founded right here in Lakeland, Florida — not in a
+          boardroom, but on job sites across Polk County. We started because we saw
+          a need for a land-clearing company that actually showed up on time, gave
+          straight answers, and took the work seriously.
+        </p>
+        <p class="text-base-content/75 leading-relaxed">
+          Land is one of the most valuable things a person can own. Whether you're
+          a homeowner carving out a backyard, a developer prepping a lot, or a
+          landowner reclaiming overgrown acreage — the condition of your land
+          affects everything that comes next. We take that responsibility seriously.
+        </p>
+        <p class="text-base-content/75 leading-relaxed">
+          From our very first job, we built this business around four principles:
+          <strong class="text-primary">integrity</strong>,
+          <strong class="text-primary">quality</strong>,
+          <strong class="text-primary">transparency</strong>, and
+          <strong class="text-primary">safety</strong>. Those aren't buzzwords
+          here — they're the reason our clients call us back and refer us to their
+          neighbors.
+        </p>
+        <p class="text-base-content/75 leading-relaxed">
+          We're a locally owned, owner-operated business. When you hire us, you're
+          not dealing with a call center or a franchise — you're working directly
+          with the people on the ground, the same people who answer the phone and
+          show up to your property.
+        </p>
+
+        <div class="flex gap-4 pt-2 flex-wrap">
+          <a href="/book" class="btn btn-primary btn-lg">Request a Free Estimate</a>
+          <a href="/services" class="btn btn-outline btn-primary btn-lg">View Our Services</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────────────────
+     3. MISSION, VISION & VALUES
+     ─────────────────────────────────────────────── -->
+<section class="bg-base-200 py-20 lg:py-28">
+  <div class="container mx-auto px-6">
+
+    <!-- Section header -->
+    <div class="text-center mb-16 max-w-2xl mx-auto">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        What Drives Us
+      </p>
+      <h2 class="text-primary font-heading leading-tight">
+        Mission, Vision &amp; Values
+      </h2>
+      <div class="w-12 h-0.5 bg-accent mx-auto mt-4"></div>
+    </div>
+
+    <!-- Mission + Vision cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-6">
+
+      <!-- Mission -->
+      <div class="card bg-base-100 shadow-md rounded-2xl">
+        <div class="card-body p-8">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="w-14 h-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <Fragment set:html={iconSvg(faTractor, "size-7")} />
+            </span>
+            <h3 class="font-heading text-primary text-2xl mb-0">Our Mission</h3>
+          </div>
+          <p class="text-base-content/75 leading-relaxed mb-0">
+            To deliver professional land clearing, grading, site preparation, and
+            excavation services that homeowners, builders, and commercial clients
+            in Central Florida can count on — completed safely, honestly, and to
+            the highest standard of workmanship.
+          </p>
+        </div>
+      </div>
+
+      <!-- Vision -->
+      <div class="card bg-primary text-primary-content shadow-md rounded-2xl">
+        <div class="card-body p-8">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="w-14 h-14 rounded-xl bg-primary-content/15 text-primary-content flex items-center justify-center shrink-0">
+              <Fragment set:html={iconSvg(faMapPin, "size-7")} />
+            </span>
+            <h3 class="font-heading text-primary-content text-2xl mb-0">Our Vision</h3>
+          </div>
+          <p class="text-primary-content/80 leading-relaxed mb-0">
+            To become the most trusted, long-term land management partner in
+            Central Florida — the company that clients think of first when they
+            need land cleared, a site prepared, or a property transformed. We're
+            building a reputation that outlasts any single job.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Values grid -->
+    <div class="max-w-5xl mx-auto">
+      <h3 class="font-heading text-primary text-center text-2xl mb-8">Our Core Values</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        {values.map(({ icon, title, body }) => (
+          <div class="card bg-base-100 shadow-sm rounded-2xl hover:shadow-md transition-shadow duration-200">
+            <div class="card-body p-6 text-center gap-3 items-center">
+              <span class="w-12 h-12 rounded-xl bg-accent/15 text-accent flex items-center justify-center shrink-0">
+                <Fragment set:html={iconSvg(icon, "size-5")} />
+              </span>
+              <h4 class="font-heading text-primary text-lg mb-0">{title}</h4>
+              <p class="text-base-content/65 text-sm leading-relaxed mb-0">{body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>
