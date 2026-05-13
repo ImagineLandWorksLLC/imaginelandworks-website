@@ -4,16 +4,25 @@ const formUrl =
   "https://clienthub.getjobber.com/client_hubs/9b1e8ded-a0cb-4ca0-a3d9-cb0bbed65d9e/public/work_request/embedded_work_request_form?form_id=2746986";
 ---
 
+<link rel="preconnect" href="https://d3ey4dbjkt2f6s.cloudfront.net" />
+<link rel="preconnect" href="https://clienthub.getjobber.com" />
+<link
+  rel="preload"
+  as="style"
+  href="https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css"
+  media="screen"
+/>
+
 <section class="w-full py-12 px-4">
   <div class="container mx-auto max-w-3xl">
-    <link
-      rel="stylesheet"
-      href="https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css"
-      media="screen"
-    />
     <div id={clienthubId} class="w-full"></div>
     <script
       is:inline
+      async
       src="https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js"
       clienthub_id="9b1e8ded-a0cb-4ca0-a3d9-cb0bbed65d9e-2746986"
       form_url={formUrl}></script>
