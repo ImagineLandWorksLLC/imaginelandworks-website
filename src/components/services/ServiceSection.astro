@@ -45,9 +45,18 @@ const { section, reversed = false } = Astro.props;
           ))}
         </ul>
 
-        <a href="/contact" class="btn btn-primary btn-lg mt-2">
-          {section.cta}
-        </a>
+        <div class="flex flex-wrap items-center gap-4 mt-2">
+          <a href="/contact" class="btn btn-primary btn-lg">
+            {section.cta}
+          </a>
+          <a
+            href={`/services/${section.anchor}`}
+            class="btn btn-outline btn-lg"
+            aria-label={`View details for ${section.title}`}
+          >
+            View Service Details
+          </a>
+        </div>
       </div>
 
       <!-- Image placeholder -->
