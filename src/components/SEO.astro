@@ -12,6 +12,7 @@ export interface PageFrontmatter {
 type Props = PageFrontmatter;
 
 const SITE_NAME = "Imagine Land Works";
+const DEFAULT_OG_IMAGE = "https://imaginelandworks.com/images/og-default.png";
 
 const {
   title,
@@ -21,10 +22,12 @@ const {
   noindex = false,
 } = Astro.props;
 
-const resolvedTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
+const resolvedTitle = title
+  ? (title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`)
+  : SITE_NAME;
 const resolvedImage = image
   ? new URL(image, Astro.site).href
-  : undefined;
+  : DEFAULT_OG_IMAGE;
 ---
 
 <title>{resolvedTitle}</title>
@@ -42,10 +45,10 @@ const resolvedImage = image
 <meta property="og:url" content={canonical} />
 <meta property="og:title" content={resolvedTitle} />
 {description && <meta property="og:description" content={description} />}
-{resolvedImage && <meta property="og:image" content={resolvedImage} />}
+<meta property="og:image" content={resolvedImage} />
 
 <!-- Twitter Card -->
-<meta name="twitter:card" content={resolvedImage ? "summary_large_image" : "summary"} />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={resolvedTitle} />
 {description && <meta name="twitter:description" content={description} />}
-{resolvedImage && <meta name="twitter:image" content={resolvedImage} />}
+<meta name="twitter:image" content={resolvedImage} />
