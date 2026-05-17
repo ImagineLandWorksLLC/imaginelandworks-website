@@ -36,6 +36,20 @@ export const localBusinessSchema = {
     addressRegion: contact.address.state,
     addressCountry: "US",
   },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "07:00",
+      closes: "18:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Saturday",
+      opens: "08:00",
+      closes: "15:00",
+    },
+  ],
   areaServed: serviceCities.map((c) => ({ "@type": "City", name: c.name })),
   sameAs: contact.social.map((s) => s.href),
 };
@@ -53,8 +67,10 @@ export const faqSchema = {
   })),
 };
 
-<Schema schema={localBusinessSchema} />
-<Schema schema={faqSchema} />
+<Fragment slot="head">
+  <Schema schema={localBusinessSchema} />
+  <Schema schema={faqSchema} />
+</Fragment>
 
 <HomeHero
   title="Landworks Done Right"
