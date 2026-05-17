@@ -25,6 +25,7 @@ const { title, description, image, canonical, noindex } = Astro.props;
       canonical={canonical}
       noindex={noindex}
     />
+    <slot name="head" />
   </head>
   <body>
     <slot />

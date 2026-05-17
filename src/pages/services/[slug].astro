@@ -1,0 +1,153 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import ServiceHero from "@components/services/ServiceHero.astro";
+import Breadcrumb from "@components/services/Breadcrumb.astro";
+import ServiceProcess from "@components/services/ServiceProcess.astro";
+import BeforeAfterGrid from "@components/services/BeforeAfterGrid.astro";
+import RelatedServices from "@components/services/RelatedServices.astro";
+import ValueProps from "@components/ValueProps.astro";
+import Testimonials from "@components/Testimonials.astro";
+import ServiceArea from "@components/ServiceArea.astro";
+import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
+import Schema from "@components/Schema.astro";
+import { serviceSections } from "@data/serviceSections";
+import { reviews } from "@data/reviews";
+import { serviceCities } from "@data/serviceArea";
+import { contact } from "@data/contact";
+
+export function getStaticPaths() {
+  return serviceSections.map((service) => ({
+    params: { slug: service.anchor },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: service.title,
+  description: service.description,
+  serviceType: service.title,
+  provider: {
+    "@type": "LocalBusiness",
+    name: "Imagine Land Works",
+    url: "https://imaginelandworks.com",
+    telephone: contact.phone.display,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Lakeland",
+      addressRegion: "FL",
+      addressCountry: "US",
+    },
+  },
+  areaServed: serviceCities.map((city) => ({
+    "@type": "City",
+    name: city.name,
+  })),
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://imaginelandworks.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Services",
+      item: "https://imaginelandworks.com/services",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: service.title,
+      item: `https://imaginelandworks.com/services/${service.anchor}`,
+    },
+  ],
+};
+---
+
+<DefaultLayout title={service.seoTitle} description={service.seoDescription}>
+  <Schema slot="head" schema={serviceSchema} />
+  <Schema slot="head" schema={breadcrumbSchema} />
+
+  <ServiceHero
+    eyebrow={service.eyebrow}
+    title={service.title}
+    shortDescription={service.shortDescription}
+  />
+
+  <Breadcrumb
+    items={[
+      { label: "Home", href: "/" },
+      { label: "Services", href: "/services" },
+      { label: service.title },
+    ]}
+  />
+
+  <!-- What's Included -->
+  <section class="bg-base-100 py-20">
+    <div class="container mx-auto px-6 max-w-3xl">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        What's Included
+      </p>
+      <h2 class="text-primary font-heading mb-8">{service.title} Service</h2>
+      <ul class="space-y-4">
+        {service.capabilities.map((item) => (
+          <li class="flex items-start gap-4 text-base-content/80">
+            <span class="mt-2 size-2.5 rounded-full bg-secondary shrink-0"></span>
+            <span class="text-lg leading-relaxed">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <ServiceProcess steps={service.processSteps} />
+
+  <BeforeAfterGrid serviceName={service.title} />
+
+  <ValueProps
+    items={[
+      { icon: "shield-halved", title: "Licensed & Insured" },
+      { icon: "gears", title: "Professional Equipment" },
+      { icon: "bolt", title: "Fast Turnaround" },
+      { icon: "house-chimney", title: "Locally Owned" },
+    ]}
+  />
+
+  <Testimonials
+    layout="featured"
+    reviews={reviews}
+    ctaLabel="Read More Reviews"
+    ctaHref={contact.social.find((s) => s.key === "google")!.href}
+  />
+
+  <ServiceArea
+    cities={serviceCities}
+    ctaLabel="See If We Service Your Area"
+    ctaHref="/book"
+  />
+
+  <RelatedServices
+    relatedSlugs={service.relatedServices}
+    allServices={serviceSections}
+  />
+
+  <FreeEstimateCTA
+    headline={`Get a Free ${service.title} Estimate`}
+    subheadline="No Obligation. No Guesswork."
+    body={`Ready to get started? We'll assess your property and give you a straight, honest estimate for your ${service.title.toLowerCase()} project — fast. Serving Lakeland and surrounding areas.`}
+    ctaLabel="Request a Free Estimate"
+    ctaHref="/book"
+    phone={contact.phone.display}
+    phoneLabel="Call Us Today"
+  />
+</DefaultLayout>

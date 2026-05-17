@@ -1,0 +1,54 @@
+---
+import type { ServiceSectionData } from "@data/serviceSections";
+
+interface Props {
+  relatedSlugs: string[];
+  allServices: ServiceSectionData[];
+}
+
+const { relatedSlugs, allServices } = Astro.props;
+
+const related = relatedSlugs
+  .map((slug) => allServices.find((s) => s.anchor === slug))
+  .filter((s): s is ServiceSectionData => s !== undefined)
+  .slice(0, 3);
+---
+
+{related.length > 0 && (
+  <section class="bg-base-200 py-20">
+    <div class="container mx-auto px-6">
+
+      <div class="text-center mb-12">
+        <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+          Explore More
+        </p>
+        <h2 class="text-primary font-heading">Related Services</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {related.map((service) => (
+          <a
+            href={`/services/${service.anchor}`}
+            class="card bg-base-100 shadow-md rounded-xl hover:shadow-xl transition-shadow duration-200 group no-underline"
+          >
+            <div class="card-body gap-3 p-7">
+              <p class="text-secondary font-heading text-xs uppercase tracking-widest">
+                {service.eyebrow}
+              </p>
+              <h3 class="card-title font-heading text-primary text-xl leading-tight group-hover:underline">
+                {service.title}
+              </h3>
+              <p class="text-base-content/65 text-sm leading-relaxed flex-grow">
+                {service.shortDescription}
+              </p>
+              <span class="text-primary text-sm font-medium mt-2">
+                Learn more →
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </section>
+)}

@@ -5,6 +5,7 @@ layout: "@layouts/DefaultLayout.astro"
 ---
 
 import HomeHero from "@components/HomeHero.astro";
+import Schema from "@components/Schema.astro";
 import ValueProps from "@components/ValueProps.astro";
 import ServicesOverview from "@components/ServicesOverview.astro";
 import HowItWorks from "@components/HowItWorks.astro";
@@ -21,6 +22,39 @@ import { metrics } from "@data/metrics";
 import { serviceCities } from "@data/serviceArea";
 import { contact } from "@data/contact";
 import { faqs } from "@data/faqs";
+
+export const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Imagine Land Works",
+  url: "https://imaginelandworks.com",
+  telephone: contact.phone.display,
+  email: contact.email,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: contact.address.city,
+    addressRegion: contact.address.state,
+    addressCountry: "US",
+  },
+  areaServed: serviceCities.map((c) => ({ "@type": "City", name: c.name })),
+  sameAs: contact.social.map((s) => s.href),
+};
+
+export const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
+
+<Schema schema={localBusinessSchema} />
+<Schema schema={faqSchema} />
 
 <HomeHero
   title="Landworks Done Right"
@@ -40,7 +74,7 @@ import { faqs } from "@data/faqs";
   layout="featured"
   reviews={reviews}
   ctaLabel="Read More Reviews"
-  ctaHref="https://www.google.com/maps"
+  ctaHref={contact.social.find((s) => s.key === "google")?.href ?? ""}
 />
 <HowItWorks steps={processSteps} />
 <FreeEstimateCTA

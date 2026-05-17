@@ -6,6 +6,11 @@ export interface ServiceSectionData {
   capabilities: string[];
   cta: string;
   imagePlaceholder: string;
+  shortDescription: string;
+  seoTitle: string;
+  seoDescription: string;
+  processSteps: { title: string; description: string }[];
+  relatedServices: string[];
 }
 
 export const serviceSections: ServiceSectionData[] = [
@@ -25,6 +30,29 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     cta: "Get a Free Estimate",
     imagePlaceholder: "Insert land clearing service image here",
+    shortDescription:
+      "Full-service land clearing from brush removal to stump grinding — leaving your property clean and build-ready.",
+    seoTitle: "Land Clearing Lakeland FL",
+    seoDescription:
+      "Professional land clearing in Lakeland, FL. Imagine Land Works removes trees, brush, and stumps — leaving your property build-ready. Licensed & insured. Free estimates.",
+    processSteps: [
+      {
+        title: "Site Walk & Quote",
+        description:
+          "We assess your property in person, identify what needs to go, and give you a straight, no-surprise estimate.",
+      },
+      {
+        title: "Full Clearing",
+        description:
+          "Our crew and equipment move in — removing trees, brush, stumps, and debris efficiently while protecting the surrounding property.",
+      },
+      {
+        title: "Clean Finish",
+        description:
+          "We haul off or chip all debris on-site and do a final walk to confirm the property meets your expectations before we leave.",
+      },
+    ],
+    relatedServices: ["site-preparation", "excavation", "demolition"],
   },
   {
     anchor: "site-preparation",
@@ -42,6 +70,29 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     cta: "Request Site Prep Quote",
     imagePlaceholder: "Insert site preparation service image here",
+    shortDescription:
+      "Grading, leveling, compaction, and drainage — everything your lot needs before construction can begin.",
+    seoTitle: "Site Preparation Lakeland FL",
+    seoDescription:
+      "Expert site preparation in Lakeland, FL. Grading, leveling, compaction & drainage for residential and commercial projects. Locally owned. Free estimates.",
+    processSteps: [
+      {
+        title: "Survey & Plan",
+        description:
+          "We review your site plan, identify drainage needs, and determine the grading approach before any equipment arrives.",
+      },
+      {
+        title: "Grade & Compact",
+        description:
+          "Our crew levels and grades the site to spec, compacting soil to the load-bearing requirements your build demands.",
+      },
+      {
+        title: "Builder-Ready Handoff",
+        description:
+          "We walk the finished site with you, confirm drainage and pad elevations are correct, and hand it off to your next contractor.",
+      },
+    ],
+    relatedServices: ["land-clearing", "excavation", "demolition"],
   },
   {
     anchor: "demolition",
@@ -59,6 +110,29 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     cta: "Schedule a Demolition Consultation",
     imagePlaceholder: "Insert demolition service image here",
+    shortDescription:
+      "Safe, controlled teardown of structures, slabs, and outbuildings — with complete debris removal included.",
+    seoTitle: "Demolition Services Lakeland FL",
+    seoDescription:
+      "Licensed demolition contractor in Lakeland, FL. Residential and commercial structure teardown, slab removal, and full debris hauling. Free estimates.",
+    processSteps: [
+      {
+        title: "Utility Verification",
+        description:
+          "Before we touch anything, we confirm all utilities are disconnected and coordinate with your local providers to keep the job safe.",
+      },
+      {
+        title: "Controlled Teardown",
+        description:
+          "We systematically demolish the structure — home, barn, slab, or outbuilding — protecting adjacent property at every stage.",
+      },
+      {
+        title: "Full Site Cleanout",
+        description:
+          "Every piece of debris is hauled away, leaving you with a cleared, ready-to-build lot and a clean bill of completion.",
+      },
+    ],
+    relatedServices: ["land-clearing", "site-preparation", "excavation"],
   },
   {
     anchor: "bush-hogging",
@@ -76,6 +150,29 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     cta: "Get a Bush Hogging Quote",
     imagePlaceholder: "Insert bush hogging service image here",
+    shortDescription:
+      "Heavy-duty mowing for overgrown fields, fence lines, and right-of-ways — fast results on any size acreage.",
+    seoTitle: "Bush Hogging Lakeland FL",
+    seoDescription:
+      "Professional bush hogging in Lakeland, FL. Heavy-duty brush cutting for fields, fence lines, and pastures across Polk County. Free estimates.",
+    processSteps: [
+      {
+        title: "Acreage Assessment",
+        description:
+          "We walk or drive your property to assess terrain, density of growth, and any obstacles before scheduling equipment.",
+      },
+      {
+        title: "Heavy-Duty Mowing",
+        description:
+          "Our track-driven or tractor-mounted bush hog cuts through tall grass, dense brush, and overgrowth in a single efficient pass.",
+      },
+      {
+        title: "Cleanup & Inspection",
+        description:
+          "We make a final pass on problem spots and leave your land looking managed, accessible, and maintained.",
+      },
+    ],
+    relatedServices: ["land-clearing", "mulching", "tree-work"],
   },
   {
     anchor: "excavation",
@@ -93,6 +190,29 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     cta: "Start Your Excavation Project",
     imagePlaceholder: "Insert excavation service image here",
+    shortDescription:
+      "Precision digging for foundations, utilities, ponds, and drainage — professional equipment, on-schedule results.",
+    seoTitle: "Excavation Contractor Lakeland FL",
+    seoDescription:
+      "Professional excavation services in Lakeland, FL. Foundation digging, utility trenching, pond excavation, and drainage work. Licensed & insured. Free estimates.",
+    processSteps: [
+      {
+        title: "Dig Plan Review",
+        description:
+          "We review your site plans, utility maps, and depth requirements before a single bucket hits the ground.",
+      },
+      {
+        title: "Precision Excavation",
+        description:
+          "Our operators dig to the exact dimensions and depths your project requires — foundation, trench, pond, or drainage channel.",
+      },
+      {
+        title: "Grade & Backfill",
+        description:
+          "We grade the surrounding area, backfill where needed, and leave the site ready for the next phase of your build.",
+      },
+    ],
+    relatedServices: ["site-preparation", "land-clearing", "pond-cleaning"],
   },
   {
     anchor: "mulching",
@@ -110,6 +230,29 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     cta: "Request a Mulching Estimate",
     imagePlaceholder: "Insert mulching service image here",
+    shortDescription:
+      "Forestry mulching grinds vegetation in place — faster, cleaner, and more eco-friendly than traditional clearing.",
+    seoTitle: "Forestry Mulching Lakeland FL",
+    seoDescription:
+      "Professional forestry mulching in Lakeland, FL. Eco-friendly land clearing that grinds brush and trees in place — no burn piles, no hauling. Free estimates.",
+    processSteps: [
+      {
+        title: "Property Walkthrough",
+        description:
+          "We identify which vegetation to clear and which to preserve, and flag any obstacles before the mulcher moves in.",
+      },
+      {
+        title: "Mulch & Grind",
+        description:
+          "Our forestry mulcher grinds trees, brush, and underbrush directly in place — no pile burning, no hauling required.",
+      },
+      {
+        title: "Ground Cover Layer",
+        description:
+          "The finished mulch layer stays on-site as natural erosion control, suppressing weeds and protecting soil health.",
+      },
+    ],
+    relatedServices: ["land-clearing", "bush-hogging", "tree-work"],
   },
   {
     anchor: "tree-work",
@@ -127,6 +270,29 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     cta: "Get a Tree Work Quote",
     imagePlaceholder: "Insert tree work service image here",
+    shortDescription:
+      "Tree removal, trimming, stump grinding, and storm cleanup — keeping your property safe and your trees healthy.",
+    seoTitle: "Tree Removal & Tree Work Lakeland FL",
+    seoDescription:
+      "Professional tree removal, trimming, and stump grinding in Lakeland, FL. Storm cleanup and hazardous tree takedown. Licensed & insured. Free estimates.",
+    processSteps: [
+      {
+        title: "Tree Assessment",
+        description:
+          "We evaluate each tree's condition, removal complexity, and proximity to structures to plan the safest approach.",
+      },
+      {
+        title: "Removal & Trimming",
+        description:
+          "Our crew takes down, trims, or shapes trees with precision — protecting surrounding landscaping and structures throughout.",
+      },
+      {
+        title: "Stump & Debris Cleanup",
+        description:
+          "We grind stumps below grade and chip or haul all debris, leaving your property clean with no trace of the work.",
+      },
+    ],
+    relatedServices: ["land-clearing", "mulching", "bush-hogging"],
   },
   {
     anchor: "pond-cleaning",
@@ -144,5 +310,28 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     cta: "Schedule a Pond Assessment",
     imagePlaceholder: "Insert pond cleaning service image here",
+    shortDescription:
+      "Sediment removal, aquatic vegetation clearing, and shoreline cleanup — restoring your pond to full function.",
+    seoTitle: "Pond Cleaning & Restoration Lakeland FL",
+    seoDescription:
+      "Professional pond cleaning and restoration in Lakeland, FL. Sediment removal, aquatic weed clearing, and shoreline repair. Serving Polk County. Free estimates.",
+    processSteps: [
+      {
+        title: "Pond Assessment",
+        description:
+          "We evaluate sediment depth, vegetation coverage, and shoreline condition to build a targeted restoration plan.",
+      },
+      {
+        title: "Clear & Dredge",
+        description:
+          "We remove invasive plants, aquatic weeds, and built-up sediment to restore your pond's depth, clarity, and capacity.",
+      },
+      {
+        title: "Shoreline Finish",
+        description:
+          "We shape and stabilize the banks, clear brush from the perimeter, and create access paths so the pond stays usable.",
+      },
+    ],
+    relatedServices: ["excavation", "land-clearing", "tree-work"],
   },
 ];

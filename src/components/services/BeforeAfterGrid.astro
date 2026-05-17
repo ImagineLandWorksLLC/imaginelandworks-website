@@ -1,0 +1,76 @@
+---
+interface Photo {
+  src?: string;
+  alt?: string;
+  label: "Before" | "After";
+}
+
+interface Props {
+  photos?: Photo[];
+  serviceName: string;
+}
+
+const { photos, serviceName } = Astro.props;
+
+const slots: Photo[] = photos && photos.length === 4
+  ? photos
+  : [
+      { label: "Before", alt: `${serviceName} before photo 1` },
+      { label: "After",  alt: `${serviceName} after photo 1`  },
+      { label: "Before", alt: `${serviceName} before photo 2` },
+      { label: "After",  alt: `${serviceName} after photo 2`  },
+    ];
+---
+
+<section class="bg-base-100 py-20">
+  <div class="container mx-auto px-6">
+
+    <div class="text-center mb-12">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        The Results
+      </p>
+      <h2 class="text-primary font-heading">Before &amp; After</h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
+      {slots.map((photo) => (
+        <div class="relative overflow-hidden rounded-2xl">
+          {photo.src ? (
+            <img
+              src={photo.src}
+              alt={photo.alt ?? `${serviceName} ${photo.label.toLowerCase()} photo`}
+              class="w-full aspect-[4/3] object-cover"
+            />
+          ) : (
+            <div class="w-full aspect-[4/3] bg-base-200 border-2 border-dashed border-base-300 flex flex-col items-center justify-center gap-3 text-base-content/40">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="size-12 text-base-content/20"
+                aria-hidden="true"
+              >
+                <path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21h18M3 10.5h18M3 6.75l9-4.5 9 4.5" />
+              </svg>
+              <p class="font-heading text-sm uppercase tracking-wider text-base-content/30">
+                {photo.label} Photo
+              </p>
+              <p class="text-xs text-base-content/25">
+                Add a {photo.label.toLowerCase()} image for {serviceName}
+              </p>
+            </div>
+          )}
+          <span class:list={[
+            "absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider",
+            photo.label === "Before"
+              ? "bg-base-content/80 text-base-100"
+              : "bg-primary text-primary-content",
+          ]}>
+            {photo.label}
+          </span>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
