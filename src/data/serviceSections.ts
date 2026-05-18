@@ -5,6 +5,8 @@ export interface ServiceSectionData {
   description: string;
   capabilities: string[];
   cta: string;
+  /** Path to the service image (e.g. "/images/services/land-clearing.jpg"). Set once client provides photos. */
+  image?: string;
   imagePlaceholder: string;
   shortDescription: string;
   seoTitle: string;

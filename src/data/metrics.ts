@@ -19,7 +19,7 @@ export const metrics: Metric[] = [
     icon: "clipboard-check",
   },
   {
-    stat: "5+",
+    stat: "1+",
     label: "Years in Business",
     description: "Serving Lakeland since day one",
     icon: "calendar-days",
