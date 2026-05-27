@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import type { ServiceSectionData } from "@data/serviceSections";
 
 interface Props {
@@ -7,6 +8,17 @@ interface Props {
 }
 
 const { section, reversed = false } = Astro.props;
+
+// Eagerly load all service images so we can resolve by filename at build time
+const serviceImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/services/*.{jpg,jpeg,png,webp}",
+  { eager: true }
+);
+
+const imageKey = section.image
+  ? `/src/assets/images/services/${section.image}`
+  : null;
+const imageData = imageKey ? serviceImages[imageKey]?.default ?? null : null;
 ---
 
 <section
@@ -61,12 +73,14 @@ const { section, reversed = false } = Astro.props;
 
       <!-- Service image -->
       <div class="flex-1 w-full">
-        {section.image ? (
-          <img
-            src={section.image}
-            alt={section.title}
+        {imageData ? (
+          <Image
+            src={imageData}
+            alt={`${section.title} services in Lakeland, FL — Imagine Land Works`}
             class="w-full rounded-2xl object-cover aspect-3/2"
             loading="lazy"
+            widths={[480, 768, 1024]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
           />
         ) : (
           <div
