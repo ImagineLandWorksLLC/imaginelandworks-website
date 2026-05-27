@@ -1,7 +1,7 @@
 ---
 import { contact } from "@data/contact";
 
-const { clienthubId, formUrl } = contact.jobber;
+const { clienthubId, formUrl, workRequestUrl } = contact.jobber;
 ---
 
 <link
@@ -10,9 +10,22 @@ const { clienthubId, formUrl } = contact.jobber;
   media="screen"
 />
 
-<section class="w-full py-12 px-4">
-  <div class="container mx-auto max-w-3xl">
-    <div id={clienthubId} class="w-full"></div>
-    <Fragment set:html={`<script src="https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js" clienthub_id="${clienthubId}" form_url="${formUrl}"></script>`} />
-  </div>
-</section>
+<div class="w-full">
+  <div id={clienthubId} class="w-full"></div>
+  <Fragment set:html={`<script src="https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js" clienthub_id="${clienthubId}" form_url="${formUrl}"></script>`} />
+  <noscript>
+    <div class="bg-base-200 rounded-xl p-6 text-center">
+      <p class="text-base-content/70 mb-4">
+        JavaScript is required to load the estimate form.
+      </p>
+      <a
+        href={workRequestUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-primary"
+      >
+        Open Estimate Request Form
+      </a>
+    </div>
+  </noscript>
+</div>

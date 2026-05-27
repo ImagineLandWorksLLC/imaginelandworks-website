@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Navbar from "@components/NavBar.astro";
+import NavFooter from "@components/NavFooter.astro";
 import type { PageFrontmatter } from "@components/SEO.astro";
 
 type Props = PageFrontmatter;
@@ -9,12 +10,13 @@ const { title, description, image, canonical, noindex } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} image={image} canonical={canonical} noindex={noindex}>
-  <div class="flex flex-col h-screen">
+  <div class="flex flex-col min-h-screen">
     <header>
       <Navbar />
     </header>
-    <main class="flex-1 overflow-auto h-full">
+    <main class="flex-1">
       <slot />
     </main>
+    <NavFooter />
   </div>
 </BaseLayout>

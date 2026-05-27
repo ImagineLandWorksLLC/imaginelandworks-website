@@ -1,14 +1,172 @@
 ---
 import BookingLayout from "@layouts/BookingLayout.astro";
 import JobberForm from "@components/JobberForm.astro";
+import Schema from "@components/Schema.astro";
+import { contact } from "@data/contact";
+import { services } from "@data/services";
+
+const contactPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Get a Free Estimate | Imagine Land Works",
+  description:
+    "Request a free estimate for land clearing, excavation, site prep, mulching, tree work, and more in Lakeland, FL & Polk County.",
+  url: "https://imaginelandworks.com/book",
+  mainEntity: {
+    "@type": "LocalBusiness",
+    name: contact.legalName,
+    telephone: `+1${contact.phone.raw}`,
+    email: contact.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: contact.address.street,
+      addressLocality: contact.address.city,
+      addressRegion: contact.address.state,
+      postalCode: contact.address.zip,
+      addressCountry: "US",
+    },
+    areaServed: [
+      "Lakeland, FL",
+      "Plant City, FL",
+      "Bartow, FL",
+      "Winter Haven, FL",
+      "Auburndale, FL",
+      "Lake Wales, FL",
+      "Polk County, FL",
+    ],
+    hasMap: "https://maps.google.com/?cid=imaginelandworks",
+  },
+};
 ---
 
 <BookingLayout
   title="Get a Free Estimate | Land Clearing & Excavation"
   description="Request a free estimate from Imagine Land Works in Lakeland, FL. We specialize in land clearing, excavation, site prep, mulching, tree work, and more. Fast response."
 >
-  <div class="flex flex-col items-center px-4 py-12 h-full">
-    <h1 class="text-6xl font-extrabold text-center mb-8">Get a Quote</h1>
-    <JobberForm />
+  <Schema schema={contactPageSchema} />
+
+  <div class="container mx-auto px-4 py-12 lg:py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+      <!-- ─── Left: SEO Content Column ─────────────────────────── -->
+      <div class="flex flex-col gap-10">
+
+        <!-- Page header -->
+        <div>
+          <p class="text-secondary font-heading text-sm uppercase tracking-widest mb-2">
+            Free Estimates · Fast Response
+          </p>
+          <h1 class="text-primary font-heading text-5xl leading-tight mb-4">
+            Get a Free Quote
+          </h1>
+          <p class="text-base-content/70 text-lg leading-relaxed">
+            Serving Lakeland, Polk County, and surrounding Central Florida
+            communities. Fill out the form and we'll follow up within one
+            business day.
+          </p>
+        </div>
+
+        <!-- Services list -->
+        <div>
+          <h2 class="font-heading text-primary text-2xl mb-5">Services We Quote</h2>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
+            {
+              services.map((service) => (
+                <li class="flex items-center gap-2 text-base-content/80">
+                  <span
+                    aria-hidden="true"
+                    class="w-5 h-5 rounded-full bg-secondary/15 flex items-center justify-center shrink-0"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      class="w-3 h-3 fill-secondary"
+                      aria-hidden="true"
+                    >
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                  </span>
+                  <a
+                    href={`/services#${service.anchor}`}
+                    class="hover:text-primary transition-colors duration-150"
+                  >
+                    {service.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <!-- What to expect steps -->
+        <div>
+          <h2 class="font-heading text-primary text-2xl mb-5">What to Expect</h2>
+          <ol class="flex flex-col gap-5">
+            {
+              [
+                {
+                  title: "Submit this form",
+                  body: "Tell us about your project, property size, and timeline.",
+                },
+                {
+                  title: "We'll reach out",
+                  body: "A team member will call or email you within one business day.",
+                },
+                {
+                  title: "On-site visit & quote",
+                  body: "We visit your property and deliver a detailed, no-obligation estimate.",
+                },
+              ].map((step, i) => (
+                <li class="flex gap-4 items-start">
+                  <span class="shrink-0 w-8 h-8 rounded-full bg-primary text-primary-content font-heading text-sm flex items-center justify-center shadow-sm">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p class="font-semibold text-base-content leading-snug">
+                      {step.title}
+                    </p>
+                    <p class="text-base-content/60 text-sm mt-0.5">{step.body}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+
+        <!-- Call CTA card -->
+        <div class="bg-base-200 rounded-xl p-6 flex flex-col gap-1.5 border border-base-300">
+          <p class="font-heading text-primary text-xs uppercase tracking-widest">
+            Prefer to call?
+          </p>
+          <a
+            href={`tel:${contact.phone.raw}`}
+            class="text-3xl font-heading text-primary hover:text-secondary transition-colors duration-150"
+          >
+            {contact.phone.display}
+          </a>
+          <p class="text-base-content/55 text-sm">
+            Mon–Fri 7 AM–6 PM · Sat 8 AM–3 PM
+          </p>
+        </div>
+
+        <!-- Service area note -->
+        <p class="text-base-content/45 text-sm leading-relaxed">
+          Proudly serving Lakeland, Plant City, Bartow, Winter Haven,
+          Auburndale, Lake Wales, Haines City, and all of Polk County, FL.
+          <a href="/service-area" class="underline hover:text-primary transition-colors duration-150 ml-1">
+            View full service area →
+          </a>
+        </p>
+
+      </div>
+
+      <!-- ─── Right: Form Column ─────────────────────────────────── -->
+      <div class="lg:sticky lg:top-6">
+        <div class="bg-base-100 rounded-2xl shadow-lg border border-base-300 p-2">
+          <JobberForm />
+        </div>
+      </div>
+
+    </div>
   </div>
 </BookingLayout>
