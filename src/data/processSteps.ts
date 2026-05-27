@@ -11,7 +11,7 @@ export const processSteps: ProcessStep[] = [
     icon: "helmet-safety",
     title: "Walk the Site",
     description:
-      "We meet you on the property, listen, and quote the work straight — no upsell.",
+      "We meet you on the property, listen, and quote the work straight, no upsell.",
   },
   {
     number: "02",

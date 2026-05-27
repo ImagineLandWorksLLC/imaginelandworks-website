@@ -32,7 +32,7 @@ export const services: Service[] = [
   {
     title: "Pond Cleaning",
     description:
-      "Complete pond cleaning and maintenance — debris removal, sediment clearing, and shoreline cleanup to restore your water feature.",
+      "Complete pond cleaning and maintenance, with debris removal, sediment clearing, and shoreline cleanup to restore your water feature.",
     icon: "water",
     anchor: "pond-cleaning",
   },
@@ -47,7 +47,7 @@ export const services: Service[] = [
   {
     title: "Site Preparation",
     description:
-      "Complete groundwork services — grading, compacting, and leveling — so your site is build-ready from day one.",
+      "Complete groundwork services, including grading, compacting, and leveling, so your site is build-ready from day one.",
     icon: "ruler-combined",
     anchor: "site-preparation",
     featured: true,
@@ -62,7 +62,7 @@ export const services: Service[] = [
   {
     title: "Bush Hogging",
     description:
-      "Heavy-duty brush mowing for overgrown fields, fence lines, and right-of-ways — fast results on even the toughest terrain.",
+      "Heavy-duty brush mowing for overgrown fields, fence lines, and right-of-ways, with fast results on even the toughest terrain.",
     icon: "tractor",
     anchor: "bush-hogging",
   },

@@ -21,7 +21,7 @@ export const serviceSections: ServiceSectionData[] = [
     eyebrow: "Site Readiness Starts Here",
     title: "Land Clearing",
     description:
-      "Whether you're preparing raw acreage for construction, farming, or development, Imagine Land Works delivers complete land clearing from start to finish. Our team removes all trees, brush, stumps, and vegetation — leaving your property clean, accessible, and ready for the next phase of your project.",
+      "Whether you're preparing raw acreage for construction, farming, or development, Imagine Land Works delivers complete land clearing from start to finish. Our team removes all trees, brush, stumps, and vegetation, leaving your property clean, accessible, and ready for the next phase of your project.",
     capabilities: [
       "Brush and shrub removal from any terrain",
       "Tree removal including large-diameter hardwoods",
@@ -33,10 +33,10 @@ export const serviceSections: ServiceSectionData[] = [
     cta: "Get a Free Estimate",
     imagePlaceholder: "Insert land clearing service image here",
     shortDescription:
-      "Full-service land clearing from brush removal to stump grinding — leaving your property clean and build-ready.",
+      "Full-service land clearing from brush removal to stump grinding, leaving your property clean and build-ready.",
     seoTitle: "Land Clearing Lakeland FL",
     seoDescription:
-      "Professional land clearing in Lakeland, FL. Imagine Land Works removes trees, brush, and stumps — leaving your property build-ready. Licensed & insured. Free estimates.",
+      "Professional land clearing in Lakeland, FL. Imagine Land Works removes trees, brush, and stumps, leaving your property build-ready. Licensed & insured. Free estimates.",
     processSteps: [
       {
         title: "Site Walk & Quote",
@@ -46,7 +46,7 @@ export const serviceSections: ServiceSectionData[] = [
       {
         title: "Full Clearing",
         description:
-          "Our crew and equipment move in — removing trees, brush, stumps, and debris efficiently while protecting the surrounding property.",
+          "Our crew and equipment move in, removing trees, brush, stumps, and debris efficiently while protecting the surrounding property.",
       },
       {
         title: "Clean Finish",
@@ -73,7 +73,7 @@ export const serviceSections: ServiceSectionData[] = [
     cta: "Request Site Prep Quote",
     imagePlaceholder: "Insert site preparation service image here",
     shortDescription:
-      "Grading, leveling, compaction, and drainage — everything your lot needs before construction can begin.",
+      "Grading, leveling, compaction, and drainage, everything your lot needs before construction can begin.",
     seoTitle: "Site Preparation Lakeland FL",
     seoDescription:
       "Expert site preparation in Lakeland, FL. Grading, leveling, compaction & drainage for residential and commercial projects. Locally owned. Free estimates.",
@@ -101,9 +101,9 @@ export const serviceSections: ServiceSectionData[] = [
     eyebrow: "Clear the Way",
     title: "Demolition",
     description:
-      "Old structures don't have to stand in the way of progress. Imagine Land Works provides controlled demolition for residential and commercial properties — taking down what no longer serves you and hauling every bit of it away. We prioritize safety at every step, protecting surrounding structures and neighboring properties throughout the process.",
+      "Old structures don't have to stand in the way of progress. Imagine Land Works provides controlled demolition for residential and commercial properties, taking down what no longer serves you and hauling every bit of it away. We prioritize safety at every step, protecting surrounding structures and neighboring properties throughout the process.",
     capabilities: [
-      "Full structure teardown — homes, barns, sheds, outbuildings",
+      "Full structure teardown, homes, barns, sheds, outbuildings",
       "Concrete slab and foundation removal",
       "Block wall and masonry demolition",
       "Complete debris hauling and site cleanout",
@@ -113,7 +113,7 @@ export const serviceSections: ServiceSectionData[] = [
     cta: "Schedule a Demolition Consultation",
     imagePlaceholder: "Insert demolition service image here",
     shortDescription:
-      "Safe, controlled teardown of structures, slabs, and outbuildings — with complete debris removal included.",
+      "Safe, controlled teardown of structures, slabs, and outbuildings, with complete debris removal included.",
     seoTitle: "Demolition Services Lakeland FL",
     seoDescription:
       "Licensed demolition contractor in Lakeland, FL. Residential and commercial structure teardown, slab removal, and full debris hauling. Free estimates.",
@@ -126,7 +126,7 @@ export const serviceSections: ServiceSectionData[] = [
       {
         title: "Controlled Teardown",
         description:
-          "We systematically demolish the structure — home, barn, slab, or outbuilding — protecting adjacent property at every stage.",
+          "We systematically demolish the structure, home, barn, slab, or outbuilding, protecting adjacent property at every stage.",
       },
       {
         title: "Full Site Cleanout",
@@ -141,7 +141,7 @@ export const serviceSections: ServiceSectionData[] = [
     eyebrow: "Tame Your Overgrowth",
     title: "Bush Hogging",
     description:
-      "Overgrown fields, fence lines, and right-of-ways are no match for our heavy-duty bush hogging equipment. Imagine Land Works handles acreage of any size — cutting down tall grass, dense brush, and stubborn overgrowth fast so your land looks managed and stays that way. Ideal for property owners, farmers, and developers who need consistent maintenance on large parcels.",
+      "Overgrown fields, fence lines, and right-of-ways are no match for our heavy-duty bush hogging equipment. Imagine Land Works handles acreage of any size, cutting down tall grass, dense brush, and stubborn overgrowth fast so your land looks managed and stays that way. Ideal for property owners, farmers, and developers who need consistent maintenance on large parcels.",
     capabilities: [
       "Tall grass and thick brush cutting on any terrain",
       "Overgrowth removal along fence lines and property borders",
@@ -153,7 +153,7 @@ export const serviceSections: ServiceSectionData[] = [
     cta: "Get a Bush Hogging Quote",
     imagePlaceholder: "Insert bush hogging service image here",
     shortDescription:
-      "Heavy-duty mowing for overgrown fields, fence lines, and right-of-ways — fast results on any size acreage.",
+      "Heavy-duty mowing for overgrown fields, fence lines, and right-of-ways, with fast results on any size acreage.",
     seoTitle: "Bush Hogging Lakeland FL",
     seoDescription:
       "Professional bush hogging in Lakeland, FL. Heavy-duty brush cutting for fields, fence lines, and pastures across Polk County. Free estimates.",
@@ -181,9 +181,9 @@ export const serviceSections: ServiceSectionData[] = [
     eyebrow: "Dig Deep, Build Right",
     title: "Excavation",
     description:
-      "Precise excavation is the foundation of every successful construction project. Imagine Land Works operates professional-grade excavation equipment to dig exactly where you need it — whether that's utility trenches, structural foundations, retention ponds, or drainage channels. We work efficiently and accurately to keep your project on schedule.",
+      "Precise excavation is the foundation of every successful construction project. Imagine Land Works operates professional-grade excavation equipment to dig exactly where you need it, whether that's utility trenches, structural foundations, retention ponds, or drainage channels. We work efficiently and accurately to keep your project on schedule.",
     capabilities: [
-      "Trenching for utilities — water, sewer, electrical, and fiber",
+      "Trenching for utilities, water, sewer, electrical, and fiber",
       "Deep digging for residential and commercial foundations",
       "Retention pond and drainage ditch excavation",
       "Utility staging and underground infrastructure prep",
@@ -193,7 +193,7 @@ export const serviceSections: ServiceSectionData[] = [
     cta: "Start Your Excavation Project",
     imagePlaceholder: "Insert excavation service image here",
     shortDescription:
-      "Precision digging for foundations, utilities, ponds, and drainage — professional equipment, on-schedule results.",
+      "Precision digging for foundations, utilities, ponds, and drainage, with professional equipment and on-schedule results.",
     seoTitle: "Excavation Contractor Lakeland FL",
     seoDescription:
       "Professional excavation services in Lakeland, FL. Foundation digging, utility trenching, pond excavation, and drainage work. Licensed & insured. Free estimates.",
@@ -206,7 +206,7 @@ export const serviceSections: ServiceSectionData[] = [
       {
         title: "Precision Excavation",
         description:
-          "Our operators dig to the exact dimensions and depths your project requires — foundation, trench, pond, or drainage channel.",
+          "Our operators dig to the exact dimensions and depths your project requires, whether that's a foundation, trench, pond, or drainage channel.",
       },
       {
         title: "Grade & Backfill",
@@ -221,22 +221,22 @@ export const serviceSections: ServiceSectionData[] = [
     eyebrow: "Nature-Friendly Land Management",
     title: "Mulching",
     description:
-      "Forestry mulching is one of the most efficient and environmentally responsible ways to clear land. Rather than hauling material away, our mulching equipment grinds vegetation in place — turning trees, brush, and underbrush into a natural ground cover that suppresses weeds and protects the soil. It's faster, cleaner, and better for the land than traditional clearing methods.",
+      "Forestry mulching is one of the most efficient and environmentally responsible ways to clear land. Rather than hauling material away, our mulching equipment grinds vegetation in place, turning trees, brush, and underbrush into a natural ground cover that suppresses weeds and protects the soil. It's faster, cleaner, and better for the land than traditional clearing methods.",
     capabilities: [
       "Forestry mulching with track-driven mulcher equipment",
       "Underbrush and invasive species removal",
       "Firebreak creation along property perimeters",
       "Selective clearing that preserves desirable trees",
       "Erosion control through in-place mulch layer",
-      "No burn piles — eco-friendly and compliant with local ordinances",
+      "No burn piles, eco-friendly and compliant with local ordinances",
     ],
     cta: "Request a Mulching Estimate",
     imagePlaceholder: "Insert mulching service image here",
     shortDescription:
-      "Forestry mulching grinds vegetation in place — faster, cleaner, and more eco-friendly than traditional clearing.",
+      "Forestry mulching grinds vegetation in place, faster, cleaner, and more eco-friendly than traditional clearing.",
     seoTitle: "Forestry Mulching Lakeland FL",
     seoDescription:
-      "Professional forestry mulching in Lakeland, FL. Eco-friendly land clearing that grinds brush and trees in place — no burn piles, no hauling. Free estimates.",
+      "Professional forestry mulching in Lakeland, FL. Eco-friendly land clearing that grinds brush and trees in place, no burn piles, no hauling. Free estimates.",
     processSteps: [
       {
         title: "Property Walkthrough",
@@ -246,7 +246,7 @@ export const serviceSections: ServiceSectionData[] = [
       {
         title: "Mulch & Grind",
         description:
-          "Our forestry mulcher grinds trees, brush, and underbrush directly in place — no pile burning, no hauling required.",
+          "Our forestry mulcher grinds trees, brush, and underbrush directly in place, no pile burning, no hauling required.",
       },
       {
         title: "Ground Cover Layer",
@@ -261,9 +261,9 @@ export const serviceSections: ServiceSectionData[] = [
     eyebrow: "Expert Tree Care",
     title: "Tree Work",
     description:
-      "Trees add beauty and value to your property — until they become a hazard or stand in the way of your plans. Imagine Land Works handles everything from routine trimming and canopy shaping to full removal of damaged, dead, or unwanted trees. After major storms, we're on the ground fast to clear debris and restore safe access to your property.",
+      "Trees add beauty and value to your property, until they become a hazard or stand in the way of your plans. Imagine Land Works handles everything from routine trimming and canopy shaping to full removal of damaged, dead, or unwanted trees. After major storms, we're on the ground fast to clear debris and restore safe access to your property.",
     capabilities: [
-      "Tree removal — single trees to full-lot clearing",
+      "Tree removal, single trees to full-lot clearing",
       "Crown trimming and canopy shaping for health and clearance",
       "Dead, leaning, and hazardous tree takedown",
       "Storm damage cleanup and emergency tree debris removal",
@@ -273,7 +273,7 @@ export const serviceSections: ServiceSectionData[] = [
     cta: "Get a Tree Work Quote",
     imagePlaceholder: "Insert tree work service image here",
     shortDescription:
-      "Tree removal, trimming, stump grinding, and storm cleanup — keeping your property safe and your trees healthy.",
+      "Tree removal, trimming, stump grinding, and storm cleanup, keeping your property safe and your trees healthy.",
     seoTitle: "Tree Removal & Tree Work Lakeland FL",
     seoDescription:
       "Professional tree removal, trimming, and stump grinding in Lakeland, FL. Storm cleanup and hazardous tree takedown. Licensed & insured. Free estimates.",
@@ -286,7 +286,7 @@ export const serviceSections: ServiceSectionData[] = [
       {
         title: "Removal & Trimming",
         description:
-          "Our crew takes down, trims, or shapes trees with precision — protecting surrounding landscaping and structures throughout.",
+          "Our crew takes down, trims, or shapes trees with precision, protecting surrounding landscaping and structures throughout.",
       },
       {
         title: "Stump & Debris Cleanup",
@@ -301,7 +301,7 @@ export const serviceSections: ServiceSectionData[] = [
     eyebrow: "Restore Your Water Feature",
     title: "Pond Cleaning",
     description:
-      "A neglected pond quickly becomes a liability — choked with vegetation, silted up, and inaccessible. Imagine Land Works restores ponds and water features back to a clean, functional state. We remove built-up sediment, clear invasive aquatic plants, clean up the shoreline, and cut access paths so you can enjoy and maintain your water feature going forward.",
+      "A neglected pond quickly becomes a liability, choked with vegetation, silted up, and inaccessible. Imagine Land Works restores ponds and water features back to a clean, functional state. We remove built-up sediment, clear invasive aquatic plants, clean up the shoreline, and cut access paths so you can enjoy and maintain your water feature going forward.",
     capabilities: [
       "Sediment and silt removal to restore pond depth and capacity",
       "Aquatic vegetation and invasive plant clearing",
@@ -313,7 +313,7 @@ export const serviceSections: ServiceSectionData[] = [
     cta: "Schedule a Pond Assessment",
     imagePlaceholder: "Insert pond cleaning service image here",
     shortDescription:
-      "Sediment removal, aquatic vegetation clearing, and shoreline cleanup — restoring your pond to full function.",
+      "Sediment removal, aquatic vegetation clearing, and shoreline cleanup, restoring your pond to full function.",
     seoTitle: "Pond Cleaning & Restoration Lakeland FL",
     seoDescription:
       "Professional pond cleaning and restoration in Lakeland, FL. Sediment removal, aquatic weed clearing, and shoreline repair. Serving Polk County. Free estimates.",

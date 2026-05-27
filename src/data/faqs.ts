@@ -10,7 +10,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "Do you offer free estimates?",
-    answer: "Yes — we provide fast, no-obligation estimates for all land clearing and site work projects.",
+    answer: "Yes, we provide fast, no-obligation estimates for all land clearing and site work projects.",
   },
   {
     question: "Can you handle small residential jobs?",
@@ -18,7 +18,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "Are you licensed and insured?",
-    answer: "Yes — Imagine Land Works is fully licensed and insured for all services we provide.",
+    answer: "Yes, Imagine Land Works is fully licensed and insured for all services we provide.",
   },
   {
     question: "How quickly can you start?",
