@@ -27,12 +27,12 @@ const social: SocialLink[] = [
   {
     key: "facebook",
     label: "Facebook",
-    href: "https://www.facebook.com/imaginelandworks",
+    href: "https://www.facebook.com/profile.php?id=61582118219528",
   },
   {
     key: "instagram",
     label: "Instagram",
-    href: "https://www.instagram.com/imaginelandworks",
+    href: "https://www.instagram.com/imagine_landworks_llc_",
   },
   {
     key: "youtube",
@@ -42,7 +42,7 @@ const social: SocialLink[] = [
   {
     key: "google",
     label: "Google Business",
-    href: "https://g.page/imaginelandworks",
+    href: "https://share.google/7OuoO8mwQ3tU3beW9",
   },
 ];
 
