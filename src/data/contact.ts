@@ -1,4 +1,10 @@
-export type SocialKey = "facebook" | "instagram" | "tiktok" | "youtube" | "linkedin" | "google";
+export type SocialKey =
+  | "facebook"
+  | "instagram"
+  | "tiktok"
+  | "youtube"
+  | "linkedin"
+  | "google";
 
 export interface SocialLink {
   key: SocialKey;
@@ -18,18 +24,42 @@ const hours: HoursEntry[] = [
 ];
 
 const social: SocialLink[] = [
-  { key: "facebook", label: "Facebook", href: "https://www.facebook.com/imaginelandworks" },
-  { key: "instagram", label: "Instagram", href: "https://www.instagram.com/imaginelandworks" },
-  { key: "tiktok", label: "TikTok", href: "https://www.tiktok.com/@imaginelandworks" },
-  { key: "youtube", label: "YouTube", href: "https://www.youtube.com/@imaginelandworks" },
-  { key: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/imaginelandworks" },
-  { key: "google", label: "Google Business", href: "https://g.page/imaginelandworks" },
+  {
+    key: "facebook",
+    label: "Facebook",
+    href: "https://www.facebook.com/imaginelandworks",
+  },
+  {
+    key: "instagram",
+    label: "Instagram",
+    href: "https://www.instagram.com/imaginelandworks",
+  },
+  {
+    key: "tiktok",
+    label: "TikTok",
+    href: "https://www.tiktok.com/@imaginelandworks",
+  },
+  {
+    key: "youtube",
+    label: "YouTube",
+    href: "https://www.youtube.com/@imaginelandworks",
+  },
+  {
+    key: "linkedin",
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/imaginelandworks",
+  },
+  {
+    key: "google",
+    label: "Google Business",
+    href: "https://g.page/imaginelandworks",
+  },
 ];
 
 export const contact = {
   phone: {
-    display: "(863) 712-4867",
-    raw: "8637124867",
+    display: "(813) 690-9943",
+    raw: "8136909943",
   },
   email: "seth@imaginelandworks.com",
   address: {
