@@ -25,16 +25,29 @@ import { faqs } from "@data/faqs";
 
 export const localBusinessSchema = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": ["LocalBusiness", "LandscapingBusiness"],
   name: "Imagine Land Works",
+  legalName: contact.legalName,
   url: "https://imaginelandworks.com",
   telephone: contact.phone.display,
   email: contact.email,
+  image: "https://imaginelandworks.com/images/ImagineLandWorks.png",
+  description:
+    "Imagine Land Works provides professional land clearing, excavation, site preparation, demolition, and more across Lakeland and Polk County, FL. Licensed and insured. Free estimates.",
+  foundingDate: String(contact.founding),
+  priceRange: "$$",
   address: {
     "@type": "PostalAddress",
+    streetAddress: contact.address.street,
     addressLocality: contact.address.city,
     addressRegion: contact.address.state,
+    postalCode: contact.address.zip,
     addressCountry: "US",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 27.9887,
+    longitude: -81.962,
   },
   openingHoursSpecification: [
     {
