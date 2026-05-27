@@ -91,7 +91,9 @@ function starsHtml(rating: number, large = false): string {
                 <div>
                   <p class="font-heading text-primary text-base leading-tight">{r.name}</p>
                   {r.source && (
-                    <p class="text-base-content/40 text-xs uppercase tracking-wider mt-0.5">{r.source}</p>
+                    r.link
+                      ? <a href={r.link} target="_blank" rel="noopener noreferrer" class="text-base-content/40 hover:text-accent text-xs uppercase tracking-wider mt-0.5 transition-colors">{r.source}</a>
+                      : <p class="text-base-content/40 text-xs uppercase tracking-wider mt-0.5">{r.source}</p>
                   )}
                 </div>
               </div>
@@ -145,9 +147,9 @@ function starsHtml(rating: number, large = false): string {
             {reviews[0].name}
           </p>
           {reviews[0].source && (
-            <p class="text-primary-content/50 text-sm uppercase tracking-widest">
-              {reviews[0].source}
-            </p>
+            reviews[0].link
+              ? <a href={reviews[0].link} target="_blank" rel="noopener noreferrer" class="text-primary-content/50 hover:text-accent text-sm uppercase tracking-widest transition-colors">{reviews[0].source}</a>
+              : <p class="text-primary-content/50 text-sm uppercase tracking-widest">{reviews[0].source}</p>
           )}
         </div>
 
@@ -170,7 +172,9 @@ function starsHtml(rating: number, large = false): string {
               <div class="border-t border-primary-content/15 pt-3">
                 <p class="font-heading text-primary-content text-base uppercase tracking-wide leading-tight">{r.name}</p>
                 {r.source && (
-                  <p class="text-primary-content/40 text-xs uppercase tracking-widest mt-0.5">{r.source}</p>
+                  r.link
+                    ? <a href={r.link} target="_blank" rel="noopener noreferrer" class="text-primary-content/40 hover:text-accent text-xs uppercase tracking-widest mt-0.5 transition-colors">{r.source}</a>
+                    : <p class="text-primary-content/40 text-xs uppercase tracking-widest mt-0.5">{r.source}</p>
                 )}
               </div>
             </div>
@@ -227,7 +231,10 @@ function starsHtml(rating: number, large = false): string {
               <p class="text-base-content/70 text-sm italic leading-snug">
                 "{r.text}"
               </p>
-              <p class="text-primary font-heading text-sm">{r.name}</p>
+              {r.link
+                ? <a href={r.link} target="_blank" rel="noopener noreferrer" class="text-primary hover:text-accent font-heading text-sm transition-colors">{r.name}</a>
+                : <p class="text-primary font-heading text-sm">{r.name}</p>
+              }
             </div>
           ))}
         </div>
