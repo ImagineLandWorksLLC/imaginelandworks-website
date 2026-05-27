@@ -35,21 +35,6 @@ const social: SocialLink[] = [
     href: "https://www.instagram.com/imaginelandworks",
   },
   {
-    key: "tiktok",
-    label: "TikTok",
-    href: "https://www.tiktok.com/@imaginelandworks",
-  },
-  {
-    key: "youtube",
-    label: "YouTube",
-    href: "https://www.youtube.com/@imaginelandworks",
-  },
-  {
-    key: "linkedin",
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/imaginelandworks",
-  },
-  {
     key: "google",
     label: "Google Business",
     href: "https://g.page/imaginelandworks",

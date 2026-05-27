@@ -7,12 +7,6 @@ export interface Metric {
 
 export const metrics: Metric[] = [
   {
-    stat: "120+",
-    label: "Acres Cleared",
-    description: "Across Polk County and surrounding regions",
-    icon: "tractor",
-  },
-  {
     stat: "200+",
     label: "Projects Completed",
     description: "From lot clearing to full site prep",
