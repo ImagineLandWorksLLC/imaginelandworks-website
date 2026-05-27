@@ -1,0 +1,138 @@
+---
+import type { ServiceCity } from "@data/serviceArea";
+
+interface Props {
+  cities: ServiceCity[];
+  /** Primary city to highlight (slug). Defaults to "lakeland". */
+  primarySlug?: string;
+  class?: string;
+}
+
+const { cities, primarySlug = "lakeland", class: className } = Astro.props;
+
+// Center on the midpoint of the bounding box of all cities
+const lats = cities.map((c) => c.lat);
+const lngs = cities.map((c) => c.lng);
+const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+const centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+
+// Unique ID so multiple maps on a page don't collide
+const mapId = `slm-${Math.random().toString(36).slice(2, 8)}`;
+
+const pins = cities
+  .filter((c) => c.showOnMap !== false)
+  .map((c) => ({
+    name: c.name,
+    slug: c.slug,
+    lat: c.lat,
+    lng: c.lng,
+    primary: c.slug === primarySlug,
+  }));
+---
+
+<!-- Leaflet CSS — loaded once even if component is rendered multiple times -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<div
+  id={mapId}
+  class:list={[
+    "w-full rounded-2xl overflow-hidden border border-base-300 shadow-md",
+    "aspect-square lg:aspect-auto lg:h-full lg:min-h-96",
+    className,
+  ]}
+  aria-label="Interactive map of Imagine Land Works service area in Polk County, FL"
+  role="application"
+>
+  <!-- Shown while JS loads -->
+  <div class="w-full h-full min-h-80 bg-base-200 flex items-center justify-center text-base-content/40 text-sm">
+    Loading map…
+  </div>
+</div>
+
+<script is:inline define:vars={{ mapId, pins, centerLat, centerLng }}>
+(function () {
+  const LEAFLET_JS = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+
+  function initMap() {
+    const el = document.getElementById(mapId);
+    if (!el || el.dataset.leafletInit) return;
+    el.dataset.leafletInit = "1";
+    el.innerHTML = ""; // clear placeholder
+
+    const map = L.map(el, {
+      center: [28.1, -82.5],
+      zoom: 7,
+      scrollWheelZoom: false,
+      zoomControl: true,
+    });
+
+    // CartoDB Positron — clean, light basemap, free
+    L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: "abcd",
+        maxZoom: 19,
+      }
+    ).addTo(map);
+
+    // Service-area shaded circle (~50-mile radius from Lakeland)
+    const home = pins.find((p) => p.primary) ?? pins[0];
+    L.circle([home.lat, home.lng], {
+      radius: 130_000, // metres ≈ 80 miles
+      color: "#2a7a99",
+      weight: 2,
+      dashArray: "8 5",
+      fillColor: "#2a7a99",
+      fillOpacity: 0.07,
+    }).addTo(map);
+
+    // City markers
+    pins.forEach((pin) => {
+      const size = pin.primary ? 16 : 11;
+      const bg = pin.primary ? "#e8952a" : "#2a7a99";
+      const icon = L.divIcon({
+        html: `<div style="
+          width:${size}px;height:${size}px;
+          border-radius:50%;
+          background:${bg};
+          border:2.5px solid #fff;
+          box-shadow:0 1px 5px rgba(0,0,0,.35);
+        "></div>`,
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+        className: "",
+      });
+
+      const marker = L.marker([pin.lat, pin.lng], { icon }).addTo(map);
+      marker.bindPopup(
+        `<div style="font-family:sans-serif;min-width:130px;">
+          <strong style="color:#2a7a99;">${pin.name}</strong><br>
+          <a href="/service-area/${pin.slug}"
+             style="font-size:12px;color:#2a7a99;text-decoration:underline;">
+            View services →
+          </a>
+        </div>`,
+        { closeButton: false, maxWidth: 180 }
+      );
+    });
+  }
+
+  // Load Leaflet JS once, then init
+  if (window.L) {
+    initMap();
+  } else if (!document.querySelector(`script[src="${LEAFLET_JS}"]`)) {
+    const s = document.createElement("script");
+    s.src = LEAFLET_JS;
+    s.onload = initMap;
+    document.head.appendChild(s);
+  } else {
+    // Script tag already exists but may still be loading
+    document.querySelector(`script[src="${LEAFLET_JS}"]`).addEventListener("load", initMap);
+  }
+})();
+</script>

@@ -1,6 +1,7 @@
 ---
 import DefaultLayout from "@layouts/DefaultLayout.astro";
 import Schema from "@components/Schema.astro";
+import ServiceAreaMap from "@components/ServiceAreaMap.astro";
 import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
 import { serviceCities } from "@data/serviceArea";
 import { contact } from "@data/contact";
@@ -95,29 +96,17 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <!-- Google Map -->
+  <!-- Interactive service area map -->
   <section class="bg-base-100 py-20">
     <div class="container mx-auto px-6 max-w-4xl">
       <div class="text-center mb-8">
-        <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">Our Location</p>
-        <h2 class="text-primary font-heading leading-tight">Find Us in Lakeland, FL</h2>
+        <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">Coverage Map</p>
+        <h2 class="text-primary font-heading leading-tight">Our Service Area</h2>
         <p class="text-base-content/70 mt-3">
-          Based at {contact.address.street}, {contact.address.city}, {contact.address.state} {contact.address.zip}.
-          Serving all of Polk County and surrounding areas.
+          Click any pin to see services available in that city.
         </p>
       </div>
-      <div class="rounded-2xl overflow-hidden shadow-md border border-base-300 aspect-video">
-        <iframe
-          title="Imagine Land Works location in Lakeland, FL"
-          src={`https://maps.google.com/maps?q=${encodeURIComponent(`${contact.address.street}, ${contact.address.city}, ${contact.address.state} ${contact.address.zip}`)}&output=embed&z=13`}
-          width="100%"
-          height="100%"
-          style="border:0;"
-          allowfullscreen
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
-      </div>
+      <ServiceAreaMap cities={serviceCities} class="aspect-video lg:aspect-auto lg:h-120" />
     </div>
   </section>
 

@@ -21,7 +21,9 @@ export function getStaticPaths() {
 const { city } = Astro.props;
 
 const seoTitle = `Land Clearing in ${city.name}, FL | Imagine Land Works, LLC`;
-const seoDescription = `Professional land clearing, excavation, and site preparation in ${city.name}, ${city.county ?? "FL"}. Imagine Land Works serves ${city.name} and all of Polk County. Licensed & insured. Free estimates.`;
+const locationLabel = city.county ? `${city.county}, FL` : "FL";
+const coverageLabel = city.county ? `all of ${city.county}` : "all of Central Florida";
+const seoDescription = `Professional land clearing, excavation, and site preparation in ${city.name}, ${locationLabel}. Imagine Land Works serves ${city.name} and ${coverageLabel}. Licensed & insured. Free estimates.`;
 
 const pageUrl = `https://imaginelandworks.com/service-area/${city.slug}`;
 
@@ -44,7 +46,7 @@ const localBusinessSchema = {
   },
   areaServed: [
     { "@type": "City", name: city.name },
-    { "@type": "AdministrativeArea", name: city.county ?? "Polk County" },
+    ...(city.county ? [{ "@type": "AdministrativeArea", name: city.county }] : []),
   ],
 };
 
@@ -78,7 +80,7 @@ const breadcrumbSchema = {
       </nav>
 
       <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-3">
-        {city.county ?? "Polk County"}, FL
+        {city.county ? `${city.county}, FL` : "Florida"}
       </p>
       <h1 class="text-primary font-heading leading-tight mb-6">
         Land Clearing Services in {city.name}, FL
@@ -125,7 +127,7 @@ const breadcrumbSchema = {
   <FreeEstimateCTA
     headline={`Get a Free Estimate in ${city.name}`}
     subheadline="No Obligation. No Guesswork."
-    body={`Whether you need land cleared, a site prepped, or a structure demolished in ${city.name}, we'll give you a straight, honest estimate fast. Serving ${city.name} and all of ${city.county ?? "Polk County"}.`}
+    body={`Whether you need land cleared, a site prepped, or a structure demolished in ${city.name}, we'll give you a straight, honest estimate fast. Serving ${city.name} and ${coverageLabel}.`}
     ctaLabel="Request a Free Estimate"
     ctaHref="/book"
     phone={contact.phone.display}
