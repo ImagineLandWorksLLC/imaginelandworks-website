@@ -2,17 +2,16 @@
 import FacebookIcon from "../assets/icons/facebook-brands-solid-full.svg";
 import InstagramIcon from "../assets/icons/instagram-brands-solid-full.svg";
 import { faPhone, faEnvelope, faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { contact } from "@data/contact";
+import { iconFromDef } from "@utils/icons";
+import { contact, getSocialHref } from "@data/contact";
 
 const year = new Date().getFullYear();
-const facebookHref = contact.social.find((s) => s.key === "facebook")!.href;
-const instagramHref = contact.social.find((s) => s.key === "instagram")!.href;
+const facebookHref = getSocialHref("facebook");
+const instagramHref = getSocialHref("instagram");
 
-function iconSvg(icon: typeof faPhone, cls = "size-[1.1rem]") {
-  const [w, h, , , path] = icon.icon;
-  const d = Array.isArray(path) ? path.join(" ") : path;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="${cls}"><path d="${d}" /></svg>`;
-}
+const phoneSvg    = iconFromDef(faPhone,       "size-[1.1rem]");
+const envelopeSvg = iconFromDef(faEnvelope,    "size-[1.1rem]");
+const pinSvg      = iconFromDef(faLocationDot, "size-[1.1rem]");
 ---
 
 <footer class="bg-primary text-primary-content border-t border-white/10 text-[15px] md:text-base">
@@ -82,7 +81,7 @@ function iconSvg(icon: typeof faPhone, cls = "size-[1.1rem]") {
             class="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity no-underline"
           >
             <span class="shrink-0 text-secondary">
-              <Fragment set:html={iconSvg(faPhone)} />
+              <Fragment set:html={phoneSvg} />
             </span>
             {contact.phone.display}
           </a>
@@ -91,13 +90,13 @@ function iconSvg(icon: typeof faPhone, cls = "size-[1.1rem]") {
             class="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity no-underline"
           >
             <span class="shrink-0 text-secondary">
-              <Fragment set:html={iconSvg(faEnvelope)} />
+              <Fragment set:html={envelopeSvg} />
             </span>
             {contact.email}
           </a>
           <div class="flex items-center gap-3 opacity-60">
             <span class="shrink-0 text-secondary">
-              <Fragment set:html={iconSvg(faLocationDot)} />
+              <Fragment set:html={pinSvg} />
             </span>
             {contact.address.city}, {contact.address.state}
           </div>

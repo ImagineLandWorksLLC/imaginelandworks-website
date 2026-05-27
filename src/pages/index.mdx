@@ -21,18 +21,20 @@ import { reviews } from "@data/reviews";
 import { processSteps } from "@data/processSteps";
 import { metrics } from "@data/metrics";
 import { serviceCities } from "@data/serviceArea";
-import { contact } from "@data/contact";
+import { contact, getSocialHref } from "@data/contact";
 import { faqs } from "@data/faqs";
+import { defaultValueProps } from "@data/valueProps";
+import { SITE_URL } from "@utils/schema";
 
 export const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "LandscapingBusiness"],
   name: "Imagine Land Works",
   legalName: contact.legalName,
-  url: "https://imaginelandworks.com",
+  url: SITE_URL,
   telephone: contact.phone.display,
   email: contact.email,
-  image: "https://imaginelandworks.com/images/ImagineLandWorks.png",
+  image: `${SITE_URL}/images/ImagineLandWorks.png`,
   description:
     "Imagine Land Works provides professional land clearing, excavation, site preparation, demolition, and more across Lakeland and Polk County, FL. Licensed and insured. Free estimates.",
   foundingDate: String(contact.founding),
@@ -95,17 +97,12 @@ export const faqSchema = {
   imageAlt="Imagine Land Works excavator on a job site"
 />
 <ServicesOverview services={services} />
-<ValueProps items={[
-  { icon: "shield-halved", title: "Licensed & Insured" },
-  { icon: "gears",         title: "Professional Equipment" },
-  { icon: "bolt",          title: "Fast Turnaround" },
-  { icon: "house-chimney", title: "Locally Owned" },
-]} />
+<ValueProps items={defaultValueProps} />
 <Testimonials
   layout="featured"
   reviews={reviews}
   ctaLabel="Read More Reviews"
-  ctaHref={contact.social.find((s) => s.key === "google")?.href ?? ""}
+  ctaHref={getSocialHref("google")}
 />
 <HowItWorks steps={processSteps} />
 <FreeEstimateCTA

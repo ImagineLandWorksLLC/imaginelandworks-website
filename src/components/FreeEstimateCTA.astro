@@ -1,5 +1,6 @@
 ---
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { iconFromDef } from "@utils/icons";
 
 interface Props {
   headline: string;
@@ -14,9 +15,7 @@ interface Props {
 const { headline, subheadline, body, ctaLabel, ctaHref, phone, phoneLabel } =
   Astro.props;
 
-const [w, h, , , path] = faPhone.icon;
-const pathD = Array.isArray(path) ? path.join(" ") : path;
-const phoneSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="size-5 shrink-0"><path d="${pathD}" /></svg>`;
+const phoneSvg = iconFromDef(faPhone, "size-5 shrink-0");
 ---
 
 <section class="bg-accent py-20">

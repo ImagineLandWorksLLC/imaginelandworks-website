@@ -46,6 +46,14 @@ const social: SocialLink[] = [
   },
 ];
 
+/**
+ * Look up a social profile URL by key. Returns an empty string if the key
+ * doesn't exist so callers never need a non-null assertion or fallback `?? ""`.
+ */
+export function getSocialHref(key: SocialKey): string {
+  return social.find((s) => s.key === key)?.href ?? "";
+}
+
 export const contact = {
   phone: {
     display: "(813) 690-9943",

@@ -1,5 +1,6 @@
 ---
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { iconFromDef } from "@utils/icons";
 import type { ServiceCity } from "@data/serviceArea";
 import ServiceAreaMap from "@components/ServiceAreaMap.astro";
 
@@ -11,9 +12,7 @@ interface Props {
 
 const { cities, ctaLabel, ctaHref } = Astro.props;
 
-const [w, h, , , path] = faLocationDot.icon;
-const pinD = Array.isArray(path) ? path.join(" ") : path;
-const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="size-4 shrink-0 mt-0.5" aria-hidden="true"><path d="${pinD}" /></svg>`;
+const pinSvg = iconFromDef(faLocationDot, "size-4 shrink-0 mt-0.5");
 ---
 
 <section class="bg-base-200 py-20">

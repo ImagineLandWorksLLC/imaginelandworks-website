@@ -9,7 +9,9 @@ import ValueProps from "@components/ValueProps.astro";
 import { serviceCities } from "@data/serviceArea";
 import { services } from "@data/services";
 import { reviews } from "@data/reviews";
-import { contact } from "@data/contact";
+import { contact, getSocialHref } from "@data/contact";
+import { defaultValueProps } from "@data/valueProps";
+import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
 
 export function getStaticPaths() {
   return serviceCities.map((city) => ({
@@ -25,17 +27,17 @@ const locationLabel = city.county ? `${city.county}, FL` : "FL";
 const coverageLabel = city.county ? `all of ${city.county}` : "all of Central Florida";
 const seoDescription = `Professional land clearing, excavation, and site preparation in ${city.name}, ${locationLabel}. Imagine Land Works serves ${city.name} and ${coverageLabel}. Licensed & insured. Free estimates.`;
 
-const pageUrl = `https://imaginelandworks.com/service-area/${city.slug}`;
+const pageUrl = `${SITE_URL}/service-area/${city.slug}`;
 
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "LandscapingBusiness"],
   name: "Imagine Land Works",
   legalName: contact.legalName,
-  url: "https://imaginelandworks.com",
+  url: SITE_URL,
   telephone: contact.phone.display,
   email: contact.email,
-  image: "https://imaginelandworks.com/images/ImagineLandWorks.png",
+  image: `${SITE_URL}/images/ImagineLandWorks.png`,
   address: {
     "@type": "PostalAddress",
     streetAddress: contact.address.street,
@@ -50,15 +52,11 @@ const localBusinessSchema = {
   ],
 };
 
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://imaginelandworks.com" },
-    { "@type": "ListItem", position: 2, name: "Service Area", item: "https://imaginelandworks.com/service-area" },
-    { "@type": "ListItem", position: 3, name: city.name, item: pageUrl },
-  ],
-};
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: "Home",         item: SITE_URL },
+  { name: "Service Area", item: `${SITE_URL}/service-area` },
+  { name: city.name,      item: pageUrl },
+]);
 ---
 
 <DefaultLayout title={seoTitle} description={seoDescription}>
@@ -101,19 +99,14 @@ const breadcrumbSchema = {
   <ServicesOverview services={services} />
 
   <!-- Value props -->
-  <ValueProps items={[
-    { icon: "shield-halved", title: "Licensed & Insured" },
-    { icon: "gears",         title: "Professional Equipment" },
-    { icon: "bolt",          title: "Fast Turnaround" },
-    { icon: "house-chimney", title: "Locally Owned" },
-  ]} />
+  <ValueProps items={defaultValueProps} />
 
   <!-- Reviews -->
   <Testimonials
     layout="featured"
     reviews={reviews}
     ctaLabel="Read More Reviews"
-    ctaHref={contact.social.find((s) => s.key === "google")?.href ?? ""}
+    ctaHref={getSocialHref("google")}
   />
 
   <!-- Full service area -->

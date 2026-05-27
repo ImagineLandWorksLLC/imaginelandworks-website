@@ -1,14 +1,18 @@
 ---
 import { Image } from "astro:assets";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { iconFromDef } from "@utils/icons";
 import { contact } from "@data/contact";
 import logoSrc from "@assets/images/original-brand-only.png";
 
-function iconSvg(icon: typeof faPhone, cls = "size-4") {
-  const [w, h, , , path] = icon.icon;
-  const d = Array.isArray(path) ? path.join(" ") : path;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="${cls}"><path d="${d}" /></svg>`;
-}
+const navLinks = [
+  { href: "/",        label: "Home" },
+  { href: "/services",label: "Services" },
+  { href: "/about",   label: "About" },
+  { href: "/contact", label: "Contact Us" },
+];
+
+const phoneSvg = iconFromDef(faPhone, "size-3.5");
 ---
 
 <nav class="navbar bg-base-100 shadow-sm">
@@ -24,10 +28,9 @@ function iconSvg(icon: typeof faPhone, cls = "size-4") {
   <!-- Desktop: centered nav links -->
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
-      <li><a href="/">Home</a></li>
-      <li><a href="/services">Services</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/contact">Contact Us</a></li>
+      {navLinks.map(({ href, label }) => (
+        <li><a href={href}>{label}</a></li>
+      ))}
     </ul>
   </div>
 
@@ -39,7 +42,7 @@ function iconSvg(icon: typeof faPhone, cls = "size-4") {
         href={`tel:${contact.phone.raw}`}
         class="flex items-center gap-2 text-sm font-medium opacity-60 hover:opacity-100 transition-opacity"
       >
-        <Fragment set:html={iconSvg(faPhone, "size-3.5")} />
+        <Fragment set:html={phoneSvg} />
         {contact.phone.display}
       </a>
       <a href="/book" class="btn btn-primary btn-sm">Get a Quote</a>
@@ -51,7 +54,7 @@ function iconSvg(icon: typeof faPhone, cls = "size-4") {
       aria-label="Open menu"
       aria-expanded="false"
     >
-      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
       </svg>
     </button>
@@ -64,10 +67,9 @@ function iconSvg(icon: typeof faPhone, cls = "size-4") {
   <div class="flex flex-col p-4 gap-1">
 
     <ul class="menu w-full">
-      <li><a href="/">Home</a></li>
-      <li><a href="/services">Services</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/contact">Contact Us</a></li>
+      {navLinks.map(({ href, label }) => (
+        <li><a href={href}>{label}</a></li>
+      ))}
     </ul>
 
     <div class="divider my-0"></div>
@@ -76,7 +78,7 @@ function iconSvg(icon: typeof faPhone, cls = "size-4") {
       href={`tel:${contact.phone.raw}`}
       class="flex items-center gap-2 px-4 py-2 text-sm font-medium opacity-60 hover:opacity-100 transition-opacity"
     >
-      <Fragment set:html={iconSvg(faPhone, "size-3.5")} />
+      <Fragment set:html={phoneSvg} />
       {contact.phone.display}
     </a>
 

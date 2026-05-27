@@ -1,5 +1,6 @@
 ---
 import { faStar, faStarHalfStroke, faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
+import { iconFromDef } from "@utils/icons";
 import type { Review } from "@data/reviews";
 
 export type TestimonialLayout = "grid" | "featured" | "badge";
@@ -22,31 +23,37 @@ const {
   ctaHref,
 } = Astro.props;
 
-// --- SVG helpers ---
-function makeSvg(fa: typeof faStar, cls: string): string {
-  const [w, h, , , path] = fa.icon;
-  const d = Array.isArray(path) ? path.join(" ") : path;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" fill="currentColor" class="${cls}" aria-hidden="true"><path d="${d}" /></svg>`;
-}
-
-const solidStar   = makeSvg(faStar,           "size-5");
-const halfStar    = makeSvg(faStarHalfStroke, "size-5");
-const quoteLeft   = makeSvg(faQuoteLeft,      "size-7");
-const solidStarLg = makeSvg(faStar,           "size-6");
+// Pre-build reused SVG strings
+const solidStar    = iconFromDef(faStar,           "size-5");
+const halfStar     = iconFromDef(faStarHalfStroke, "size-5");
+const quoteLeft    = iconFromDef(faQuoteLeft,      "size-7");
+const quoteLeftLg  = iconFromDef(faQuoteLeft,      "size-12");
+const quoteLeftMd  = iconFromDef(faQuoteLeft,      "size-6");
+const solidStarLg  = iconFromDef(faStar,           "size-6");
+const halfStarLg   = iconFromDef(faStarHalfStroke, "size-6");
+const emptyStar    = iconFromDef(faStar,           "size-5 opacity-20");
+const emptyStarLg  = iconFromDef(faStar,           "size-6 opacity-20");
 
 function starsHtml(rating: number, large = false): string {
   const star  = large ? solidStarLg : solidStar;
-  const half  = large ? makeSvg(faStarHalfStroke, "size-6") : halfStar;
-  const empty = large
-    ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" class="size-6 opacity-20" aria-hidden="true"><path d="${(faStar.icon[4] as string)}"/></svg>`
-    : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" class="size-5 opacity-20" aria-hidden="true"><path d="${(faStar.icon[4] as string)}"/></svg>`;
+  const half  = large ? halfStarLg  : halfStar;
+  const empty = large ? emptyStarLg : emptyStar;
 
   return Array.from({ length: 5 }, (_, i) => {
     const pos = i + 1;
-    if (rating >= pos)           return star;
-    if (rating >= pos - 0.5)     return half;
+    if (rating >= pos)        return star;
+    if (rating >= pos - 0.5)  return half;
     return empty;
   }).join("");
+}
+
+/** Reviewer source attribution — avoids the 4× repeated source/link branch in the template. */
+function reviewerAttribution(r: Review, textClass: string, linkClass: string): string {
+  if (!r.source) return "";
+  if (r.link) {
+    return `<a href="${r.link}" target="_blank" rel="noopener noreferrer" class="${linkClass}">${r.source}</a>`;
+  }
+  return `<p class="${textClass}">${r.source}</p>`;
 }
 ---
 
@@ -74,7 +81,7 @@ function starsHtml(rating: number, large = false): string {
               </span>
 
               <!-- Review text -->
-              <p class="text-base-content/80 text-sm leading-relaxed flex-grow italic">
+              <p class="text-base-content/80 text-sm leading-relaxed grow italic">
                 "{r.text}"
               </p>
 
@@ -90,11 +97,11 @@ function starsHtml(rating: number, large = false): string {
               <div class="flex items-center justify-between pt-3 border-t border-base-300">
                 <div>
                   <p class="font-heading text-primary text-base leading-tight">{r.name}</p>
-                  {r.source && (
-                    r.link
-                      ? <a href={r.link} target="_blank" rel="noopener noreferrer" class="text-base-content/40 hover:text-accent text-xs uppercase tracking-wider mt-0.5 transition-colors">{r.source}</a>
-                      : <p class="text-base-content/40 text-xs uppercase tracking-wider mt-0.5">{r.source}</p>
-                  )}
+                  <Fragment set:html={reviewerAttribution(
+                    r,
+                    "text-base-content/40 text-xs uppercase tracking-wider mt-0.5",
+                    "text-base-content/40 hover:text-accent text-xs uppercase tracking-wider mt-0.5 transition-colors"
+                  )} />
                 </div>
               </div>
 
@@ -125,7 +132,7 @@ function starsHtml(rating: number, large = false): string {
 
         <!-- Quote mark -->
         <span class="text-primary-content/20 flex justify-center">
-          <Fragment set:html={makeSvg(faQuoteLeft, "size-12")} />
+          <Fragment set:html={quoteLeftLg} />
         </span>
 
         <!-- Review text -->
@@ -146,11 +153,11 @@ function starsHtml(rating: number, large = false): string {
           <p class="font-heading text-primary-content text-xl uppercase tracking-wide">
             {reviews[0].name}
           </p>
-          {reviews[0].source && (
-            reviews[0].link
-              ? <a href={reviews[0].link} target="_blank" rel="noopener noreferrer" class="text-primary-content/50 hover:text-accent text-sm uppercase tracking-widest transition-colors">{reviews[0].source}</a>
-              : <p class="text-primary-content/50 text-sm uppercase tracking-widest">{reviews[0].source}</p>
-          )}
+          <Fragment set:html={reviewerAttribution(
+            reviews[0],
+            "text-primary-content/50 text-sm uppercase tracking-widest",
+            "text-primary-content/50 hover:text-accent text-sm uppercase tracking-widest transition-colors"
+          )} />
         </div>
 
       </div>
@@ -161,7 +168,7 @@ function starsHtml(rating: number, large = false): string {
           {reviews.slice(1).map((r) => (
             <div class="bg-primary-content/10 border border-primary-content/15 rounded-xl p-7 space-y-4">
               <span class="text-primary-content/25">
-                <Fragment set:html={makeSvg(faQuoteLeft, "size-6")} />
+                <Fragment set:html={quoteLeftMd} />
               </span>
               <p class="text-primary-content/85 text-sm leading-relaxed italic">
                 "{r.text}"
@@ -171,11 +178,11 @@ function starsHtml(rating: number, large = false): string {
               </div>
               <div class="border-t border-primary-content/15 pt-3">
                 <p class="font-heading text-primary-content text-base uppercase tracking-wide leading-tight">{r.name}</p>
-                {r.source && (
-                  r.link
-                    ? <a href={r.link} target="_blank" rel="noopener noreferrer" class="text-primary-content/40 hover:text-accent text-xs uppercase tracking-widest mt-0.5 transition-colors">{r.source}</a>
-                    : <p class="text-primary-content/40 text-xs uppercase tracking-widest mt-0.5">{r.source}</p>
-                )}
+                <Fragment set:html={reviewerAttribution(
+                  r,
+                  "text-primary-content/40 text-xs uppercase tracking-widest mt-0.5",
+                  "text-primary-content/40 hover:text-accent text-xs uppercase tracking-widest mt-0.5 transition-colors"
+                )} />
               </div>
             </div>
           ))}

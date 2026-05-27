@@ -37,10 +37,6 @@
   --color-error: #B33A3A;
   --color-error-content: #FFFFFF;
 
-  /* Text colors */
-  --color-text-primary: #1F3D2B;   /* Headings */
-  --color-text-secondary: #4FAF4F; /* Subtle accents */
-  --color-text-neutral: #2A2A2A;   /* Body text */
 }
 
 /* -------------------------------------------------------
