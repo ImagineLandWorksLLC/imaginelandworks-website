@@ -5,6 +5,7 @@ layout: "@layouts/DefaultLayout.astro"
 ---
 
 import HomeHero from "@components/HomeHero.astro";
+import heroImg from "@assets/images/Excavator-X1-Transparent.webp";
 import Schema from "@components/Schema.astro";
 import ValueProps from "@components/ValueProps.astro";
 import ServicesOverview from "@components/ServicesOverview.astro";
@@ -81,13 +82,14 @@ export const faqSchema = {
 };
 
 <Fragment slot="head">
+  <link rel="preload" as="image" href={heroImg.src} fetchpriority="high" type="image/webp" />
   <Schema schema={localBusinessSchema} />
   <Schema schema={faqSchema} />
 </Fragment>
 
 <HomeHero
   title="Landworks Done Right"
-  description="Imagine Land Works delivers professional land clearing, excavation, site preparation, and more across Lakeland, Florida. Built on reliability, done with care."
+  description="Imagine Land Works delivers professional land clearing, excavation, site preparation, and more across Central Florida. Built on reliability, done with care."
   buttonText="Request an Estimate"
   buttonHref="/book"
   imageAlt="Imagine Land Works excavator on a job site"

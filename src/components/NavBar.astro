@@ -1,6 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { contact } from "@data/contact";
+import logoSrc from "@assets/images/original-brand-only.png";
 
 function iconSvg(icon: typeof faPhone, cls = "size-4") {
   const [w, h, , , path] = icon.icon;
@@ -14,7 +16,7 @@ function iconSvg(icon: typeof faPhone, cls = "size-4") {
   <!-- Logo -->
   <div class="navbar-start">
     <a href="/" class="btn btn-ghost flex items-center gap-2">
-       <img src="/images/original-brand-only.png" alt="Imagine Land Works logo" class="h-10" />
+       <Image src={logoSrc} alt="Imagine Land Works logo" class="h-10 w-auto" loading="eager" />
        <span class="font-body text-base leading-tight">land works</span>
     </a>
   </div>

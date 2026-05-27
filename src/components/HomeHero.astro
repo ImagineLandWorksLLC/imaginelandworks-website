@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import exImg from "@assets/images/Excavator-X1-Transparent.webp";
 
 interface Props {
@@ -27,9 +28,13 @@ const {
       <div
         class="flex-1 flex justify-center pt-10 lg:pt-0 px-6 lg:px-0 relative z-20 lg:z-auto"
       >
-        <img
-          src={exImg.src}
+        <Image
+          src={exImg}
           alt={imageAlt}
+          fetchpriority="high"
+          loading="eager"
+          widths={[480, 768, 1024, 1280]}
+          sizes="(max-width: 1024px) 100vw, 50vw"
           class="w-full max-w-sm lg:w-130 lg:max-w-none drop-shadow-2xl rounded-xl
                  lg:translate-x-6 lg:-translate-y-4"
         />
