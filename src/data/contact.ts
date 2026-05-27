@@ -53,8 +53,10 @@ export const contact = {
   },
   email: "seth@imaginelandworks.com",
   address: {
+    street: "3454 Airfield Dr W",
     city: "Lakeland",
     state: "FL",
+    zip: "33811",
     county: "Polk County",
   },
   hours,
