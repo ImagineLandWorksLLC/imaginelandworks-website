@@ -1,0 +1,134 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import Schema from "@components/Schema.astro";
+import ServiceArea from "@components/ServiceArea.astro";
+import ServicesOverview from "@components/ServicesOverview.astro";
+import Testimonials from "@components/Testimonials.astro";
+import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
+import ValueProps from "@components/ValueProps.astro";
+import { serviceCities } from "@data/serviceArea";
+import { services } from "@data/services";
+import { reviews } from "@data/reviews";
+import { contact } from "@data/contact";
+
+export function getStaticPaths() {
+  return serviceCities.map((city) => ({
+    params: { city: city.slug },
+    props: { city },
+  }));
+}
+
+const { city } = Astro.props;
+
+const seoTitle = `Land Clearing in ${city.name}, FL | Imagine Land Works, LLC`;
+const seoDescription = `Professional land clearing, excavation, and site preparation in ${city.name}, ${city.county ?? "FL"}. Imagine Land Works serves ${city.name} and all of Polk County. Licensed & insured. Free estimates.`;
+
+const pageUrl = `https://imaginelandworks.com/service-area/${city.slug}`;
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "LandscapingBusiness"],
+  name: "Imagine Land Works",
+  legalName: contact.legalName,
+  url: "https://imaginelandworks.com",
+  telephone: contact.phone.display,
+  email: contact.email,
+  image: "https://imaginelandworks.com/images/ImagineLandWorks.png",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: contact.address.street,
+    addressLocality: contact.address.city,
+    addressRegion: contact.address.state,
+    postalCode: contact.address.zip,
+    addressCountry: "US",
+  },
+  areaServed: [
+    { "@type": "City", name: city.name },
+    { "@type": "AdministrativeArea", name: city.county ?? "Polk County" },
+  ],
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://imaginelandworks.com" },
+    { "@type": "ListItem", position: 2, name: "Service Area", item: "https://imaginelandworks.com/service-area" },
+    { "@type": "ListItem", position: 3, name: city.name, item: pageUrl },
+  ],
+};
+---
+
+<DefaultLayout title={seoTitle} description={seoDescription}>
+  <Schema slot="head" schema={localBusinessSchema} />
+  <Schema slot="head" schema={breadcrumbSchema} />
+
+  <!-- Hero -->
+  <section class="bg-base-100 py-20">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-8">
+        <ol class="flex items-center gap-2 text-sm text-base-content/50">
+          <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
+          <li aria-hidden="true" class="select-none">/</li>
+          <li><a href="/service-area" class="hover:text-primary transition-colors">Service Area</a></li>
+          <li aria-hidden="true" class="select-none">/</li>
+          <li class="text-base-content/80" aria-current="page">{city.name}</li>
+        </ol>
+      </nav>
+
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-3">
+        {city.county ?? "Polk County"}, FL
+      </p>
+      <h1 class="text-primary font-heading leading-tight mb-6">
+        Land Clearing Services in {city.name}, FL
+      </h1>
+      <p class="text-base-content/70 text-lg leading-relaxed max-w-2xl mb-8">
+        {city.blurb}
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/book" class="btn btn-primary btn-lg">Request a Free Estimate</a>
+        <a href={`tel:${contact.phone.raw}`} class="btn btn-outline btn-lg">
+          Call {contact.phone.display}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <ServicesOverview services={services} />
+
+  <!-- Value props -->
+  <ValueProps items={[
+    { icon: "shield-halved", title: "Licensed & Insured" },
+    { icon: "gears",         title: "Professional Equipment" },
+    { icon: "bolt",          title: "Fast Turnaround" },
+    { icon: "house-chimney", title: "Locally Owned" },
+  ]} />
+
+  <!-- Reviews -->
+  <Testimonials
+    layout="featured"
+    reviews={reviews}
+    ctaLabel="Read More Reviews"
+    ctaHref={contact.social.find((s) => s.key === "google")?.href ?? ""}
+  />
+
+  <!-- Full service area -->
+  <ServiceArea
+    cities={serviceCities}
+    ctaLabel="See All Areas We Serve"
+    ctaHref="/service-area"
+  />
+
+  <!-- CTA -->
+  <FreeEstimateCTA
+    headline={`Get a Free Estimate in ${city.name}`}
+    subheadline="No Obligation. No Guesswork."
+    body={`Whether you need land cleared, a site prepped, or a structure demolished in ${city.name}, we'll give you a straight, honest estimate fast. Serving ${city.name} and all of ${city.county ?? "Polk County"}.`}
+    ctaLabel="Request a Free Estimate"
+    ctaHref="/book"
+    phone={contact.phone.display}
+    phoneLabel="Call Us Today"
+  />
+</DefaultLayout>
