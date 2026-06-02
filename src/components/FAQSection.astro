@@ -23,9 +23,9 @@ const { faqs } = Astro.props;
 
     <!-- Accordion -->
     <div class="max-w-2xl mx-auto flex flex-col gap-3">
-      {faqs.map((faq) => (
+      {faqs.map((faq, i) => (
         <div class="collapse collapse-plus bg-base-200 border border-base-300 rounded-xl">
-          <input type="checkbox" />
+          <input type="checkbox" name={`faq-${i}`} aria-label={faq.question} />
           <div class="collapse-title font-heading text-primary text-lg pr-10">
             {faq.question}
           </div>

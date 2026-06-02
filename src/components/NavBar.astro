@@ -40,7 +40,7 @@ const phoneSvg = iconFromDef(faPhone, "size-3.5");
     <div class="hidden lg:flex items-center gap-4">
       <a
         href={`tel:${contact.phone.raw}`}
-        class="flex items-center gap-2 text-sm font-medium opacity-60 hover:opacity-100 transition-opacity"
+        class="flex items-center gap-2 text-sm font-medium text-base-content/75 hover:text-base-content transition-colors"
       >
         <Fragment set:html={phoneSvg} />
         {contact.phone.display}
@@ -76,7 +76,7 @@ const phoneSvg = iconFromDef(faPhone, "size-3.5");
 
     <a
       href={`tel:${contact.phone.raw}`}
-      class="flex items-center gap-2 px-4 py-2 text-sm font-medium opacity-60 hover:opacity-100 transition-opacity"
+      class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-base-content/75 hover:text-base-content transition-colors"
     >
       <Fragment set:html={phoneSvg} />
       {contact.phone.display}

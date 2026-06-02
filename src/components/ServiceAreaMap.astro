@@ -102,13 +102,16 @@ const pins = cities
           background:${bg};
           border:2.5px solid #fff;
           box-shadow:0 1px 5px rgba(0,0,0,.35);
-        "></div>`,
+        " title="${pin.name}, FL"></div>`,
         iconSize: [size, size],
         iconAnchor: [size / 2, size / 2],
         className: "",
       });
 
-      const marker = L.marker([pin.lat, pin.lng], { icon }).addTo(map);
+      const marker = L.marker([pin.lat, pin.lng], {
+        icon,
+        alt: `${pin.name}, FL — view land clearing services`,
+      }).addTo(map);
       marker.bindPopup(
         `<div style="font-family:sans-serif;min-width:130px;">
           <strong style="color:#2a7a99;">${pin.name}</strong><br>

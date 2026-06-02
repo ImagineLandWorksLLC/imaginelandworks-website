@@ -34,6 +34,12 @@ const { title, description, image, canonical, noindex } = Astro.props;
     <slot name="head" />
   </head>
   <body>
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-9999 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:font-heading focus:text-sm"
+    >
+      Skip to main content
+    </a>
     <slot />
   </body>
 </html>
