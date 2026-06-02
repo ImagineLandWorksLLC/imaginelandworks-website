@@ -81,7 +81,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
         {city.county ? `${city.county}, FL` : "Florida"}
       </p>
       <h1 class="text-primary font-heading leading-tight mb-6">
-        Land Clearing Services in {city.name}, FL
+        Land Clearing Services in {city.county ? `${city.county}, FL` : "Florida"}
       </h1>
       <p class="text-base-content/70 text-lg leading-relaxed max-w-2xl mb-8">
         {city.blurb}
