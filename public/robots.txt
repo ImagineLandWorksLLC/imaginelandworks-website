@@ -5,9 +5,6 @@
 User-agent: *
 Allow: /
 
-# No indexing value — booking form is a third-party embed
-Disallow: /book
-
 # AI training crawlers — opt out
 User-agent: GPTBot
 Disallow: /
