@@ -1,10 +1,4 @@
-export type SocialKey =
-  | "facebook"
-  | "instagram"
-  | "tiktok"
-  | "youtube"
-  | "linkedin"
-  | "google";
+export type SocialKey = "facebook" | "instagram" | "tiktok" | "youtube" | "linkedin" | "google";
 
 export interface SocialLink {
   key: SocialKey;
