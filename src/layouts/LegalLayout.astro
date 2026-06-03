@@ -55,6 +55,42 @@ const hasToc = tocHeadings.length > 0;
   </button>
 
   <NavFooter />
+
+  <script is:inline>
+    // Back-to-top visibility
+    const btn = document.getElementById("back-to-top");
+
+    window.addEventListener("scroll", () => {
+      btn?.classList.toggle("visible", window.scrollY > 400);
+    }, { passive: true });
+
+    btn?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // TOC active section via IntersectionObserver
+    const tocLinks = document.querySelectorAll(".toc-link");
+    const sectionHeadings = document.querySelectorAll(".legal-content h2");
+
+    if (tocLinks.length && sectionHeadings.length) {
+      const observer = new IntersectionObserver(
+        entries => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              tocLinks.forEach(l => l.classList.remove("active"));
+              const link = document.querySelector(
+                `.toc-link[href="#${entry.target.id}"]`
+              );
+              link?.classList.add("active");
+            }
+          }
+        },
+        { rootMargin: "-5% 0px -80% 0px" }
+      );
+
+      sectionHeadings.forEach(h => observer.observe(h));
+    }
+  </script>
 </BaseLayout>
 
 <style>
@@ -300,39 +336,3 @@ const hasToc = tocHeadings.length > 0;
     }
   }
 </style>
-
-<script>
-  // Back-to-top visibility
-  const btn = document.getElementById("back-to-top");
-
-  window.addEventListener("scroll", () => {
-    btn?.classList.toggle("visible", window.scrollY > 400);
-  }, { passive: true });
-
-  btn?.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  // TOC active section via IntersectionObserver
-  const tocLinks = document.querySelectorAll<HTMLAnchorElement>(".toc-link");
-  const sectionHeadings = document.querySelectorAll<HTMLElement>(".legal-content h2");
-
-  if (tocLinks.length && sectionHeadings.length) {
-    const observer = new IntersectionObserver(
-      entries => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            tocLinks.forEach(l => l.classList.remove("active"));
-            const link = document.querySelector<HTMLAnchorElement>(
-              `.toc-link[href="#${entry.target.id}"]`
-            );
-            link?.classList.add("active");
-          }
-        }
-      },
-      { rootMargin: "-5% 0px -80% 0px" }
-    );
-
-    sectionHeadings.forEach(h => observer.observe(h));
-  }
-</script>

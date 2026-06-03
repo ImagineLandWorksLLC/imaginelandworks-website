@@ -13,7 +13,7 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<section class="bg-base-200 border-y border-base-300">
+<div class="bg-base-200 border-y border-base-300">
   <div class="container mx-auto px-6 py-6">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-base-300">
       {items.map((item) => (
@@ -28,4 +28,4 @@ const { items } = Astro.props;
       ))}
     </div>
   </div>
-</section>
+</div>
