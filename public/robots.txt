@@ -5,6 +5,7 @@
 User-agent: *
 Allow: /
 Disallow: /404
+Disallow: /500
 
 # AI training crawlers — opt out
 User-agent: GPTBot
