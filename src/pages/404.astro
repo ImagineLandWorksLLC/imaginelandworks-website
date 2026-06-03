@@ -1,0 +1,156 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import { contact } from "@data/contact";
+---
+
+<DefaultLayout
+  title="Page Not Found | Imagine Land Works"
+  description="The page you're looking for doesn't exist. Head back home or get a free estimate for land clearing and excavation in Lakeland, FL."
+  noindex={true}
+>
+  <section class="bg-base-100 relative overflow-hidden" style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center;">
+
+    <div class="container mx-auto px-6 text-center pt-20 pb-16 relative z-10">
+
+      <p class="font-heading text-accent text-8xl lg:text-[10rem] leading-none mb-2 drop-shadow-sm">404</p>
+
+      <h1 class="font-heading text-primary text-2xl lg:text-4xl uppercase mb-4 leading-snug">
+        Uh oh! This page got lost<br class="hidden sm:block" /> amongst all this rough.
+      </h1>
+
+      <p class="text-base-content/60 max-w-sm mx-auto mb-10 leading-relaxed">
+        We cleared acres of land, but we couldn't find this one.
+        Try heading back, or give us a call at{" "}
+        <a
+          href={`tel:+1${contact.phone.raw}`}
+          class="text-primary font-heading hover:text-accent transition-colors"
+        >{contact.phone.display}</a>.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="/" class="btn btn-primary btn-lg">Go Home</a>
+        <a href="/services" class="btn btn-outline btn-primary btn-lg">View Services</a>
+        <a href="/book" class="btn btn-secondary btn-lg">Get a Free Estimate</a>
+      </div>
+    </div>
+
+    <!-- Cartoon grass scene -->
+    <div class="w-full" aria-hidden="true">
+      <svg
+        viewBox="0 0 1440 320"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+        class="w-full block"
+        style="height: clamp(180px, 28vw, 340px);"
+      >
+        <!-- Sky-to-ground gradient background -->
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="oklch(97% 0.01 130)" />
+            <stop offset="100%" stop-color="oklch(88% 0.06 130)" />
+          </linearGradient>
+          <linearGradient id="dirtGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8B5E3C" />
+            <stop offset="100%" stop-color="#6B4226" />
+          </linearGradient>
+        </defs>
+
+        <!-- Ground fill -->
+        <rect x="0" y="240" width="1440" height="80" fill="url(#dirtGrad)" />
+
+        <!-- Rolling ground hill -->
+        <path d="M0,260 Q180,210 360,250 Q540,290 720,245 Q900,200 1080,255 Q1260,305 1440,252 L1440,320 L0,320 Z" fill="#5a7a2a" />
+        <path d="M0,270 Q200,230 400,265 Q600,300 800,260 Q1000,220 1200,268 Q1350,300 1440,265 L1440,320 L0,320 Z" fill="#4a6e1e" />
+
+        <!-- Back row of tall overgrown grass (short, dense) -->
+        <!-- blade clusters left -->
+        <g fill="#3d6b15">
+          <path d="M30,260 Q28,220 26,200 Q30,225 34,200 Q36,225 38,260 Z" />
+          <path d="M55,258 Q52,215 50,190 Q55,218 60,190 Q62,220 65,258 Z" />
+          <path d="M85,262 Q83,225 80,205 Q84,228 88,205 Q90,230 92,262 Z" />
+          <path d="M115,256 Q112,210 110,188 Q115,215 120,188 Q122,215 125,256 Z" />
+          <path d="M148,260 Q145,218 143,198 Q148,222 153,198 Q155,222 157,260 Z" />
+        </g>
+        <g fill="#5a8a22">
+          <path d="M40,260 Q38,230 36,212 Q40,232 44,212 Q46,232 48,260 Z" />
+          <path d="M70,258 Q68,222 66,200 Q70,224 74,200 Q76,224 78,258 Z" />
+          <path d="M100,262 Q98,228 96,210 Q100,230 104,210 Q106,230 108,262 Z" />
+          <path d="M130,256 Q128,216 126,196 Q130,220 134,196 Q136,220 138,256 Z" />
+          <path d="M162,260 Q160,224 158,204 Q162,226 166,204 Q168,226 170,260 Z" />
+        </g>
+
+        <!-- Tall wild grass blades — main overgrown cluster, left -->
+        <g fill="#2e5c0e">
+          <path d="M180,268 Q168,180 155,120 Q178,195 188,120 Q198,185 195,268 Z" />
+          <path d="M215,265 Q205,175 195,115 Q215,190 225,110 Q235,185 230,265 Z" />
+          <path d="M250,270 Q245,185 238,130 Q252,195 262,125 Q268,190 265,270 Z" />
+          <path d="M285,268 Q282,182 276,125 Q287,190 297,122 Q302,188 298,268 Z" />
+          <path d="M318,265 Q316,178 310,118 Q320,188 330,115 Q336,184 332,265 Z" />
+        </g>
+        <g fill="#4a7c1a">
+          <path d="M195,268 Q188,188 182,135 Q196,198 206,132 Q212,196 208,268 Z" />
+          <path d="M232,266 Q226,180 220,125 Q232,194 242,120 Q248,190 244,266 Z" />
+          <path d="M268,270 Q263,186 257,132 Q268,196 278,128 Q283,192 280,270 Z" />
+          <path d="M302,268 Q298,182 292,126 Q303,194 313,122 Q318,190 315,268 Z" />
+          <path d="M336,265 Q332,178 326,120 Q338,186 348,116 Q353,182 350,265 Z" />
+        </g>
+
+        <!-- Wild grass cluster — centre -->
+        <g fill="#2e5c0e">
+          <path d="M580,268 Q570,172 560,100 Q578,188 590,95 Q602,182 598,268 Z" />
+          <path d="M618,265 Q610,170 602,98 Q618,184 630,92 Q640,178 636,265 Z" />
+          <path d="M655,270 Q648,175 641,105 Q655,190 667,100 Q672,186 668,270 Z" />
+          <path d="M692,268 Q686,174 680,104 Q692,188 704,100 Q709,184 706,268 Z" />
+          <path d="M728,265 Q722,170 716,100 Q728,184 740,96 Q745,180 742,265 Z" />
+        </g>
+        <g fill="#4a7c1a">
+          <path d="M598,268 Q590,174 583,105 Q596,190 608,100 Q614,186 610,268 Z" />
+          <path d="M636,265 Q629,172 622,102 Q635,186 647,98 Q652,182 649,265 Z" />
+          <path d="M673,270 Q667,176 660,108 Q672,192 684,103 Q689,188 685,270 Z" />
+          <path d="M710,268 Q704,174 698,106 Q710,190 722,102 Q727,186 724,268 Z" />
+          <path d="M746,265 Q740,170 734,102 Q746,186 758,98 Q763,182 760,265 Z" />
+        </g>
+
+        <!-- Wild grass cluster — right -->
+        <g fill="#2e5c0e">
+          <path d="M1100,268 Q1090,175 1080,108 Q1098,192 1110,102 Q1122,186 1118,268 Z" />
+          <path d="M1138,265 Q1130,172 1122,102 Q1138,186 1150,96 Q1160,180 1156,265 Z" />
+          <path d="M1175,270 Q1168,178 1161,110 Q1174,194 1186,104 Q1191,188 1187,270 Z" />
+          <path d="M1212,268 Q1206,175 1200,108 Q1212,192 1224,104 Q1229,188 1226,268 Z" />
+          <path d="M1248,265 Q1242,172 1236,104 Q1248,188 1260,100 Q1265,184 1262,265 Z" />
+        </g>
+        <g fill="#4a7c1a">
+          <path d="M1118,268 Q1110,176 1103,108 Q1116,192 1128,103 Q1133,188 1130,268 Z" />
+          <path d="M1156,265 Q1149,173 1142,104 Q1155,188 1167,100 Q1172,184 1169,265 Z" />
+          <path d="M1193,270 Q1187,178 1180,110 Q1192,194 1204,105 Q1209,190 1206,270 Z" />
+          <path d="M1230,268 Q1224,175 1218,108 Q1230,192 1242,104 Q1247,188 1244,268 Z" />
+          <path d="M1266,265 Q1260,173 1254,105 Q1266,189 1278,101 Q1283,185 1280,265 Z" />
+        </g>
+
+        <!-- Shorter fill-in grass scattered across front -->
+        <g fill="#3d6b15" opacity="0.9">
+          <path d="M420,268 Q415,240 410,220 Q418,242 426,220 Q430,242 432,268 Z" />
+          <path d="M460,266 Q456,238 452,218 Q459,240 466,218 Q469,240 471,266 Z" />
+          <path d="M500,270 Q496,242 492,222 Q499,244 506,222 Q509,244 511,270 Z" />
+          <path d="M540,268 Q536,238 532,218 Q539,240 546,218 Q549,240 551,268 Z" />
+          <path d="M820,268 Q816,240 812,220 Q819,242 826,220 Q829,242 831,268 Z" />
+          <path d="M860,266 Q856,238 852,218 Q859,240 866,218 Q869,240 871,266 Z" />
+          <path d="M900,270 Q896,242 892,222 Q899,244 906,222 Q909,244 911,270 Z" />
+          <path d="M940,268 Q936,238 932,218 Q939,240 946,218 Q949,240 951,268 Z" />
+          <path d="M980,266 Q976,238 972,218 Q979,240 986,218 Q989,240 991,266 Z" />
+          <path d="M1020,268 Q1016,240 1012,220 Q1019,242 1026,220 Q1029,242 1031,268 Z" />
+          <path d="M1060,270 Q1056,242 1052,222 Q1059,244 1066,222 Q1069,244 1071,270 Z" />
+          <path d="M1300,268 Q1296,238 1292,218 Q1299,240 1306,218 Q1309,240 1311,268 Z" />
+          <path d="M1340,266 Q1336,238 1332,218 Q1339,240 1346,218 Q1349,240 1351,266 Z" />
+          <path d="M1380,270 Q1376,242 1372,222 Q1379,244 1386,222 Q1389,244 1391,270 Z" />
+          <path d="M1420,268 Q1416,238 1412,218 Q1419,240 1426,218 Q1429,240 1431,268 Z" />
+        </g>
+
+        <!-- Foreground dark ground strip -->
+        <path d="M0,285 Q360,278 720,282 Q1080,286 1440,280 L1440,320 L0,320 Z" fill="#3d5c12" />
+        <path d="M0,295 Q360,290 720,293 Q1080,296 1440,291 L1440,320 L0,320 Z" fill="#2e4a0a" />
+      </svg>
+    </div>
+
+  </section>
+</DefaultLayout>

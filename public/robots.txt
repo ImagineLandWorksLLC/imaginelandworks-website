@@ -4,6 +4,7 @@
 # Allow all crawlers full access
 User-agent: *
 Allow: /
+Disallow: /404
 
 # AI training crawlers — opt out
 User-agent: GPTBot
