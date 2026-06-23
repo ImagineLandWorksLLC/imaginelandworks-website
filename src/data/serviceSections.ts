@@ -527,4 +527,59 @@ export const serviceSections: ServiceSectionData[] = [
       },
     ],
   },
+  {
+    anchor: "lawn-care",
+    eyebrow: "Healthy Lawns, Happy Properties",
+    title: "Lawn Care",
+    description:
+      "From weekly mowing to full sod installation, Imagine Land Works keeps your lawn looking its best year-round. Our team handles every aspect of lawn maintenance so you don't have to.",
+    shortDescription: "Professional mowing, watering, and sodding for residential and commercial lawns.",
+    capabilities: [
+      "Mowing and edge trimming to consistent height",
+      "Irrigation and watering system setup",
+      "Sod installation and grading",
+      "Lawn debris cleanup and haul-away",
+      "Seasonal lawn care planning",
+    ],
+    cta: "Get a Lawn Care Quote",
+    imagePlaceholder: "Insert lawn care service image here",
+    seoTitle: "Lawn Care in Lakeland, FL | Imagine Land Works, LLC",
+    seoDescription:
+      "Professional lawn mowing, watering setup, and sod installation in Lakeland, FL and surrounding areas. Call Imagine Land Works for a free estimate.",
+    processSteps: [
+      {
+        title: "Property Assessment",
+        description:
+          "We walk the property to evaluate lawn size, condition, soil, and your specific maintenance goals.",
+      },
+      {
+        title: "Lawn Service",
+        description:
+          "Our team executes mowing, watering setup, or sod work with professional-grade equipment.",
+      },
+      {
+        title: "Final Inspection",
+        description:
+          "We inspect finished work with you and provide guidance on keeping your lawn healthy between visits.",
+      },
+    ],
+    relatedServices: ["mulching", "land-clearing", "site-preparation"],
+    faqs: [
+      {
+        question: "How often should my lawn be mowed?",
+        answer:
+          "Most Florida lawns benefit from mowing every 1–2 weeks during the growing season (spring through fall) and every 3–4 weeks in winter. We'll recommend a schedule based on your grass type and conditions.",
+      },
+      {
+        question: "Do you install sod for new or existing lawns?",
+        answer:
+          "Both. We handle full sod installations for bare ground after clearing or grading, as well as patch installs to fill in dead or damaged areas of an existing lawn.",
+      },
+      {
+        question: "What areas do you serve for lawn care?",
+        answer:
+          "We serve Lakeland and the surrounding Central Florida area. Contact us to confirm availability in your specific location.",
+      },
+    ],
+  },
 ];

@@ -66,4 +66,11 @@ export const services: Service[] = [
     icon: "tractor",
     anchor: "bush-hogging",
   },
+  {
+    title: "Lawn Care",
+    description:
+      "Professional lawn mowing, watering system setup, and sod installation for residential and commercial properties.",
+    icon: "leaf",
+    anchor: "lawn-care",
+  },
 ];
