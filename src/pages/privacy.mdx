@@ -5,10 +5,12 @@ layout: "@layouts/LegalLayout.astro"
 noindex: true
 ---
 
+import { legalContact } from "@data/legal";
+
 # Privacy Policy
 
-**Imagine Land Works**
-Lakeland, Florida
+**{legalContact.name}**
+{legalContact.location}
 
 **Effective Date:** May 12, 2026
 
@@ -161,9 +163,9 @@ We may update this Privacy Policy from time to time to reflect changes in our pr
 
 If you have any questions about this Privacy Policy or how your information is handled, please contact us:
 
-**Imagine Land Works**
-Lakeland, Florida
-Email: [contact@imaginelandworks.com](mailto:contact@imaginelandworks.com)
+**{legalContact.name}**
+{legalContact.location}
+Email: <a href={`mailto:${legalContact.email}`}>{legalContact.email}</a>
 
 ---
 

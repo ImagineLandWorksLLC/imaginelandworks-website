@@ -5,10 +5,12 @@ layout: "@layouts/LegalLayout.astro"
 noindex: true
 ---
 
+import { legalContact } from "@data/legal";
+
 # Terms of Service
 
-**Imagine Land Works, LLC**  
-Lakeland, Florida
+**{legalContact.legalName}**  
+{legalContact.location}
 
 ---
 
@@ -164,10 +166,10 @@ Changes will be posted on this page with an updated effective date. Continued us
 
 If you have any questions about these Terms of Service, please contact us:
 
-**Imagine Land Works**  
-Lakeland, Florida  
-Email: [contact@imaginelandworks.com](mailto:contact@imaginelandworks.com)  
-Phone: [(863) 712-4867](tel:+18637124867)
+**{legalContact.name}**  
+{legalContact.location}  
+Email: <a href={`mailto:${legalContact.email}`}>{legalContact.email}</a>  
+Phone: <a href={`tel:${legalContact.phone.e164}`}>{legalContact.phone.display}</a>
 
 ---
 
