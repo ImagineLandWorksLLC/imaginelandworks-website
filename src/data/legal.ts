@@ -4,7 +4,7 @@ export const legalContact = {
   location: "Lakeland, Florida",
   email: "seth@imaginelandworks.com",
   phone: {
-    display: "(863) 712-4867",
-    e164: "+18637124867",
+    display: "(813) 690-9943",
+    e164: "+18136909943",
   },
 };
