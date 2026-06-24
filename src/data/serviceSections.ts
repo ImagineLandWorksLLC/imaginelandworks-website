@@ -160,7 +160,7 @@ export const serviceSections: ServiceSectionData[] = [
       "Concrete slab and foundation removal",
       "Block wall and masonry demolition",
       "Complete debris hauling and site cleanout",
-      "Coordinated utility disconnect verification before work begins",
+      "Pre-demolition confirmation that all utilities are disconnected by service providers",
       "Safety fencing and equipment staging for protected worksites",
     ],
     cta: "Schedule a Demolition Consultation",
@@ -175,7 +175,7 @@ export const serviceSections: ServiceSectionData[] = [
       {
         title: "Utility Verification",
         description:
-          "Before we touch anything, we confirm all utilities are disconnected and coordinate with your local providers to keep the job safe.",
+          "Before we touch anything, we confirm that electric, gas, water, and sewer have been properly disconnected by the appropriate service providers.",
       },
       {
         title: "Controlled Teardown",
@@ -286,10 +286,10 @@ export const serviceSections: ServiceSectionData[] = [
     description:
       "Precise excavation is the foundation of every successful construction project. Imagine Land Works operates professional-grade excavation equipment to dig exactly where you need it, whether that's utility trenches, structural foundations, retention ponds, or drainage channels. We work efficiently and accurately to keep your project on schedule.",
     capabilities: [
-      "Trenching for utilities, water, sewer, electrical, and fiber",
+      "Trench digging to spec for water, sewer, electrical, and fiber runs",
       "Deep digging for residential and commercial foundations",
       "Retention pond and drainage ditch excavation",
-      "Utility staging and underground infrastructure prep",
+      "Underground access excavation for utility contractor installation",
       "Grading cuts and slope work for drainage compliance",
       "Tight-access excavation with compact equipment available",
     ],
@@ -322,7 +322,7 @@ export const serviceSections: ServiceSectionData[] = [
       {
         question: "What types of excavation projects do you handle?",
         answer:
-          "We handle foundation digging, utility trenching (water, sewer, electric, fiber), retention pond excavation, drainage channel work, and grading cuts for residential and commercial projects of all sizes.",
+          "We handle foundation digging, trench excavation for utility contractors (water, sewer, electric, fiber), retention pond excavation, drainage channel work, and grading cuts for residential and commercial projects of all sizes.",
       },
       {
         question: "Do you call 811 before digging?",
