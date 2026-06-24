@@ -8,19 +8,11 @@ export interface Service {
 
 export const services: Service[] = [
   {
-    title: "Excavation",
+    title: "Lawn Care",
     description:
-      "Precision digging for foundations, utilities, ponds, and drainage systems using professional-grade equipment.",
-    icon: "digging",
-    anchor: "excavation",
-    featured: true,
-  },
-  {
-    title: "Mulching",
-    description:
-      "Professional mulching services to suppress weeds, retain moisture, and enhance the health and appearance of your landscape.",
+      "Professional lawn mowing, watering system setup, and sod installation for residential and commercial properties.",
     icon: "leaf",
-    anchor: "mulching",
+    anchor: "lawn-care",
   },
   {
     title: "Tree Work",
@@ -30,11 +22,19 @@ export const services: Service[] = [
     anchor: "tree-work",
   },
   {
-    title: "Pond Cleaning",
+    title: "Demolition",
     description:
-      "Complete pond cleaning and maintenance, with debris removal, sediment clearing, and shoreline cleanup to restore your water feature.",
-    icon: "water",
-    anchor: "pond-cleaning",
+      "Safe and efficient demolition of structures, concrete slabs, and outbuildings, followed by full debris removal.",
+    icon: "hammer",
+    anchor: "demolition",
+  },
+  {
+    title: "Excavation",
+    description:
+      "Precision digging for foundations, utilities, ponds, and drainage systems using professional-grade equipment.",
+    icon: "digging",
+    anchor: "excavation",
+    featured: true,
   },
   {
     title: "Land Clearing",
@@ -45,6 +45,13 @@ export const services: Service[] = [
     featured: true,
   },
   {
+    title: "Mulching",
+    description:
+      "Professional mulching services to suppress weeds, retain moisture, and enhance the health and appearance of your landscape.",
+    icon: "leaf",
+    anchor: "mulching",
+  },
+  {
     title: "Site Preparation",
     description:
       "Complete groundwork services, including grading, compacting, and leveling, so your site is build-ready from day one.",
@@ -53,11 +60,11 @@ export const services: Service[] = [
     featured: true,
   },
   {
-    title: "Demolition",
+    title: "Pond Cleaning",
     description:
-      "Safe and efficient demolition of structures, concrete slabs, and outbuildings, followed by full debris removal.",
-    icon: "hammer",
-    anchor: "demolition",
+      "Complete pond cleaning and maintenance, with debris removal, sediment clearing, and shoreline cleanup to restore your water feature.",
+    icon: "water",
+    anchor: "pond-cleaning",
   },
   {
     title: "Bush Hogging",
@@ -65,12 +72,5 @@ export const services: Service[] = [
       "Heavy-duty brush mowing for overgrown fields, fence lines, and right-of-ways, with fast results on even the toughest terrain.",
     icon: "tractor",
     anchor: "bush-hogging",
-  },
-  {
-    title: "Lawn Care",
-    description:
-      "Professional lawn mowing, watering system setup, and sod installation for residential and commercial properties.",
-    icon: "leaf",
-    anchor: "lawn-care",
   },
 ];
