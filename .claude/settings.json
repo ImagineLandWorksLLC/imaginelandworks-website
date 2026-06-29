@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(git add *)",
-      "Bash(git commit -m 'feat: add service area pages, city landing pages, contact map, and footer nav link *)"
+      "Bash(git commit -m 'feat: add service area pages, city landing pages, contact map, and footer nav link *)",
+      "Bash(read dir *)",
+      "Bash(touch __TRACKED_VAR__/.gitkeep)"
     ]
   }
 }

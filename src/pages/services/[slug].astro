@@ -4,6 +4,7 @@ import ServiceHero from "@components/services/ServiceHero.astro";
 import Breadcrumb from "@components/services/Breadcrumb.astro";
 import ServiceProcess from "@components/services/ServiceProcess.astro";
 import BeforeAfterGrid from "@components/services/BeforeAfterGrid.astro";
+import PhotoGallery from "@components/services/PhotoGallery.astro";
 import RelatedServices from "@components/services/RelatedServices.astro";
 import ValueProps from "@components/ValueProps.astro";
 import Testimonials from "@components/Testimonials.astro";
@@ -112,7 +113,11 @@ const breadcrumbSchema = buildBreadcrumbSchema([
 
   <ServiceProcess steps={service.processSteps} />
 
-  <BeforeAfterGrid serviceName={service.title} />
+  <PhotoGallery photos={service.galleryPhotos} serviceName={service.title} />
+
+  {service.beforeAfterPhotos && (
+    <BeforeAfterGrid photos={service.beforeAfterPhotos} serviceName={service.title} />
+  )}
 
   <ValueProps items={defaultValueProps} />
 
