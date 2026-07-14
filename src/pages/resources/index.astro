@@ -1,0 +1,69 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import Breadcrumb from "@components/services/Breadcrumb.astro";
+import Schema from "@components/Schema.astro";
+import { resources } from "@data/resources";
+import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
+
+const seoTitle = "Land Clearing & Site Prep Resources | Imagine Land Works";
+const seoDescription =
+  "Guides on land clearing costs, permits, and site preparation for property owners in Lakeland and Polk County, FL.";
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: "Home",      item: SITE_URL },
+  { name: "Resources", item: `${SITE_URL}/resources` },
+]);
+---
+
+<DefaultLayout title={seoTitle} description={seoDescription}>
+  <Schema slot="head" schema={breadcrumbSchema} />
+
+  <section class="bg-base-100 py-16">
+    <div class="container mx-auto px-6 text-center max-w-4xl">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        Guides &amp; Resources
+      </p>
+      <h1 class="text-primary font-heading leading-tight">
+        Land Clearing &amp; Site Prep Resources
+      </h1>
+      <p class="text-base-content/70 text-lg leading-relaxed max-w-2xl mx-auto mt-4">
+        Straight answers on cost, permits, and what to know before prepping land in Central Florida.
+      </p>
+    </div>
+  </section>
+
+  <Breadcrumb
+    items={[
+      { label: "Home", href: "/" },
+      { label: "Resources" },
+    ]}
+  />
+
+  <section class="bg-base-200 py-20">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {resources.map((resource) => (
+          <a
+            href={`/resources/${resource.slug}`}
+            class="card bg-base-100 shadow-md rounded-xl hover:shadow-xl transition-shadow duration-200 group no-underline"
+          >
+            <div class="card-body gap-3 p-7">
+              <p class="text-secondary font-heading text-xs uppercase tracking-widest">
+                {resource.eyebrow}
+              </p>
+              <h2 class="card-title font-heading text-primary text-xl leading-tight group-hover:underline">
+                {resource.title}
+              </h2>
+              <p class="text-base-content/65 text-sm leading-relaxed grow">
+                {resource.shortDescription}
+              </p>
+              <span class="text-primary text-sm font-medium mt-2">
+                Read more &rarr;
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</DefaultLayout>

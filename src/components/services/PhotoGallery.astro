@@ -9,6 +9,8 @@ interface Props {
   serviceName: string;
   eyebrow?: string;
   heading?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
 }
 
 const {
@@ -16,6 +18,8 @@ const {
   serviceName,
   eyebrow = "Our Work",
   heading = "Photos from the Field",
+  ctaLabel,
+  ctaHref,
 } = Astro.props;
 
 const PLACEHOLDER_COUNT = 6;
@@ -70,6 +74,12 @@ const hasPhotos = photos && photos.length > 0;
         ))
       )}
     </div>
+
+    {ctaLabel && ctaHref && (
+      <div class="text-center mt-12">
+        <a href={ctaHref} class="btn btn-outline btn-primary btn-lg">{ctaLabel}</a>
+      </div>
+    )}
 
   </div>
 </section>

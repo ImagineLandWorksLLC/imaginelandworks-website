@@ -17,7 +17,8 @@ import { reviews } from "@data/reviews";
 import { serviceCities } from "@data/serviceArea";
 import { contact, getSocialHref } from "@data/contact";
 import { defaultValueProps } from "@data/valueProps";
-import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
+import { buildBreadcrumbSchema, buildAggregateRating, buildReviewSchema, SITE_URL } from "@utils/schema";
+import PricingRange from "@components/services/PricingRange.astro";
 
 export function getStaticPaths() {
   return serviceSections.map((service) => ({
@@ -65,6 +66,10 @@ const serviceSchema = {
     "@type": "City",
     name: city.name,
   })),
+  ...(reviews.length > 0 && {
+    aggregateRating: buildAggregateRating(reviews),
+    review: buildReviewSchema(reviews),
+  }),
 };
 
 const breadcrumbSchema = buildBreadcrumbSchema([
@@ -111,9 +116,18 @@ const breadcrumbSchema = buildBreadcrumbSchema([
     </div>
   </section>
 
+  {service.pricing && (
+    <PricingRange {...service.pricing} serviceName={service.title} />
+  )}
+
   <ServiceProcess steps={service.processSteps} />
 
-  <PhotoGallery photos={service.galleryPhotos} serviceName={service.title} />
+  <PhotoGallery
+    photos={service.galleryPhotos}
+    serviceName={service.title}
+    ctaLabel="View Full Gallery"
+    ctaHref="/gallery"
+  />
 
   {service.beforeAfterPhotos && (
     <BeforeAfterGrid photos={service.beforeAfterPhotos} serviceName={service.title} />

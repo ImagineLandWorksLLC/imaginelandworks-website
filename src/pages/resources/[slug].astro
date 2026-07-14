@@ -1,0 +1,119 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import Breadcrumb from "@components/services/Breadcrumb.astro";
+import RelatedServices from "@components/services/RelatedServices.astro";
+import FAQSection from "@components/FAQSection.astro";
+import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
+import Schema from "@components/Schema.astro";
+import { resources } from "@data/resources";
+import { serviceSections } from "@data/serviceSections";
+import { contact } from "@data/contact";
+import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
+
+export function getStaticPaths() {
+  return resources.map((resource) => ({
+    params: { slug: resource.slug },
+    props: { resource },
+  }));
+}
+
+const { resource } = Astro.props;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: resource.title,
+  description: resource.seoDescription,
+  author: { "@type": "Organization", name: "Imagine Land Works" },
+  publisher: {
+    "@type": "Organization",
+    name: "Imagine Land Works",
+    logo: { "@type": "ImageObject", url: `${SITE_URL}/images/ImagineLandWorks.png` },
+  },
+  datePublished: resource.publishDate,
+  dateModified: resource.updatedDate ?? resource.publishDate,
+  mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/resources/${resource.slug}` },
+};
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: "Home",      item: SITE_URL },
+  { name: "Resources", item: `${SITE_URL}/resources` },
+  { name: resource.title, item: `${SITE_URL}/resources/${resource.slug}` },
+]);
+
+const faqSchema = resource.faqs && resource.faqs.length > 0
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: resource.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    }
+  : null;
+---
+
+<DefaultLayout title={resource.seoTitle} description={resource.seoDescription}>
+  <Schema slot="head" schema={articleSchema} />
+  <Schema slot="head" schema={breadcrumbSchema} />
+  {faqSchema && <Schema slot="head" schema={faqSchema} />}
+
+  <section class="bg-base-100 py-16">
+    <div class="container mx-auto px-6 max-w-3xl">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        {resource.eyebrow}
+      </p>
+      <h1 class="text-primary font-heading leading-tight">
+        {resource.title}
+      </h1>
+    </div>
+  </section>
+
+  <Breadcrumb
+    items={[
+      { label: "Home", href: "/" },
+      { label: "Resources", href: "/resources" },
+      { label: resource.title },
+    ]}
+  />
+
+  <section class="bg-base-100 py-20">
+    <div class="container mx-auto px-6 max-w-3xl space-y-8">
+      {resource.body.map((section) => (
+        <div class="space-y-4">
+          {section.heading && (
+            <h2 class="text-primary font-heading text-2xl">{section.heading}</h2>
+          )}
+          {section.paragraphs.map((p) => (
+            <p class="text-base-content/80 text-lg leading-relaxed">{p}</p>
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {resource.faqs && resource.faqs.length > 0 && (
+    <FAQSection faqs={resource.faqs} />
+  )}
+
+  {resource.relatedServiceSlugs && (
+    <RelatedServices
+      relatedSlugs={resource.relatedServiceSlugs}
+      allServices={serviceSections}
+    />
+  )}
+
+  <FreeEstimateCTA
+    headline="Get a Free Estimate for Your Property"
+    subheadline="No Obligation. No Guesswork."
+    body="Ready to find out what your land actually needs? We'll assess your property and give you a straight, honest estimate, fast."
+    ctaLabel="Request a Free Estimate"
+    ctaHref="/book"
+    phone={contact.phone.display}
+    phoneLabel="Call Us Today"
+  />
+</DefaultLayout>

@@ -1,0 +1,27 @@
+---
+interface Props {
+  low: number;
+  high: number;
+  unit: string;
+  note: string;
+  serviceName: string;
+}
+
+const { low, high, unit, note, serviceName } = Astro.props;
+
+const format = (n: number) => `$${n.toLocaleString("en-US")}`;
+---
+
+<section class="bg-base-200 py-20">
+  <div class="container mx-auto px-6 max-w-3xl text-center">
+    <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+      Estimated Pricing
+    </p>
+    <h2 class="text-primary font-heading mb-6">What {serviceName} Typically Costs</h2>
+    <p class="font-heading text-4xl md:text-5xl text-primary mb-2">
+      {format(low)}&ndash;{format(high)}{" "}
+      <span class="text-lg text-base-content/50 font-body">{unit}</span>
+    </p>
+    <p class="text-base-content/60 text-sm max-w-xl mx-auto mt-4">{note}</p>
+  </div>
+</section>

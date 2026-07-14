@@ -1,0 +1,147 @@
+---
+import type { GalleryItem } from "@data/gallery";
+
+interface Props {
+  items: GalleryItem[];
+}
+
+const { items } = Astro.props;
+
+const isViewable = (item: GalleryItem) =>
+  item.kind === "photo" ? !!item.photo.src : !!(item.before.src && item.after.src);
+
+let viewableCounter = 0;
+const tiles = items.map((item) => {
+  const viewable = isViewable(item);
+  const viewableIndex = viewable ? viewableCounter++ : null;
+  return { item, viewableIndex };
+});
+
+const viewableItems = items.filter(isViewable);
+
+const placeholderIcon = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-12 text-base-content/20" aria-hidden="true">
+    <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+  </svg>
+`;
+---
+
+<section class="bg-base-100 py-20">
+  <div class="container mx-auto px-6">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      {tiles.map(({ item, viewableIndex }) => (
+        item.kind === "photo" ? (
+          viewableIndex !== null ? (
+            <button
+              type="button"
+              class="overflow-hidden rounded-2xl cursor-zoom-in group relative"
+              data-lightbox-index={viewableIndex}
+            >
+              <img
+                src={item.photo.src}
+                alt={item.photo.alt}
+                class="w-full aspect-4/3 object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </button>
+          ) : (
+            <div class="overflow-hidden rounded-2xl">
+              <div class="w-full aspect-4/3 bg-base-200 border-2 border-dashed border-base-content/10 flex flex-col items-center justify-center gap-3">
+                <Fragment set:html={placeholderIcon} />
+                <p class="font-heading text-sm uppercase tracking-wider text-base-content/30">
+                  {item.caption ?? "Gallery Photo"}
+                </p>
+                <p class="text-xs text-base-content/25">Coming soon</p>
+              </div>
+            </div>
+          )
+        ) : (
+          <div class="overflow-hidden rounded-2xl sm:col-span-2 lg:col-span-1">
+            {viewableIndex !== null ? (
+              <button
+                type="button"
+                class="grid grid-cols-2 gap-1 w-full cursor-zoom-in group"
+                data-lightbox-index={viewableIndex}
+              >
+                <span class="relative block">
+                  <img
+                    src={item.before.src}
+                    alt={item.before.alt}
+                    class="w-full h-full aspect-4/3 object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-base-content/80 text-base-100">
+                    Before
+                  </span>
+                </span>
+                <span class="relative block">
+                  <img
+                    src={item.after.src}
+                    alt={item.after.alt}
+                    class="w-full h-full aspect-4/3 object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-primary text-primary-content">
+                    After
+                  </span>
+                </span>
+              </button>
+            ) : (
+              <div class="grid grid-cols-2 gap-1 w-full">
+                {(["Before", "After"] as const).map((label) => (
+                  <div class="relative w-full aspect-4/3 bg-base-200 border-2 border-dashed border-base-content/10 flex flex-col items-center justify-center gap-2">
+                    <Fragment set:html={placeholderIcon} />
+                    <p class="font-heading text-xs uppercase tracking-wider text-base-content/30">{label}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {item.caption && (
+              <p class="text-center text-xs uppercase tracking-wider text-base-content/40 mt-2">
+                {item.caption}
+              </p>
+            )}
+          </div>
+        )
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<script define:vars={{ viewableItems }}>
+  const dialog = document.getElementById("gallery-lightbox");
+  const stage = document.getElementById("lightbox-stage");
+  const caption = document.getElementById("lightbox-caption");
+  let current = 0;
+
+  function render(i) {
+    if (viewableItems.length === 0) return;
+    current = ((i % viewableItems.length) + viewableItems.length) % viewableItems.length;
+    const item = viewableItems[current];
+
+    stage.innerHTML =
+      item.kind === "before-after"
+        ? `<img src="${item.before.src}" alt="${item.before.alt}" class="max-h-[65vh] rounded-lg object-contain" />
+           <img src="${item.after.src}" alt="${item.after.alt}" class="max-h-[65vh] rounded-lg object-contain" />`
+        : `<img src="${item.photo.src}" alt="${item.photo.alt}" class="max-h-[65vh] rounded-lg object-contain mx-auto" />`;
+
+    caption.textContent = item.caption ?? "";
+  }
+
+  document.querySelectorAll("[data-lightbox-index]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      render(Number(btn.dataset.lightboxIndex));
+      dialog?.showModal();
+    });
+  });
+
+  document.getElementById("lightbox-prev")?.addEventListener("click", () => render(current - 1));
+  document.getElementById("lightbox-next")?.addEventListener("click", () => render(current + 1));
+
+  dialog?.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") render(current - 1);
+    if (e.key === "ArrowRight") render(current + 1);
+  });
+</script>

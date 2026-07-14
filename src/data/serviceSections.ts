@@ -10,6 +10,13 @@ export interface BeforeAfterPhoto extends ServicePhoto {
   label: "Before" | "After";
 }
 
+export interface PricingInfo {
+  low: number;
+  high: number;
+  unit: string;
+  note: string;
+}
+
 export interface ServiceSectionData {
   anchor: string;
   eyebrow: string;
@@ -30,6 +37,8 @@ export interface ServiceSectionData {
   galleryPhotos?: ServicePhoto[];
   /** Exactly 4 photos (2 before + 2 after) for the BeforeAfterGrid section. */
   beforeAfterPhotos?: [BeforeAfterPhoto, BeforeAfterPhoto, BeforeAfterPhoto, BeforeAfterPhoto];
+  /** Sample pricing range shown via PricingRange.astro. */
+  pricing?: PricingInfo;
 }
 
 export const serviceSections: ServiceSectionData[] = [
@@ -127,6 +136,13 @@ export const serviceSections: ServiceSectionData[] = [
       },
     ],
     relatedServices: ["site-preparation", "excavation", "demolition"],
+    // TODO(client): confirm real pricing — sample range only, not verified against current job costs
+    pricing: {
+      low: 1500,
+      high: 4000,
+      unit: "per acre",
+      note: "Sample pricing based on typical Central Florida land clearing scope. Every property is different — contact us for an exact quote.",
+    },
     faqs: [
       {
         question: "How much does land clearing cost in Lakeland, FL?",
@@ -257,6 +273,13 @@ export const serviceSections: ServiceSectionData[] = [
       },
     ],
     relatedServices: ["land-clearing", "site-preparation", "excavation"],
+    // TODO(client): confirm real pricing — sample range only, not verified against current job costs
+    pricing: {
+      low: 6000,
+      high: 18000,
+      unit: "per structure",
+      note: "Sample pricing based on typical Central Florida demolition scope. Every property is different — contact us for an exact quote.",
+    },
     faqs: [
       {
         question: "Do I need a permit for demolition in Lakeland, FL?",
@@ -386,6 +409,13 @@ export const serviceSections: ServiceSectionData[] = [
       },
     ],
     relatedServices: ["site-preparation", "land-clearing", "pond-cleaning"],
+    // TODO(client): confirm real pricing — sample range only, not verified against current job costs
+    pricing: {
+      low: 3000,
+      high: 12000,
+      unit: "per project",
+      note: "Sample pricing based on typical Central Florida excavation scope. Every property is different — contact us for an exact quote.",
+    },
     faqs: [
       {
         question: "What types of excavation projects do you handle?",
