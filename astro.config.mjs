@@ -9,6 +9,9 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
    site: 'https://imaginelandworks.com',
+   server: {
+      port: 3030,
+   },
    integrations: [mdx(), sitemap()],
    vite: {
       resolve: {
