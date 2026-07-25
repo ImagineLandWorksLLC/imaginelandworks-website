@@ -15,6 +15,8 @@ export interface PageFrontmatter {
 type Props = PageFrontmatter;
 
 const SITE_NAME = "Imagine Land Works";
+const DEFAULT_DESCRIPTION =
+  "Imagine Land Works provides land clearing, excavation, and site preparation services in Lakeland, FL and throughout Polk County. Licensed & insured. Free estimates.";
 
 const ogDefault = await getImage({
   src: ogDefaultSrc,
@@ -35,6 +37,7 @@ const {
 const resolvedTitle = title
   ? (title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`)
   : SITE_NAME;
+const resolvedDescription = description || DEFAULT_DESCRIPTION;
 const resolvedImage = image
   ? new URL(image, Astro.site).href
   : DEFAULT_OG_IMAGE;
@@ -42,7 +45,7 @@ const resolvedImage = image
 
 <title>{resolvedTitle}</title>
 
-{description && <meta name="description" content={description} />}
+<meta name="description" content={resolvedDescription} />
 {noindex
   ? <meta name="robots" content="noindex, nofollow" />
   : <meta name="robots" content="index, follow" />
@@ -54,11 +57,11 @@ const resolvedImage = image
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonical} />
 <meta property="og:title" content={resolvedTitle} />
-{description && <meta property="og:description" content={description} />}
+<meta property="og:description" content={resolvedDescription} />
 <meta property="og:image" content={resolvedImage} />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={resolvedTitle} />
-{description && <meta name="twitter:description" content={description} />}
+<meta name="twitter:description" content={resolvedDescription} />
 <meta name="twitter:image" content={resolvedImage} />

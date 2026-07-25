@@ -48,7 +48,8 @@ export const serviceSections: ServiceSectionData[] = [
     title: "Lawn Care",
     description:
       "From weekly mowing to full sod installation, Imagine Land Works keeps your lawn looking its best year-round. Our team handles every aspect of lawn maintenance so you don't have to.",
-    shortDescription: "Professional mowing, watering, and sodding for residential and commercial lawns.",
+    shortDescription:
+      "Professional mowing, watering, and sodding for residential and commercial lawns.",
     capabilities: [
       "Mowing and edge trimming to consistent height",
       "Irrigation and watering system setup",
@@ -57,6 +58,7 @@ export const serviceSections: ServiceSectionData[] = [
       "Seasonal lawn care planning",
     ],
     cta: "Get a Lawn Care Quote",
+    image: "lawn-care-cover.png",
     imagePlaceholder: "Insert lawn care service image here",
     seoTitle: "Lawn Care in Lakeland, FL | Imagine Land Works, LLC",
     seoDescription:
