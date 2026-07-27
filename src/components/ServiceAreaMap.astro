@@ -94,17 +94,20 @@ const pins = cities
     // City markers
     pins.forEach((pin) => {
       const size = pin.primary ? 16 : 11;
+      const hit = 24; // minimum touch target size (WCAG 2.5.8)
       const bg = pin.primary ? "#e8952a" : "#2a7a99";
       const icon = L.divIcon({
-        html: `<div style="
-          width:${size}px;height:${size}px;
-          border-radius:50%;
-          background:${bg};
-          border:2.5px solid #fff;
-          box-shadow:0 1px 5px rgba(0,0,0,.35);
-        " title="${pin.name}, FL"></div>`,
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2],
+        html: `<div style="width:${hit}px;height:${hit}px;display:flex;align-items:center;justify-content:center;">
+          <div style="
+            width:${size}px;height:${size}px;
+            border-radius:50%;
+            background:${bg};
+            border:2.5px solid #fff;
+            box-shadow:0 1px 5px rgba(0,0,0,.35);
+          " title="${pin.name}, FL"></div>
+        </div>`,
+        iconSize: [hit, hit],
+        iconAnchor: [hit / 2, hit / 2],
         className: "",
       });
 
@@ -125,17 +128,38 @@ const pins = cities
     });
   }
 
-  // Load Leaflet JS once, then init
-  if (window.L) {
-    initMap();
-  } else if (!document.querySelector(`script[src="${LEAFLET_JS}"]`)) {
-    const s = document.createElement("script");
-    s.src = LEAFLET_JS;
-    s.onload = initMap;
-    document.head.appendChild(s);
+  function loadLeafletThenInit() {
+    if (window.L) {
+      initMap();
+    } else if (!document.querySelector(`script[src="${LEAFLET_JS}"]`)) {
+      const s = document.createElement("script");
+      s.src = LEAFLET_JS;
+      s.onload = initMap;
+      document.head.appendChild(s);
+    } else {
+      // Script tag already exists but may still be loading
+      document.querySelector(`script[src="${LEAFLET_JS}"]`).addEventListener("load", initMap);
+    }
+  }
+
+  // Defer loading Leaflet (and the map init) until the map is near the viewport,
+  // so it doesn't ship on pages/scroll positions where it's never seen.
+  const target = document.getElementById(mapId);
+  if (target && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            loadLeafletThenInit();
+            obs.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "300px" }
+    );
+    observer.observe(target);
   } else {
-    // Script tag already exists but may still be loading
-    document.querySelector(`script[src="${LEAFLET_JS}"]`).addEventListener("load", initMap);
+    loadLeafletThenInit();
   }
 })();
 </script>

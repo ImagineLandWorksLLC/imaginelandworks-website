@@ -14,7 +14,9 @@ type Props = PageFrontmatter & {
   headings?: Heading[];
 };
 
-const { title, description, image, canonical, noindex, headings = [] } = Astro.props;
+const props = Astro.props.frontmatter ?? Astro.props;
+const { title, description, image, canonical, noindex } = props;
+const { headings = [] } = Astro.props;
 const tocHeadings = headings.filter(h => h.depth === 2);
 const hasToc = tocHeadings.length > 0;
 ---
@@ -42,7 +44,7 @@ const hasToc = tocHeadings.length > 0;
       </aside>
     )}
 
-    <main class="legal-content">
+    <main id="main-content" class="legal-content">
       <div class="doc-type-badge">Legal</div>
       <slot />
     </main>

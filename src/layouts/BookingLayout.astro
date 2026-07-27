@@ -6,7 +6,8 @@ import type { PageFrontmatter } from "@components/SEO.astro";
 
 type Props = PageFrontmatter;
 
-const { title, description, image, canonical, noindex } = Astro.props;
+const props = Astro.props.frontmatter ?? Astro.props;
+const { title, description, image, canonical, noindex } = props;
 ---
 
 <BaseLayout title={title} description={description} image={image} canonical={canonical} noindex={noindex}>
@@ -14,7 +15,7 @@ const { title, description, image, canonical, noindex } = Astro.props;
     <header>
       <Navbar />
     </header>
-    <main class="flex-1">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
     <NavFooter />

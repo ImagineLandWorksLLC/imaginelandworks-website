@@ -1,8 +1,10 @@
 ---
 import DefaultLayout from "@layouts/DefaultLayout.astro";
 import Breadcrumb from "@components/services/Breadcrumb.astro";
+import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
 import Schema from "@components/Schema.astro";
 import { resources } from "@data/resources";
+import { contact } from "@data/contact";
 import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
 
 const seoTitle = "Land Clearing & Site Prep Resources | Imagine Land Works";
@@ -66,4 +68,14 @@ const breadcrumbSchema = buildBreadcrumbSchema([
       </div>
     </div>
   </section>
+
+  <FreeEstimateCTA
+    headline="Ready to Start Your Project?"
+    subheadline="No Obligation. No Guesswork."
+    body="Now that you know the costs and the process, let's talk specifics. Get a straight, honest estimate for your property, fast."
+    ctaLabel="Request a Free Estimate"
+    ctaHref="/book/"
+    phone={contact.phone.display}
+    phoneLabel="Call Us Today"
+  />
 </DefaultLayout>

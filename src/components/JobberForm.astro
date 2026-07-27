@@ -4,15 +4,11 @@ import { contact } from "@data/contact";
 const { clienthubId, formUrl, workRequestUrl } = contact.jobber;
 ---
 
-<link
-  rel="stylesheet"
-  href="https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css"
-  media="screen"
-/>
-
-<div class="w-full">
+<div class="w-full" data-jobber-form data-clienthub-id={clienthubId} data-form-url={formUrl}>
   <div id={clienthubId} class="w-full"></div>
-  <Fragment set:html={`<script src="https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js" clienthub_id="${clienthubId}" form_url="${formUrl}"></script>`} />
+  <div class="jobber-form-placeholder bg-base-200 rounded-xl p-6 text-center animate-pulse" aria-hidden="true">
+    <p class="text-base-content/50 text-sm">Loading estimate form…</p>
+  </div>
   <noscript>
     <div class="bg-base-200 rounded-xl p-6 text-center">
       <p class="text-base-content/70 mb-4">
@@ -29,3 +25,45 @@ const { clienthubId, formUrl, workRequestUrl } = contact.jobber;
     </div>
   </noscript>
 </div>
+
+<script>
+  function loadJobberForm(container: HTMLElement) {
+    const clienthubId = container.dataset.clienthubId!;
+    const formUrl = container.dataset.formUrl!;
+
+    const stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet";
+    stylesheet.media = "screen";
+    stylesheet.href = "https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css";
+    document.head.appendChild(stylesheet);
+
+    const script = document.createElement("script");
+    script.src = "https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js";
+    script.setAttribute("clienthub_id", clienthubId);
+    script.setAttribute("form_url", formUrl);
+    script.async = true;
+    script.onload = () => {
+      container.querySelector(".jobber-form-placeholder")?.remove();
+    };
+    document.body.appendChild(script);
+  }
+
+  const containers = document.querySelectorAll<HTMLElement>("[data-jobber-form]");
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            loadJobberForm(entry.target as HTMLElement);
+            obs.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    containers.forEach((container) => observer.observe(container));
+  } else {
+    containers.forEach((container) => loadJobberForm(container));
+  }
+</script>
