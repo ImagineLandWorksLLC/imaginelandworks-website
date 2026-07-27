@@ -10,8 +10,8 @@ const seoDescription =
   "Guides on land clearing costs, permits, and site preparation for property owners in Lakeland and Polk County, FL.";
 
 const breadcrumbSchema = buildBreadcrumbSchema([
-  { name: "Home",      item: SITE_URL },
-  { name: "Resources", item: `${SITE_URL}/resources` },
+  { name: "Home",      item: `${SITE_URL}/` },
+  { name: "Resources", item: `${SITE_URL}/resources/` },
 ]);
 ---
 
@@ -44,7 +44,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         {resources.map((resource) => (
           <a
-            href={`/resources/${resource.slug}`}
+            href={`/resources/${resource.slug}/`}
             class="card bg-base-100 shadow-md rounded-xl hover:shadow-xl transition-shadow duration-200 group no-underline"
           >
             <div class="card-body gap-3 p-7">

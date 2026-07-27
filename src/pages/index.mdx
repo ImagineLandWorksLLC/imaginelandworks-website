@@ -31,7 +31,7 @@ export const localBusinessSchema = {
   "@type": ["LocalBusiness", "LandscapingBusiness"],
   name: "Imagine Land Works",
   legalName: contact.legalName,
-  url: SITE_URL,
+  url: `${SITE_URL}/`,
   telephone: contact.phone.display,
   email: contact.email,
   image: `${SITE_URL}/images/ImagineLandWorks.png`,
@@ -97,7 +97,7 @@ export const faqSchema = {
   title="Landworks Done Right"
   description="Imagine Land Works delivers professional land clearing, excavation, site preparation, and more across Central Florida. Built on reliability, done with care."
   buttonText="Request an Estimate"
-  buttonHref="/book"
+  buttonHref="/book/"
   imageAlt="Imagine Land Works excavator on a job site"
 />
 <ServicesOverview services={services} />
@@ -114,7 +114,7 @@ export const faqSchema = {
   subheadline="No Obligation. No Guesswork."
   body="Whether you're prepping a lot, clearing brush, or planning a full excavation project, we'll give you a straight, honest estimate, fast. Serving Central Florida and surrounding areas."
   ctaLabel="Request a Free Estimate"
-  ctaHref="/book"
+  ctaHref="/book/"
   phone={contact.phone.display}
   phoneLabel="Call Us Today"
 />
@@ -122,6 +122,6 @@ export const faqSchema = {
 <ServiceArea
   cities={serviceCities}
   ctaLabel="See If We Service Your Area"
-  ctaHref="/book"
+  ctaHref="/book/"
 />
 <FAQSection faqs={faqs} />

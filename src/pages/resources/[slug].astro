@@ -32,13 +32,13 @@ const articleSchema = {
   },
   datePublished: resource.publishDate,
   dateModified: resource.updatedDate ?? resource.publishDate,
-  mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/resources/${resource.slug}` },
+  mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/resources/${resource.slug}/` },
 };
 
 const breadcrumbSchema = buildBreadcrumbSchema([
-  { name: "Home",      item: SITE_URL },
-  { name: "Resources", item: `${SITE_URL}/resources` },
-  { name: resource.title, item: `${SITE_URL}/resources/${resource.slug}` },
+  { name: "Home",      item: `${SITE_URL}/` },
+  { name: "Resources", item: `${SITE_URL}/resources/` },
+  { name: resource.title, item: `${SITE_URL}/resources/${resource.slug}/` },
 ]);
 
 const faqSchema = resource.faqs && resource.faqs.length > 0
@@ -76,7 +76,7 @@ const faqSchema = resource.faqs && resource.faqs.length > 0
   <Breadcrumb
     items={[
       { label: "Home", href: "/" },
-      { label: "Resources", href: "/resources" },
+      { label: "Resources", href: "/resources/" },
       { label: resource.title },
     ]}
   />
@@ -112,7 +112,7 @@ const faqSchema = resource.faqs && resource.faqs.length > 0
     subheadline="No Obligation. No Guesswork."
     body="Ready to find out what your land actually needs? We'll assess your property and give you a straight, honest estimate, fast."
     ctaLabel="Request a Free Estimate"
-    ctaHref="/book"
+    ctaHref="/book/"
     phone={contact.phone.display}
     phoneLabel="Call Us Today"
   />

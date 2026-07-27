@@ -58,11 +58,11 @@ const imageData = imageKey ? serviceImages[imageKey]?.default ?? null : null;
         </ul>
 
         <div class="flex flex-wrap items-center gap-4 mt-2">
-          <a href="/contact" class="btn btn-primary btn-lg">
+          <a href="/contact/" class="btn btn-primary btn-lg">
             {section.cta}
           </a>
           <a
-            href={`/services/${section.anchor}`}
+            href={`/services/${section.anchor}/`}
             class="btn btn-outline btn-lg"
             aria-label={`View details for ${section.title}`}
           >

@@ -6,12 +6,12 @@ import { contact } from "@data/contact";
 import logoSrc from "@assets/images/original-brand-only.png";
 
 const navLinks = [
-  { href: "/",          label: "Home" },
-  { href: "/services",  label: "Services" },
-  { href: "/gallery",   label: "Gallery" },
-  { href: "/resources", label: "Resources" },
-  { href: "/about",     label: "About" },
-  { href: "/contact",   label: "Contact Us" },
+  { href: "/",           label: "Home" },
+  { href: "/services/",  label: "Services" },
+  { href: "/gallery/",   label: "Gallery" },
+  { href: "/resources/", label: "Resources" },
+  { href: "/about/",     label: "About" },
+  { href: "/contact/",   label: "Contact Us" },
 ];
 
 const phoneSvg = iconFromDef(faPhone, "size-3.5");
@@ -47,7 +47,7 @@ const phoneSvg = iconFromDef(faPhone, "size-3.5");
         <Fragment set:html={phoneSvg} />
         {contact.phone.display}
       </a>
-      <a href="/book" class="btn btn-primary btn-sm">Get a Quote</a>
+      <a href="/book/" class="btn btn-primary btn-sm">Get a Quote</a>
     </div>
 
     <button
@@ -85,7 +85,7 @@ const phoneSvg = iconFromDef(faPhone, "size-3.5");
     </a>
 
     <div class="px-4 pt-2 pb-1">
-      <a href="/book" class="btn btn-primary btn-sm w-full">Get a Quote</a>
+      <a href="/book/" class="btn btn-primary btn-sm w-full">Get a Quote</a>
     </div>
 
   </div>

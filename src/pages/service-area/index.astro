@@ -12,8 +12,8 @@ import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
 const pinSvg = iconFromDef(faLocationDot, "size-4 shrink-0 mt-0.5");
 
 const breadcrumbSchema = buildBreadcrumbSchema([
-  { name: "Home",         item: SITE_URL },
-  { name: "Service Area", item: `${SITE_URL}/service-area` },
+  { name: "Home",         item: `${SITE_URL}/` },
+  { name: "Service Area", item: `${SITE_URL}/service-area/` },
 ]);
 ---
 
@@ -38,7 +38,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
         and more to residential and commercial customers across central Florida.
       </p>
       <div class="flex flex-wrap gap-4">
-        <a href="/book" class="btn btn-primary btn-lg">Request a Free Estimate</a>
+        <a href="/book/" class="btn btn-primary btn-lg">Request a Free Estimate</a>
         <a href={`tel:${contact.phone.raw}`} class="btn btn-outline btn-lg">
           Call {contact.phone.display}
         </a>
@@ -64,7 +64,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
         {serviceCities.map((city) => (
           <a
-            href={`/service-area/${city.slug}`}
+            href={`/service-area/${city.slug}/`}
             class="card bg-base-100 shadow-sm border border-base-300 rounded-2xl hover:shadow-md hover:border-primary/30 transition-all duration-200 no-underline group"
           >
             <div class="card-body p-6 gap-3">
@@ -112,7 +112,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
     subheadline="Just Ask — We'll Tell You Straight."
     body="Our crews are based in Lakeland and regularly travel throughout Polk County and into Hillsborough, Highlands, and Hardee counties. If you're in central Florida, there's a good chance we can help."
     ctaLabel="Request a Free Estimate"
-    ctaHref="/book"
+    ctaHref="/book/"
     phone={contact.phone.display}
     phoneLabel="Call Us Today"
   />

@@ -14,8 +14,8 @@ const seoDescription =
   "See land clearing, excavation, demolition, and site preparation projects completed by Imagine Land Works across Lakeland and Polk County, FL.";
 
 const breadcrumbSchema = buildBreadcrumbSchema([
-  { name: "Home",    item: SITE_URL },
-  { name: "Gallery", item: `${SITE_URL}/gallery` },
+  { name: "Home",    item: `${SITE_URL}/` },
+  { name: "Gallery", item: `${SITE_URL}/gallery/` },
 ]);
 ---
 
@@ -51,7 +51,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
     subheadline="No Obligation. No Guesswork."
     body="Whatever your land clearing, excavation, or site prep project looks like, we'll give you a straight, honest estimate, fast."
     ctaLabel="Request a Free Estimate"
-    ctaHref="/book"
+    ctaHref="/book/"
     phone={contact.phone.display}
     phoneLabel="Call Us Today"
   />

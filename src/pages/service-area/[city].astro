@@ -27,14 +27,14 @@ const locationLabel = city.county ? `${city.county}, FL` : "FL";
 const coverageLabel = city.county ? `all of ${city.county}` : "all of Central Florida";
 const seoDescription = `Professional land clearing, excavation, and site preparation in ${city.name}, ${locationLabel}. Imagine Land Works serves ${city.name} and ${coverageLabel}. Licensed & insured. Free estimates.`;
 
-const pageUrl = `${SITE_URL}/service-area/${city.slug}`;
+const pageUrl = `${SITE_URL}/service-area/${city.slug}/`;
 
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "LandscapingBusiness"],
   name: "Imagine Land Works",
   legalName: contact.legalName,
-  url: SITE_URL,
+  url: `${SITE_URL}/`,
   telephone: contact.phone.display,
   email: contact.email,
   image: `${SITE_URL}/images/ImagineLandWorks.png`,
@@ -53,8 +53,8 @@ const localBusinessSchema = {
 };
 
 const breadcrumbSchema = buildBreadcrumbSchema([
-  { name: "Home",         item: SITE_URL },
-  { name: "Service Area", item: `${SITE_URL}/service-area` },
+  { name: "Home",         item: `${SITE_URL}/` },
+  { name: "Service Area", item: `${SITE_URL}/service-area/` },
   { name: city.name,      item: pageUrl },
 ]);
 ---
@@ -71,7 +71,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
         <ol class="flex items-center gap-2 text-sm text-base-content/50">
           <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
           <li aria-hidden="true" class="select-none">/</li>
-          <li><a href="/service-area" class="hover:text-primary transition-colors">Service Area</a></li>
+          <li><a href="/service-area/" class="hover:text-primary transition-colors">Service Area</a></li>
           <li aria-hidden="true" class="select-none">/</li>
           <li class="text-base-content/80" aria-current="page">{city.name}</li>
         </ol>
@@ -87,7 +87,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
         {city.blurb}
       </p>
       <div class="flex flex-wrap gap-4">
-        <a href="/book" class="btn btn-primary btn-lg">Request a Free Estimate</a>
+        <a href="/book/" class="btn btn-primary btn-lg">Request a Free Estimate</a>
         <a href={`tel:${contact.phone.raw}`} class="btn btn-outline btn-lg">
           Call {contact.phone.display}
         </a>
@@ -113,7 +113,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
   <ServiceArea
     cities={serviceCities}
     ctaLabel="See All Areas We Serve"
-    ctaHref="/service-area"
+    ctaHref="/service-area/"
   />
 
   <!-- CTA -->
@@ -122,7 +122,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
     subheadline="No Obligation. No Guesswork."
     body={`Whether you need land cleared, a site prepped, or a structure demolished in ${city.name}, we'll give you a straight, honest estimate fast. Serving ${city.name} and ${coverageLabel}.`}
     ctaLabel="Request a Free Estimate"
-    ctaHref="/book"
+    ctaHref="/book/"
     phone={contact.phone.display}
     phoneLabel="Call Us Today"
   />

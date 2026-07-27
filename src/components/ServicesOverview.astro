@@ -60,7 +60,7 @@ const { services } = Astro.props;
             <!-- CTA -->
             <div class="card-actions mt-2">
               <a
-                href={`/services/${service.anchor}`}
+                href={`/services/${service.anchor}/`}
                 class:list={[
                   "btn btn-sm",
                   service.featured ? "btn-primary" : "btn-outline btn-primary",
@@ -77,7 +77,7 @@ const { services } = Astro.props;
 
     <!-- Bottom CTA -->
     <div class="text-center mt-14">
-      <a href="/services" class="btn btn-primary btn-lg">
+      <a href="/services/" class="btn btn-primary btn-lg">
         View All Services
       </a>
     </div>
