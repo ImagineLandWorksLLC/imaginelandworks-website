@@ -39,6 +39,13 @@
 
 }
 
+/* Brighter leaf green for text-secondary usage on dark (primary) backgrounds —
+   --color-secondary itself is tuned dark enough to pass 4.5:1 on white, which
+   is too close to --color-primary's luminance to stay readable on top of it. */
+.text-secondary-on-dark {
+  color: #5DBF5D;
+}
+
 /* -------------------------------------------------------
    LOCAL FONTS
    ------------------------------------------------------- */

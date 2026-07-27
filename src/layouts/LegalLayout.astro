@@ -141,7 +141,7 @@ const hasToc = tocHeadings.length > 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.05rem;
+    gap: 0.25rem;
   }
 
   .toc-list li {
@@ -150,11 +150,13 @@ const hasToc = tocHeadings.length > 0;
   }
 
   .toc-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    min-height: 24px;
     font-size: 0.78rem;
     color: var(--color-base-content);
     text-decoration: none;
-    padding: 0.3rem 0.75rem;
+    padding: 0.4rem 0.75rem;
     border-radius: 4px;
     line-height: 1.4;
     transition: background 0.15s, color 0.15s, box-shadow 0.15s;
