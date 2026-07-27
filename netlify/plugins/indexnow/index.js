@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 const HOST = "imaginelandworks.com";
 const INDEXNOW_KEY = "597167109f126ecfc1db2a105c5d9d5c";
@@ -24,7 +24,7 @@ function collectSitemapUrls(publishDir) {
   return urls;
 }
 
-module.exports = {
+export default {
   async onSuccess({ constants }) {
     const context = process.env.CONTEXT || "unknown";
 
