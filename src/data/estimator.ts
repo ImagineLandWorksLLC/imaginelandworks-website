@@ -9,11 +9,17 @@ export interface EstimateService {
   minLow: number;
   minHigh: number;
   /**
-   * True for services priced per project rather than per acre (demolition,
-   * excavation, tree work, pond cleaning). ratePerAcre* is 0 for these and
-   * minLow/minHigh hold the flat quoted range; the acreage slider is hidden.
+   * True for services priced per project rather than per acre (tree work).
+   * ratePerAcre* is 0 for these and minLow/minHigh hold the flat quoted
+   * range; the acreage slider is hidden.
    */
   flatRate?: boolean;
+  /**
+   * True for services with too many cost drivers to ballpark at all
+   * (excavation, demolition, pond cleaning). No range is shown — the
+   * calculator points the customer straight to a quote request instead.
+   */
+  contactForQuote?: boolean;
 }
 
 /**
@@ -59,17 +65,17 @@ export const estimateServices: EstimateService[] = [
     slug: "bush-hogging",
     label: "Bush Hogging",
     ratePerAcreLow: 200,
-    ratePerAcreHigh: 500,
+    ratePerAcreHigh: 600,
     minLow: 200,
-    minHigh: 400,
+    minHigh: 600,
   },
   {
     slug: "tree-work",
     label: "Tree Work",
     ratePerAcreLow: 0,
     ratePerAcreHigh: 0,
-    minLow: 300,
-    minHigh: 1800,
+    minLow: 600,
+    minHigh: 15000,
     flatRate: true,
   },
   {
@@ -77,26 +83,26 @@ export const estimateServices: EstimateService[] = [
     label: "Excavation",
     ratePerAcreLow: 0,
     ratePerAcreHigh: 0,
-    minLow: 1500,
-    minHigh: 12000,
-    flatRate: true,
+    minLow: 0,
+    minHigh: 0,
+    contactForQuote: true,
   },
   {
     slug: "demolition",
     label: "Demolition",
     ratePerAcreLow: 0,
     ratePerAcreHigh: 0,
-    minLow: 2500,
-    minHigh: 20000,
-    flatRate: true,
+    minLow: 0,
+    minHigh: 0,
+    contactForQuote: true,
   },
   {
     slug: "pond-cleaning",
     label: "Pond Cleaning",
     ratePerAcreLow: 0,
     ratePerAcreHigh: 0,
-    minLow: 400,
-    minHigh: 1800,
-    flatRate: true,
+    minLow: 0,
+    minHigh: 0,
+    contactForQuote: true,
   },
 ];

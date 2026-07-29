@@ -91,6 +91,9 @@ const { services, ctaHref = "/book/" } = Astro.props;
   const FLAT_RATE_NOTE =
     "Ballpark only, based on typical Central Florida projects. This service is quoted " +
     "per project rather than by lot size. For an exact number, request a free quote.";
+  const CONTACT_NOTE =
+    "This service has too many variables (materials, access, disposal, permitting) to " +
+    "ballpark online. Request a free quote and we'll get you an exact number.";
 
   const format = (n) => `$${Math.round(n).toLocaleString("en-US")}`;
 
@@ -103,7 +106,14 @@ const { services, ctaHref = "/book/" } = Astro.props;
     const acreage = Number(acreageInput.value);
 
     acreageValue.textContent = formatAcreage(acreage);
-    acreageField.classList.toggle("hidden", !!service.flatRate);
+    acreageField.classList.toggle("hidden", !!service.flatRate || !!service.contactForQuote);
+
+    if (service.contactForQuote) {
+      note.textContent = CONTACT_NOTE;
+      result.textContent = "Contact Us for a Quote";
+      return;
+    }
+
     note.textContent = service.flatRate ? FLAT_RATE_NOTE : DEFAULT_NOTE;
 
     const effectiveAcreage = service.flatRate ? 1 : acreage;
