@@ -8,6 +8,14 @@ interface Props {
 }
 
 const { metrics, heading } = Astro.props;
+
+// Split each stat into a numeric part (to animate) and its prefix/suffix (e.g. "200+" -> 200, "+")
+const parseStat = (stat: string) => {
+  const match = stat.match(/^(\D*)([\d,]+(?:\.\d+)?)(.*)$/);
+  if (!match) return { prefix: "", target: null, suffix: "", raw: stat };
+  const [, prefix, numStr, suffix] = match;
+  return { prefix, target: Number(numStr.replace(/,/g, "")), suffix, raw: stat };
+};
 ---
 
 <section class="bg-base-100 py-20">
@@ -31,7 +39,9 @@ const { metrics, heading } = Astro.props;
                 lg:divide-x lg:divide-base-300"
     >
       {
-        metrics.map((m) => (
+        metrics.map((m) => {
+          const { prefix, target, suffix, raw } = parseStat(m.stat);
+          return (
           <div class="flex flex-col items-center text-center px-8 py-10 gap-3">
             {m.icon && (
               <span class="text-accent">
@@ -43,7 +53,13 @@ const { metrics, heading } = Astro.props;
               class="font-heading text-primary leading-none"
               style="font-size: clamp(3rem, 6vw, 4rem);"
             >
-              {m.stat}
+              {target !== null ? (
+                <span class="metric-counter" data-target={target} data-prefix={prefix} data-suffix={suffix}>
+                  {prefix}0{suffix}
+                </span>
+              ) : (
+                raw
+              )}
             </p>
 
             <p class="font-heading text-secondary text-sm uppercase tracking-widest leading-tight">
@@ -56,8 +72,64 @@ const { metrics, heading } = Astro.props;
               </p>
             )}
           </div>
-        ))
+          );
+        })
       }
     </div>
   </div>
 </section>
+
+<script>
+  function initCounters() {
+    const counters = document.querySelectorAll<HTMLElement>(".metric-counter");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const animate = (el: HTMLElement) => {
+      if (el.dataset.counted) return;
+      el.dataset.counted = "1";
+
+      const target = Number(el.dataset.target);
+      const prefix = el.dataset.prefix ?? "";
+      const suffix = el.dataset.suffix ?? "";
+
+      if (reduceMotion || !Number.isFinite(target)) {
+        el.textContent = `${prefix}${target}${suffix}`;
+        return;
+      }
+
+      const duration = 1200;
+      const start = performance.now();
+
+      const tick = (now: number) => {
+        const elapsed = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - elapsed, 3);
+        const value = Math.round(target * eased);
+        el.textContent = `${prefix}${value}${suffix}`;
+        if (elapsed < 1) requestAnimationFrame(tick);
+      };
+
+      requestAnimationFrame(tick);
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      counters.forEach(animate);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            animate(entry.target as HTMLElement);
+            obs.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    counters.forEach((el) => observer.observe(el));
+  }
+
+  initCounters();
+</script>

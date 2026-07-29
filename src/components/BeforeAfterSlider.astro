@@ -1,0 +1,165 @@
+---
+interface Photo {
+  src?: string;
+  alt?: string;
+}
+
+interface Props {
+  before: Photo;
+  after: Photo;
+  caption?: string;
+  class?: string;
+}
+
+const { before, after, caption, class: className } = Astro.props;
+const hasBoth = !!before.src && !!after.src;
+
+const placeholderIcon = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-12 text-base-content/20" aria-hidden="true">
+    <path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21h18M3 10.5h18M3 6.75l9-4.5 9 4.5" />
+  </svg>
+`;
+---
+
+{hasBoth ? (
+  <div class:list={["ba-slider relative overflow-hidden rounded-2xl select-none", className]}>
+    <img
+      src={after.src}
+      alt={after.alt ?? "After"}
+      class="ba-img ba-after w-full h-full object-cover"
+      loading="lazy"
+    />
+    <img
+      src={before.src}
+      alt={before.alt ?? "Before"}
+      class="ba-img ba-before w-full h-full object-cover"
+      loading="lazy"
+      style="clip-path: inset(0 50% 0 0);"
+    />
+
+    <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-base-content/80 text-base-100 pointer-events-none">
+      Before
+    </span>
+    <span class="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-primary text-primary-content pointer-events-none">
+      After
+    </span>
+
+    <div class="ba-handle absolute top-0 bottom-0 pointer-events-none" style="left: 50%;">
+      <div class="ba-handle-bar"></div>
+      <div class="ba-handle-grip">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="size-4" aria-hidden="true">
+          <path d="M8 7L3 12L8 17M16 7L21 12L16 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+    </div>
+
+    <input
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      class="ba-range absolute inset-0 w-full h-full m-0"
+      aria-label={`Drag to compare before and after${caption ? `: ${caption}` : ""}`}
+    />
+  </div>
+) : (
+  <div class:list={["grid grid-cols-2 gap-1 rounded-2xl overflow-hidden", className]}>
+    {(["Before", "After"] as const).map((label) => (
+      <div class="relative w-full aspect-4/3 bg-base-200 border-2 border-dashed border-base-content/10 flex flex-col items-center justify-center gap-2">
+        <Fragment set:html={placeholderIcon} />
+        <p class="font-heading text-xs uppercase tracking-wider text-base-content/30">{label}</p>
+      </div>
+    ))}
+  </div>
+)}
+
+{caption && (
+  <p class="text-center text-xs uppercase tracking-wider text-base-content/40 mt-2">
+    {caption}
+  </p>
+)}
+
+<style>
+  .ba-slider {
+    aspect-ratio: 4 / 3;
+    touch-action: pan-y;
+  }
+
+  .ba-img {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  .ba-handle {
+    width: 0;
+    transform: translateX(-1px);
+  }
+
+  .ba-handle-bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  }
+
+  .ba-handle-grip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: #fff;
+    color: #1f3d2b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  }
+
+  .ba-range {
+    -webkit-appearance: none;
+    appearance: none;
+    opacity: 0;
+    cursor: ew-resize;
+  }
+
+  .ba-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 40px;
+    height: 40px;
+  }
+
+  .ba-range::-moz-range-thumb {
+    width: 40px;
+    height: 40px;
+    border: none;
+  }
+
+  .ba-range:focus-visible ~ .ba-handle .ba-handle-grip {
+    outline: 2px solid #e8952a;
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".ba-slider").forEach((slider) => {
+    const range = slider.querySelector<HTMLInputElement>(".ba-range");
+    const before = slider.querySelector<HTMLElement>(".ba-before");
+    const handle = slider.querySelector<HTMLElement>(".ba-handle");
+    if (!range || !before || !handle) return;
+
+    const update = (val: number) => {
+      before.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+      handle.style.left = `${val}%`;
+    };
+
+    range.addEventListener("input", () => update(Number(range.value)));
+    update(Number(range.value));
+  });
+</script>

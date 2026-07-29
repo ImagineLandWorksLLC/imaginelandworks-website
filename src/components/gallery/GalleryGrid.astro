@@ -1,5 +1,6 @@
 ---
 import type { GalleryItem } from "@data/gallery";
+import BeforeAfterSlider from "@components/BeforeAfterSlider.astro";
 
 interface Props {
   items: GalleryItem[];
@@ -7,8 +8,9 @@ interface Props {
 
 const { items } = Astro.props;
 
-const isViewable = (item: GalleryItem) =>
-  item.kind === "photo" ? !!item.photo.src : !!(item.before.src && item.after.src);
+// Only single photos open in the lightbox — before/after tiles are already
+// fully interactive (drag-to-compare) directly in the grid.
+const isViewable = (item: GalleryItem) => item.kind === "photo" && !!item.photo.src;
 
 let viewableCounter = 0;
 const tiles = items.map((item) => {
@@ -57,51 +59,12 @@ const placeholderIcon = `
             </div>
           )
         ) : (
-          <div class="overflow-hidden rounded-2xl sm:col-span-2 lg:col-span-1">
-            {viewableIndex !== null ? (
-              <button
-                type="button"
-                class="grid grid-cols-2 gap-1 w-full cursor-zoom-in group"
-                data-lightbox-index={viewableIndex}
-              >
-                <span class="relative block">
-                  <img
-                    src={item.before.src}
-                    alt={item.before.alt}
-                    class="w-full h-full aspect-4/3 object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                  <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-base-content/80 text-base-100">
-                    Before
-                  </span>
-                </span>
-                <span class="relative block">
-                  <img
-                    src={item.after.src}
-                    alt={item.after.alt}
-                    class="w-full h-full aspect-4/3 object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                  <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-primary text-primary-content">
-                    After
-                  </span>
-                </span>
-              </button>
-            ) : (
-              <div class="grid grid-cols-2 gap-1 w-full">
-                {(["Before", "After"] as const).map((label) => (
-                  <div class="relative w-full aspect-4/3 bg-base-200 border-2 border-dashed border-base-content/10 flex flex-col items-center justify-center gap-2">
-                    <Fragment set:html={placeholderIcon} />
-                    <p class="font-heading text-xs uppercase tracking-wider text-base-content/30">{label}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-            {item.caption && (
-              <p class="text-center text-xs uppercase tracking-wider text-base-content/40 mt-2">
-                {item.caption}
-              </p>
-            )}
+          <div class="sm:col-span-2 lg:col-span-1">
+            <BeforeAfterSlider
+              before={item.before}
+              after={item.after}
+              caption={item.caption}
+            />
           </div>
         )
       ))}
@@ -121,11 +84,7 @@ const placeholderIcon = `
     current = ((i % viewableItems.length) + viewableItems.length) % viewableItems.length;
     const item = viewableItems[current];
 
-    stage.innerHTML =
-      item.kind === "before-after"
-        ? `<img src="${item.before.src}" alt="${item.before.alt}" class="max-h-[65vh] rounded-lg object-contain" />
-           <img src="${item.after.src}" alt="${item.after.alt}" class="max-h-[65vh] rounded-lg object-contain" />`
-        : `<img src="${item.photo.src}" alt="${item.photo.alt}" class="max-h-[65vh] rounded-lg object-contain mx-auto" />`;
+    stage.innerHTML = `<img src="${item.photo.src}" alt="${item.photo.alt}" class="max-h-[65vh] rounded-lg object-contain mx-auto" />`;
 
     caption.textContent = item.caption ?? "";
   }

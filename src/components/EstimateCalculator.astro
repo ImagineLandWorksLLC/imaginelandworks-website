@@ -1,0 +1,119 @@
+---
+import type { EstimateService } from "@data/estimator";
+
+interface Props {
+  services: EstimateService[];
+  ctaHref?: string;
+}
+
+const { services, ctaHref = "/book/" } = Astro.props;
+---
+
+<section class="bg-base-200 py-20">
+  <div class="container mx-auto px-6">
+    <div class="max-w-2xl mx-auto text-center mb-10">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        What Will It Cost?
+      </p>
+      <h2 class="text-primary font-heading leading-tight">Get a Ballpark Estimate</h2>
+      <p class="text-base-content/70 mt-3">
+        Pick a service and your approximate acreage for a rough price range in seconds.
+        No forms, no obligation.
+      </p>
+    </div>
+
+    <div class="max-w-2xl mx-auto bg-base-100 rounded-2xl border border-base-300 shadow-md p-8 md:p-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+
+        <div>
+          <label for="est-service" class="block font-heading text-primary text-sm uppercase tracking-widest mb-3">
+            Service
+          </label>
+          <select id="est-service" class="select select-bordered w-full">
+            {services.map((s) => (
+              <option value={s.slug}>{s.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div id="est-acreage-field">
+          <label for="est-acreage" class="flex items-baseline justify-between font-heading text-primary text-sm uppercase tracking-widest mb-3">
+            <span>Lot Size</span>
+            <span id="est-acreage-value" class="text-secondary normal-case tracking-normal">1 acre</span>
+          </label>
+          <input
+            id="est-acreage"
+            type="range"
+            min="0.25"
+            max="10"
+            step="0.25"
+            value="1"
+            class="range range-secondary w-full"
+          />
+          <div class="flex justify-between text-xs text-base-content/40 mt-1">
+            <span>&frac14; acre</span>
+            <span>10 acres</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center border-t border-base-300 mt-8 pt-8">
+        <p class="text-base-content/60 text-sm uppercase tracking-widest font-heading mb-2">
+          Estimated Range
+        </p>
+        <p id="est-result" class="font-heading text-4xl md:text-5xl text-primary">
+          $0&ndash;$0
+        </p>
+        <p id="est-note" class="text-base-content/50 text-xs max-w-md mx-auto mt-4">
+          Ballpark only, based on typical Central Florida jobs. Actual pricing depends on
+          terrain, density, and access. For an exact number, request a free quote.
+        </p>
+        <a href={ctaHref} class="btn btn-primary btn-lg mt-6">
+          Get an Exact Quote
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ services }}>
+  const serviceSelect = document.getElementById("est-service");
+  const acreageField = document.getElementById("est-acreage-field");
+  const acreageInput = document.getElementById("est-acreage");
+  const acreageValue = document.getElementById("est-acreage-value");
+  const result = document.getElementById("est-result");
+  const note = document.getElementById("est-note");
+
+  const DEFAULT_NOTE =
+    "Ballpark only, based on typical Central Florida jobs. Actual pricing depends on " +
+    "terrain, density, and access. For an exact number, request a free quote.";
+  const FLAT_RATE_NOTE =
+    "Ballpark only, based on typical Central Florida projects. This service is quoted " +
+    "per project rather than by lot size. For an exact number, request a free quote.";
+
+  const format = (n) => `$${Math.round(n).toLocaleString("en-US")}`;
+
+  function formatAcreage(a) {
+    return `${a % 1 === 0 ? a : a.toFixed(2)} acre${a === 1 ? "" : "s"}`;
+  }
+
+  function update() {
+    const service = services.find((s) => s.slug === serviceSelect.value) ?? services[0];
+    const acreage = Number(acreageInput.value);
+
+    acreageValue.textContent = formatAcreage(acreage);
+    acreageField.classList.toggle("hidden", !!service.flatRate);
+    note.textContent = service.flatRate ? FLAT_RATE_NOTE : DEFAULT_NOTE;
+
+    const effectiveAcreage = service.flatRate ? 1 : acreage;
+    const low = Math.max(service.ratePerAcreLow * effectiveAcreage, service.minLow);
+    const high = Math.max(service.ratePerAcreHigh * effectiveAcreage, service.minHigh);
+
+    result.textContent = `${format(low)}–${format(high)}`;
+  }
+
+  serviceSelect?.addEventListener("change", update);
+  acreageInput?.addEventListener("input", update);
+  update();
+</script>

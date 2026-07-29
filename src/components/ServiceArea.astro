@@ -3,6 +3,8 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { iconFromDef } from "@utils/icons";
 import type { ServiceCity } from "@data/serviceArea";
 import ServiceAreaMap from "@components/ServiceAreaMap.astro";
+import ZipChecker from "@components/ZipChecker.astro";
+import { serviceZips } from "@data/serviceZips";
 
 interface Props {
   cities: ServiceCity[];
@@ -41,6 +43,9 @@ const pinSvg = iconFromDef(faLocationDot, "size-4 shrink-0 mt-0.5");
             good chance we can get to you.
           </p>
         </div>
+
+        <!-- ZIP code checker -->
+        <ZipChecker zips={serviceZips} ctaHref={ctaHref ?? "/book/"} />
 
         <!-- City list -->
         <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">

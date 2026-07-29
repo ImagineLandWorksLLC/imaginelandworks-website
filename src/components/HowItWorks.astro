@@ -7,6 +7,8 @@ interface Props {
 }
 
 const { steps } = Astro.props;
+
+const trackerSvg = iconSvg("tractor", "size-4");
 ---
 
 <section class="bg-base-200 py-20">
@@ -27,21 +29,30 @@ const { steps } = Astro.props;
     </div>
 
     <!-- Steps -->
-    <div class="relative">
+    <div class="relative" id="hiw-track">
 
       <!-- Horizontal connector line (lg desktop only, at icon center) -->
       <div
         aria-hidden="true"
         class="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-0.5 bg-base-300 z-0"
-      ></div>
+      >
+        <div
+          id="hiw-fill"
+          class="h-full bg-secondary origin-left"
+          style="transform: scaleX(0);"
+        ></div>
+        <div id="hiw-marker" class="hiw-marker" style="left: 0%;">
+          <Fragment set:html={trackerSvg} />
+        </div>
+      </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-6">
-        {steps.map((step) => (
-          <div class="relative flex flex-col items-center text-center z-10">
+        {steps.map((step, i) => (
+          <div class="hiw-step relative flex flex-col items-center text-center z-10" data-step={i}>
 
             <!-- Icon circle -->
             <div
-              class="w-20 h-20 rounded-full bg-primary flex items-center justify-center
+              class="hiw-icon w-20 h-20 rounded-full bg-primary flex items-center justify-center
                      text-primary-content mb-6 ring-4 ring-base-100 shadow-md"
             >
               <Fragment set:html={iconSvg(step.icon, "size-8")} />
@@ -58,7 +69,7 @@ const { steps } = Astro.props;
             </h3>
 
             <!-- Description -->
-            <p class="text-base-content/70 text-sm leading-relaxed max-w-[240px]">
+            <p class="text-base-content/70 text-sm leading-relaxed max-w-60">
               {step.description}
             </p>
 
@@ -79,3 +90,91 @@ const { steps } = Astro.props;
 
   </div>
 </section>
+
+<style>
+  .hiw-icon {
+    transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
+  }
+
+  .hiw-step.is-active .hiw-icon {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 4px var(--color-secondary, #2e7d32);
+  }
+
+  #hiw-fill {
+    transition: transform 0.6s ease-out;
+  }
+
+  .hiw-marker {
+    position: absolute;
+    top: 50%;
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    background: var(--color-secondary, #2e7d32);
+    color: var(--color-secondary-content, #fff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    transform: translate(-50%, -50%);
+    transition: left 0.6s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hiw-icon,
+    #hiw-fill,
+    .hiw-marker {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initHowItWorks() {
+    const track = document.querySelector<HTMLElement>("#hiw-track");
+    if (!track) return;
+
+    const stepEls = Array.from(track.querySelectorAll<HTMLElement>(".hiw-step"));
+    const fill = track.querySelector<HTMLElement>("#hiw-fill");
+    const marker = track.querySelector<HTMLElement>("#hiw-marker");
+    if (stepEls.length === 0) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let maxActive = -1;
+
+    const setProgress = (index: number) => {
+      const progress = stepEls.length > 1 ? index / (stepEls.length - 1) : 1;
+      if (fill) fill.style.transform = `scaleX(${progress})`;
+      if (marker) marker.style.left = `${progress * 100}%`;
+    };
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      stepEls.forEach((el) => el.classList.add("is-active"));
+      setProgress(stepEls.length - 1);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const index = Number((entry.target as HTMLElement).dataset.step);
+          if (index > maxActive) {
+            maxActive = index;
+            for (let i = 0; i <= maxActive; i++) {
+              stepEls[i]?.classList.add("is-active");
+            }
+            setProgress(maxActive);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -30% 0px", threshold: 0.4 }
+    );
+
+    stepEls.forEach((el) => observer.observe(el));
+  }
+
+  initHowItWorks();
+</script>

@@ -1,4 +1,6 @@
 ---
+import BeforeAfterSlider from "@components/BeforeAfterSlider.astro";
+
 interface Photo {
   src?: string;
   alt?: string;
@@ -20,6 +22,12 @@ const slots: Photo[] = photos && photos.length === 4
       { label: "Before", alt: `${serviceName} before photo 2` },
       { label: "After",  alt: `${serviceName} after photo 2`  },
     ];
+
+// Pair up as (Before, After) comparisons for the drag slider
+const pairs = [
+  { before: slots[0], after: slots[1] },
+  { before: slots[2], after: slots[3] },
+];
 ---
 
 <section class="bg-base-100 py-20">
@@ -30,45 +38,15 @@ const slots: Photo[] = photos && photos.length === 4
         The Results
       </p>
       <h2 class="text-primary font-heading">Before &amp; After</h2>
+      <p class="text-base-content/60 text-sm mt-2">Drag the slider to compare</p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
-      {slots.map((photo) => (
-        <div class="relative overflow-hidden rounded-2xl">
-          {photo.src ? (
-            <img
-              src={photo.src}
-              alt={photo.alt ?? `${serviceName} ${photo.label.toLowerCase()} photo`}
-              class="w-full aspect-4/3 object-cover"
-            />
-          ) : (
-            <div class="w-full aspect-4/3 bg-base-200 border-2 border-dashed border-base-300 flex flex-col items-center justify-center gap-3 text-base-content/40">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                class="size-12 text-base-content/20"
-                aria-hidden="true"
-              >
-                <path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21h18M3 10.5h18M3 6.75l9-4.5 9 4.5" />
-              </svg>
-              <p class="font-heading text-sm uppercase tracking-wider text-base-content/30">
-                {photo.label} Photo
-              </p>
-              <p class="text-xs text-base-content/25">
-                Add a {photo.label.toLowerCase()} image for {serviceName}
-              </p>
-            </div>
-          )}
-          <span class:list={[
-            "absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider",
-            photo.label === "Before"
-              ? "bg-base-content/80 text-base-100"
-              : "bg-primary text-primary-content",
-          ]}>
-            {photo.label}
-          </span>
-        </div>
+      {pairs.map((pair) => (
+        <BeforeAfterSlider
+          before={{ src: pair.before.src, alt: pair.before.alt }}
+          after={{ src: pair.after.src, alt: pair.after.alt }}
+        />
       ))}
     </div>
 

@@ -26,6 +26,6 @@ export const faqs: FAQ[] = [
   },
   {
     question: "What equipment do you use?",
-    answer: "We use professional-grade equipment for clearing, grading, excavation, mulching, and demolition.",
+    answer: "Skid steers, forestry mulchers, mini and full-size excavators, bulldozers, and dump trucks, all professional-grade, for clearing, grading, excavation, mulching, and demolition. See our full equipment lineup below.",
   },
 ];

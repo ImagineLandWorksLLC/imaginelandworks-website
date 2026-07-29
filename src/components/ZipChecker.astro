@@ -1,0 +1,65 @@
+---
+import type { ZipEntry } from "@data/serviceZips";
+
+interface Props {
+  zips: ZipEntry[];
+  ctaHref?: string;
+}
+
+const { zips, ctaHref = "/book/" } = Astro.props;
+---
+
+<div class="bg-base-100 rounded-xl border border-base-300 p-6">
+  <p class="font-heading text-primary text-sm uppercase tracking-widest mb-3">
+    Check Your ZIP Code
+  </p>
+  <form id="zip-checker-form" class="flex gap-2" novalidate>
+    <label for="zip-checker-input" class="sr-only">ZIP code</label>
+    <input
+      id="zip-checker-input"
+      type="text"
+      inputmode="numeric"
+      pattern="[0-9]{5}"
+      maxlength="5"
+      placeholder="e.g. 33801"
+      class="input input-bordered w-full"
+      aria-describedby="zip-checker-result"
+    />
+    <button type="submit" class="btn btn-secondary shrink-0">Check</button>
+  </form>
+  <div id="zip-checker-result" class="mt-3 text-sm min-h-6" role="status" aria-live="polite"></div>
+</div>
+
+<script define:vars={{ zips, ctaHref }}>
+  const form = document.getElementById("zip-checker-form");
+  const input = document.getElementById("zip-checker-input");
+  const result = document.getElementById("zip-checker-result");
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const zip = input.value.trim();
+
+    if (!/^\d{5}$/.test(zip)) {
+      result.innerHTML = `<span class="text-error">Enter a valid 5-digit ZIP code.</span>`;
+      return;
+    }
+
+    const match = zips.find((z) => z.zip === zip);
+
+    if (match) {
+      result.innerHTML = `<span class="text-secondary font-semibold">✓ Yes, we serve ${match.cityName}.</span>
+        <a href="/service-area/${match.citySlug}/" class="underline hover:text-primary ml-1">View local services →</a>`;
+      return;
+    }
+
+    const prefix = zip.slice(0, 2);
+    if (prefix === "33" || prefix === "34") {
+      result.innerHTML = `<span class="text-primary font-semibold">You're likely in our service area.</span>
+        <a href="${ctaHref}" class="underline hover:text-primary ml-1">Request an estimate →</a>`;
+      return;
+    }
+
+    result.innerHTML = `<span class="text-base-content/70">Not sure, but we may still be able to help.</span>
+      <a href="${ctaHref}" class="underline hover:text-primary ml-1">Contact us →</a>`;
+  });
+</script>

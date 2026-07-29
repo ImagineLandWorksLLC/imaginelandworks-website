@@ -1,0 +1,49 @@
+---
+import type { EquipmentItem } from "@data/equipment";
+import { iconSvg } from "@utils/icons";
+
+interface Props {
+  equipment: EquipmentItem[];
+  heading?: string;
+}
+
+const { equipment, heading = "The Iron We Run" } = Astro.props;
+---
+
+<section class="bg-base-100 py-20" id="equipment">
+  <div class="container mx-auto px-6">
+
+    <div class="text-center mb-14">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
+        Our Equipment
+      </p>
+      <h2 class="text-primary font-heading leading-tight">{heading}</h2>
+      <p class="text-base-content/70 max-w-xl mx-auto mt-3">
+        Professional-grade machines, run by experienced operators. Here's what
+        shows up to your job site.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      {equipment.map((item) => (
+        <div class="group relative bg-base-200 border border-base-300 rounded-2xl p-6 flex flex-col items-center text-center gap-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-secondary/40">
+          {item.image ? (
+            <img
+              src={item.image}
+              alt={item.name}
+              class="w-16 h-16 rounded-full object-cover shadow-md transition-transform duration-300 group-hover:scale-110"
+              loading="lazy"
+            />
+          ) : (
+            <div class="w-16 h-16 rounded-full bg-primary text-primary-content flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-110">
+              <Fragment set:html={iconSvg(item.icon, "size-7")} />
+            </div>
+          )}
+          <h3 class="font-heading text-primary uppercase text-lg">{item.name}</h3>
+          <p class="text-base-content/65 text-sm leading-relaxed">{item.use}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

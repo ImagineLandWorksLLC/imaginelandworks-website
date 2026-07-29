@@ -16,6 +16,8 @@ import ServiceArea from "@components/ServiceArea.astro";
 import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
 import JobberForm from "@components/JobberForm.astro";
 import FAQSection from "@components/FAQSection.astro";
+import EstimateCalculator from "@components/EstimateCalculator.astro";
+import EquipmentShowcase from "@components/EquipmentShowcase.astro";
 import { services } from "@data/services";
 import { reviews } from "@data/reviews";
 import { processSteps } from "@data/processSteps";
@@ -24,6 +26,8 @@ import { serviceCities } from "@data/serviceArea";
 import { contact, getSocialHref } from "@data/contact";
 import { faqs } from "@data/faqs";
 import { defaultValueProps } from "@data/valueProps";
+import { estimateServices } from "@data/estimator";
+import { equipmentList } from "@data/equipment";
 import { SITE_URL, buildAggregateRating, buildReviewSchema } from "@utils/schema";
 
 export const localBusinessSchema = {
@@ -101,6 +105,7 @@ export const faqSchema = {
   imageAlt="Imagine Land Works excavator on a job site"
 />
 <ServicesOverview services={services} />
+<EstimateCalculator services={estimateServices} ctaHref="/book/" />
 <ValueProps items={defaultValueProps} />
 <Testimonials
   layout="featured"
@@ -125,3 +130,4 @@ export const faqSchema = {
   ctaHref="/book/"
 />
 <FAQSection faqs={faqs} />
+<EquipmentShowcase equipment={equipmentList} />
