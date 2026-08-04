@@ -3,8 +3,8 @@ import { getImage } from "astro:assets";
 import ogDefaultSrc from "@assets/images/og-default.png";
 
 export interface PageFrontmatter {
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
   /** Absolute URL or site-relative path to the OG share image */
   image?: string;
   /** Override the canonical URL (defaults to the current page URL) */

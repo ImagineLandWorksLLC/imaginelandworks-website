@@ -117,7 +117,7 @@ export const serviceSections: ServiceSectionData[] = [
     imagePlaceholder: "Insert land clearing service image here",
     shortDescription:
       "Full-service land clearing from brush removal to stump grinding, leaving your property clean and build-ready.",
-    seoTitle: "Land Clearing in Lakeland, FL | Imagine Land Works, LLC",
+    seoTitle: "Land Clearing Services | Imagine Land Works",
     seoDescription:
       "Professional land clearing in Lakeland, FL. Imagine Land Works removes trees, brush, and stumps, leaving your property build-ready. Licensed & insured. Free estimates.",
     processSteps: [
