@@ -81,6 +81,13 @@ export const serviceSections: ServiceSectionData[] = [
       },
     ],
     relatedServices: ["mulching", "land-clearing", "site-preparation"],
+    galleryPhotos: [
+      { src: "/images/services/lawn-care/gallery/job-1.jpg", alt: "Freshly mowed backyard with clean mowing stripes in Lakeland, FL" },
+      { src: "/images/services/lawn-care/gallery/job-2.jpg", alt: "Stand-on mower cutting striped lawn along a tree-lined property" },
+      { src: "/images/services/lawn-care/gallery/job-3.jpg", alt: "Large fenced backyard freshly mowed with a trimmed hedge line" },
+      { src: "/images/services/lawn-care/gallery/job-4.jpg", alt: "Freshly laid sod in a backyard with shade sail posts installed" },
+      { src: "/images/services/lawn-care/gallery/job-5.jpg", alt: "Compact loader delivering a pallet of sod rolls for installation" },
+    ],
     faqs: [
       {
         question: "How often should my lawn be mowed?",
@@ -275,6 +282,15 @@ export const serviceSections: ServiceSectionData[] = [
       },
     ],
     relatedServices: ["land-clearing", "site-preparation", "excavation"],
+    galleryPhotos: [
+      { src: "/images/services/demolition/gallery/job-1.jpg", alt: "Collapsed roof and interior debris pile mid-teardown during a mobile home demolition" },
+      { src: "/images/services/demolition/gallery/job-2.jpg", alt: "CAT skid steer with hydraulic breaker attachment demolishing a concrete slab" },
+      { src: "/images/services/demolition/gallery/job-3.jpg", alt: "Dump trailer loaded with structural debris after a demolition job in Lakeland, FL" },
+      { src: "/images/services/demolition/gallery/job-4.jpg", alt: "Excavator demolishing a home's roof framing next to a debris dumpster" },
+      { src: "/images/services/demolition/gallery/job-5.jpg", alt: "Demolition site secured with caution tape as an excavator clears structure debris" },
+      { src: "/images/services/demolition/gallery/job-6.jpg", alt: "Excavator loading concrete block and demolition debris onto a dump trailer" },
+      { src: "/images/services/demolition/gallery/job-7.jpg", alt: "Excavator bucket clearing a pile of broken cinder block from a demolished wall" },
+    ],
     // TODO(client): confirm real pricing — sample range only, not verified against current job costs
     pricing: {
       low: 6000,

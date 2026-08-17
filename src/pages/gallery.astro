@@ -5,13 +5,42 @@ import GalleryGrid from "@components/gallery/GalleryGrid.astro";
 import GalleryLightbox from "@components/gallery/GalleryLightbox.astro";
 import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
 import Schema from "@components/Schema.astro";
-import { galleryItems } from "@data/gallery";
+import type { GalleryItem } from "@data/gallery";
+import { serviceSections } from "@data/serviceSections";
 import { contact } from "@data/contact";
 import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
 
 const seoTitle = "Project Gallery | Land Clearing & Excavation | Imagine Land Works, LLC";
 const seoDescription =
   "See land clearing, excavation, demolition, and site preparation projects completed by Imagine Land Works across Lakeland and Polk County, FL.";
+
+// Built from each service's photos so any photo added to a service page
+// automatically shows up here too — no separate list to keep in sync.
+const galleryItems: GalleryItem[] = serviceSections.flatMap((service) => {
+  const items: GalleryItem[] = service.galleryPhotos?.length
+    ? service.galleryPhotos.map((photo): GalleryItem => ({
+        kind: "photo",
+        photo,
+        caption: service.title,
+      }))
+    : [
+        {
+          kind: "photo",
+          photo: { alt: `${service.title} project in Lakeland, FL` },
+          caption: service.title,
+        },
+      ];
+
+  if (service.beforeAfterPhotos) {
+    const [before1, after1, before2, after2] = service.beforeAfterPhotos;
+    items.push(
+      { kind: "before-after", before: before1, after: after1, caption: `${service.title} — Before & After` },
+      { kind: "before-after", before: before2, after: after2, caption: `${service.title} — Before & After` },
+    );
+  }
+
+  return items;
+});
 
 const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "Home",    item: `${SITE_URL}/` },
