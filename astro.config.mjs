@@ -5,6 +5,7 @@ import mdx from '@astrojs/mdx';
 import tailwindcss from "@tailwindcss/vite";
 
 import sitemap from '@astrojs/sitemap';
+import webmcp from 'astro-webmcp';
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,7 +14,7 @@ export default defineConfig({
    server: {
       port: 3030,
    },
-   integrations: [mdx(), sitemap()],
+   integrations: [mdx(), sitemap(), webmcp()],
    vite: {
       resolve: {
          alias: {

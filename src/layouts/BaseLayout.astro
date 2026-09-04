@@ -24,6 +24,9 @@ const { title, description, image, canonical, noindex } = Astro.props;
     {import.meta.env.DEV && (
       <meta name="robots" content="noindex, nofollow" />
     )}
+    {import.meta.env.WEBMCP_ORIGIN_TRIAL_TOKEN && (
+      <meta http-equiv="origin-trial" content={import.meta.env.WEBMCP_ORIGIN_TRIAL_TOKEN} />
+    )}
     <SEO
       title={title}
       description={description}
