@@ -1,0 +1,41 @@
+---
+import { Image } from "astro:assets";
+import type { Project } from "@data/projects";
+import { serviceSections } from "@data/serviceSections";
+import { resolveServiceImage } from "@utils/images";
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const cover = project.galleryImages[0] ?? project.beforeAfter?.[0]?.after;
+const meta = resolveServiceImage(cover?.src);
+const service = serviceSections.find((s) => s.anchor === project.category);
+const place = [project.city, project.county].filter(Boolean).join(", ");
+---
+
+<a
+  href={`/projects/${project.slug}/`}
+  class="card bg-base-100 shadow-md rounded-xl hover:shadow-xl transition-shadow duration-200 group no-underline overflow-hidden"
+>
+  {meta && cover && (
+    <figure>
+      <Image
+        src={meta}
+        alt={cover.alt}
+        width={800}
+        widths={[400, 800]}
+        sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 100vw"
+        class="w-full aspect-4/3 object-cover"
+        loading="lazy"
+      />
+    </figure>
+  )}
+  <div class="card-body gap-2 p-6">
+    <p class="text-secondary font-heading text-xs uppercase tracking-widest">{service?.title ?? project.category}</p>
+    <h3 class="card-title font-heading text-primary text-xl leading-tight group-hover:underline">{project.title}</h3>
+    {place && <p class="text-sm text-base-content/60">{place}</p>}
+    <p class="text-base-content/70 text-sm leading-relaxed">{project.description}</p>
+  </div>
+</a>

@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint src",
+    "test": "vitest run",
     "lint:fix": "eslint src --fix",
     "format": "prettier --write src",
     "format:check": "prettier --check src"
@@ -34,6 +35,7 @@
     "eslint-plugin-astro": "^1.7.0",
     "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript-eslint": "^8.60.0"
+    "typescript-eslint": "^8.60.0",
+    "vitest": "^5.1.0"
   }
 }

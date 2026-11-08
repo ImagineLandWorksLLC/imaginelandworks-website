@@ -1,0 +1,165 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import Breadcrumb from "@components/services/Breadcrumb.astro";
+import PhotoGallery from "@components/services/PhotoGallery.astro";
+import FAQSection from "@components/FAQSection.astro";
+import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
+import Schema from "@components/Schema.astro";
+import { contact } from "@data/contact";
+import { serviceSections } from "@data/serviceSections";
+import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
+
+// Everything below is drawn from the existing, published Lawn Care service content.
+// Frequencies, prices, and contract terms are intentionally NOT listed: they have not been
+// approved by the owner (see docs/OWNER-DECISIONS.md).
+const lawn = serviceSections.find((s) => s.anchor === "lawn-care")!;
+const scheduleFaq = lawn.faqs.filter((f) => /how often|mowed/i.test(f.question));
+const faqs = [
+  ...scheduleFaq,
+  {
+    question: "How do I request recurring lawn maintenance?",
+    answer:
+      "Send a quote request and mention that you want ongoing service. We'll assess your property and recommend a schedule that fits your lawn.",
+  },
+];
+
+const title = "Lawn Maintenance Plans in Lakeland, FL | Recurring Lawn Care";
+const description =
+  "Request recurring lawn maintenance in Lakeland and Polk County, FL. Routine mowing, edging, and cleanup on a schedule matched to your lawn. Free estimates.";
+
+const comparison = [
+  { label: "Schedule", once: "One visit, when you need it", recurring: "Repeat visits on a schedule we recommend for your lawn" },
+  { label: "Best for", once: "Cleanups, overgrown yards, sod projects", recurring: "Lawns that need regular mowing and upkeep" },
+  { label: "How it starts", once: "Request a free estimate", recurring: "Request a free estimate and ask for ongoing service" },
+];
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: "Home", item: `${SITE_URL}/` },
+  { name: "Maintenance Plans", item: `${SITE_URL}/maintenance-plans/` },
+]);
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.question,
+    acceptedAnswer: { "@type": "Answer", text: f.answer },
+  })),
+};
+---
+
+<DefaultLayout title={title} description={description}>
+  <Schema slot="head" schema={breadcrumbSchema} />
+  <Schema slot="head" schema={faqSchema} />
+
+  <section class="bg-base-100 py-16">
+    <div class="container mx-auto px-6 text-center max-w-3xl">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">Maintenance Plans</p>
+      <h1 class="text-primary font-heading leading-tight">Recurring Lawn Maintenance in Lakeland, FL</h1>
+      <p class="text-base-content/70 text-lg leading-relaxed mt-4">
+        Keep your lawn looking its best without having to think about it. Tell us about your property and we'll
+        recommend a mowing and upkeep schedule that fits.
+      </p>
+      <a href="/book/" class="btn btn-primary btn-lg mt-8" data-maintenance-cta>
+        Request a Recurring Lawn Estimate
+      </a>
+    </div>
+  </section>
+
+  <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Maintenance Plans" }]} />
+
+  <section class="bg-base-100 py-16">
+    <div class="container mx-auto px-6 max-w-4xl grid gap-12">
+      <div>
+        <h2 class="text-primary font-heading mb-3">Who it's for</h2>
+        <p class="text-base-content/80 text-lg leading-relaxed">
+          Homeowners and commercial property owners in Lakeland and Polk County who want their lawn
+          maintained regularly instead of calling for each visit.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-primary font-heading mb-3">What lawn maintenance can include</h2>
+        <ul class="grid gap-3">
+          {lawn.capabilities.filter((c) => /mowing|cleanup|seasonal/i.test(c)).map((c) => (
+            <li class="flex items-start gap-4 text-base-content/80">
+              <span class="mt-2 size-2.5 rounded-full bg-secondary shrink-0"></span>
+              <span class="text-lg leading-relaxed">{c}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="text-sm text-base-content/60 mt-4">
+          The exact services and visit schedule are set after we see your property. See the full
+          <a href="/services/lawn-care/" class="underline">Lawn Care service page</a>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-primary font-heading mb-3">How the schedule is set</h2>
+        <p class="text-base-content/80 text-lg leading-relaxed">
+          Lawn size, grass type, condition, and the season all affect how often a lawn needs attention.
+          We walk the property, then recommend a schedule based on what we see. Larger or more overgrown
+          lawns may need a first cleanup before routine visits begin.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-primary font-heading mb-4">One-time service vs. recurring service</h2>
+        <div class="overflow-x-auto">
+          <table class="table">
+            <caption class="sr-only">Comparison of one-time and recurring lawn service</caption>
+            <thead>
+              <tr><th scope="col"><span class="sr-only">Feature</span></th><th scope="col">One-time</th><th scope="col">Recurring</th></tr>
+            </thead>
+            <tbody>
+              {comparison.map((row) => (
+                <tr>
+                  <th scope="row">{row.label}</th>
+                  <td>{row.once}</td>
+                  <td>{row.recurring}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="text-sm text-base-content/60 mt-4">
+          Pricing is quoted for your property after an assessment. Nothing is billed automatically.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <PhotoGallery
+    photos={lawn.galleryPhotos}
+    serviceName="Lawn Care"
+    heading="Lawn Care Work"
+    ctaLabel="View Full Gallery"
+    ctaHref="/gallery/"
+  />
+
+  <FAQSection faqs={faqs} />
+
+  <FreeEstimateCTA
+    headline="Ready for a Lawn You Don't Have to Think About?"
+    subheadline="Free Estimates"
+    body="Tell us about your property and that you're interested in ongoing service. We'll follow up with a recommended schedule and a straight, honest estimate."
+    ctaLabel="Request a Free Estimate"
+    ctaHref="/book/"
+    phone={contact.phone.display}
+    phoneLabel="Call Us Today"
+  />
+</DefaultLayout>
+
+<script>
+  import { buildQuoteSummary, saveQuoteSummary } from "@utils/quoteSummary";
+
+  document.querySelector("[data-maintenance-cta]")?.addEventListener("click", () => {
+    saveQuoteSummary(
+      buildQuoteSummary({
+        source: "maintenance-plans",
+        services: ["Lawn Care"],
+        outcome: "Recurring lawn maintenance estimate",
+      }),
+    );
+  });
+</script>

@@ -1,0 +1,168 @@
+---
+import { Image } from "astro:assets";
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import Breadcrumb from "@components/services/Breadcrumb.astro";
+import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
+import BeforeAfterSlider from "@components/BeforeAfterSlider.astro";
+import Schema from "@components/Schema.astro";
+import { serviceSections } from "@data/serviceSections";
+import { contact } from "@data/contact";
+import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
+import { resolveServiceImage } from "@utils/images";
+import { publishedProjects } from "@utils/siteProjects";
+import type { Project } from "@data/projects";
+
+export function getStaticPaths() {
+  return publishedProjects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const service = serviceSections.find((s) => s.anchor === project.category);
+const relatedServices = [project.category, ...(project.services ?? [])]
+  .map((slug) => serviceSections.find((s) => s.anchor === slug))
+  .filter((s) => s !== undefined);
+const place = [project.city, project.county].filter(Boolean).join(", ");
+
+const details: { label: string; value: string }[] = [
+  ...(place ? [{ label: "Location", value: place }] : []),
+  { label: "Service", value: service?.title ?? project.category },
+  ...(project.duration ? [{ label: "Timeline", value: project.duration }] : []),
+];
+
+const title = `${project.title} | ${service?.title ?? "Project"}${project.city ? ` in ${project.city}, FL` : ""}`;
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: "Home", item: `${SITE_URL}/` },
+  { name: "Gallery", item: `${SITE_URL}/gallery/` },
+  { name: project.title, item: `${SITE_URL}/projects/${project.slug}/` },
+]);
+---
+
+<DefaultLayout title={title} description={project.description.slice(0, 160)}>
+  <Schema slot="head" schema={breadcrumbSchema} />
+
+  <section class="bg-base-100 py-16">
+    <div class="container mx-auto px-6 max-w-4xl text-center">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">{service?.title}</p>
+      <h1 class="text-primary font-heading leading-tight">{project.title}</h1>
+      <p class="text-base-content/70 text-lg leading-relaxed mt-4">{project.description}</p>
+    </div>
+  </section>
+
+  <Breadcrumb
+    items={[
+      { label: "Home", href: "/" },
+      { label: "Gallery", href: "/gallery/" },
+      { label: project.title },
+    ]}
+  />
+
+  <section class="bg-base-100 py-16">
+    <div class="container mx-auto px-6 max-w-4xl space-y-12">
+      <dl class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {details.map((d) => (
+          <div class="bg-base-200 rounded-xl p-5">
+            <dt class="text-xs uppercase tracking-widest text-base-content/50">{d.label}</dt>
+            <dd class="font-heading text-primary text-lg mt-1">{d.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {project.challenge && (
+        <div>
+          <h2 class="text-primary font-heading mb-3">The Challenge</h2>
+          <p class="text-base-content/80 text-lg leading-relaxed">{project.challenge}</p>
+        </div>
+      )}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div>
+          <h2 class="text-primary font-heading mb-3">Scope of Work</h2>
+          <ul class="list-disc pl-5 space-y-2 text-base-content/80">{project.scope.map((i) => <li>{i}</li>)}</ul>
+        </div>
+        <div>
+          <h2 class="text-primary font-heading mb-3">What We Delivered</h2>
+          <ul class="list-disc pl-5 space-y-2 text-base-content/80">{project.deliverables.map((i) => <li>{i}</li>)}</ul>
+        </div>
+      </div>
+
+      {project.equipment?.length ? (
+        <div>
+          <h2 class="text-primary font-heading mb-3">Equipment Used</h2>
+          <ul class="list-disc pl-5 space-y-2 text-base-content/80">{project.equipment.map((i) => <li>{i}</li>)}</ul>
+        </div>
+      ) : null}
+
+      {project.results && (
+        <div>
+          <h2 class="text-primary font-heading mb-3">Results</h2>
+          <p class="text-base-content/80 text-lg leading-relaxed">{project.results}</p>
+        </div>
+      )}
+
+      {project.beforeAfter?.length ? (
+        <div>
+          <h2 class="text-primary font-heading mb-6">Before &amp; After</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {project.beforeAfter.map((pair) => (
+              <BeforeAfterSlider before={pair.before} after={pair.after} />
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {project.galleryImages.length > 0 && (
+        <div>
+          <h2 class="text-primary font-heading mb-6">Project Photos</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {project.galleryImages.map((img) => {
+              const meta = resolveServiceImage(img.src);
+              return meta ? (
+                <Image
+                  src={meta}
+                  alt={img.alt}
+                  width={1000}
+                  widths={[500, 1000]}
+                  sizes="(min-width: 768px) 440px, 100vw"
+                  class="w-full aspect-4/3 object-cover rounded-2xl"
+                  loading="lazy"
+                />
+              ) : null;
+            })}
+          </div>
+        </div>
+      )}
+
+      {project.testimonial && (
+        <figure class="bg-base-200 rounded-2xl p-8">
+          <blockquote class="text-lg leading-relaxed text-base-content/80">“{project.testimonial.quote}”</blockquote>
+          <figcaption class="mt-4 font-heading text-primary">{project.testimonial.attribution}</figcaption>
+        </figure>
+      )}
+
+      {relatedServices.length > 0 && (
+        <div>
+          <h2 class="text-primary font-heading mb-3">Related Services</h2>
+          <ul class="flex flex-wrap gap-3">
+            {relatedServices.map((s) => (
+              <li><a href={`/services/${s.anchor}/`} class="btn btn-outline btn-primary btn-sm">{s.title}</a></li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <FreeEstimateCTA
+    headline="Have a Similar Project?"
+    subheadline="No Obligation. No Guesswork."
+    body="Tell us about your property and we'll give you a straight, honest estimate."
+    ctaLabel="Request a Similar Project"
+    ctaHref="/book/"
+    phone={contact.phone.display}
+    phoneLabel="Call Us Today"
+  />
+</DefaultLayout>

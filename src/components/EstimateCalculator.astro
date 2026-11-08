@@ -1,5 +1,12 @@
 ---
 import type { EstimateService } from "@data/estimator";
+import { accessOptions, terrainOptions, vegetationOptions } from "@data/projectOptions";
+import {
+  calculateEstimate,
+  describeResult,
+  ESTIMATE_DISCLAIMER,
+  formatAcreage,
+} from "@utils/estimate";
 
 interface Props {
   services: EstimateService[];
@@ -7,9 +14,15 @@ interface Props {
 }
 
 const { services, ctaHref = "/book/" } = Astro.props;
+
+// Server-render the default state with the same function the browser uses, so
+// the page never shows a placeholder like "$0–$0", even without JavaScript.
+const initialService = services.find((s) => s.pricingStatus === "approved") ?? services[0];
+const initialAcres = 1;
+const initial = describeResult(calculateEstimate(initialService, { acres: initialAcres }));
 ---
 
-<section class="bg-base-200 py-20">
+<section class="bg-base-200 py-20" id="estimate" data-estimate-calculator>
   <div class="container mx-auto px-6">
     <div class="max-w-2xl mx-auto text-center mb-10">
       <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
@@ -17,7 +30,7 @@ const { services, ctaHref = "/book/" } = Astro.props;
       </p>
       <h2 class="text-primary font-heading leading-tight">Get a Ballpark Estimate</h2>
       <p class="text-base-content/70 mt-3">
-        Pick a service and your approximate acreage for a rough price range in seconds.
+        Pick a service and your approximate acreage for a rough planning range in seconds.
         No forms, no obligation.
       </p>
     </div>
@@ -31,7 +44,7 @@ const { services, ctaHref = "/book/" } = Astro.props;
           </label>
           <select id="est-service" class="select select-bordered w-full">
             {services.map((s) => (
-              <option value={s.slug}>{s.label}</option>
+              <option value={s.slug} selected={s.slug === initialService.slug}>{s.label}</option>
             ))}
           </select>
         </div>
@@ -39,7 +52,7 @@ const { services, ctaHref = "/book/" } = Astro.props;
         <div id="est-acreage-field">
           <label for="est-acreage" class="flex items-baseline justify-between font-heading text-primary text-sm uppercase tracking-widest mb-3">
             <span>Lot Size</span>
-            <span id="est-acreage-value" class="text-secondary normal-case tracking-normal">1 acre</span>
+            <span id="est-acreage-value" class="text-secondary normal-case tracking-normal">{formatAcreage(initialAcres)}</span>
           </label>
           <input
             id="est-acreage"
@@ -47,7 +60,7 @@ const { services, ctaHref = "/book/" } = Astro.props;
             min="0.25"
             max="10"
             step="0.25"
-            value="1"
+            value={initialAcres}
             class="range range-secondary w-full"
           />
           <div class="flex justify-between text-xs text-base-content/40 mt-1">
@@ -58,72 +71,206 @@ const { services, ctaHref = "/book/" } = Astro.props;
 
       </div>
 
+      <details class="mt-8 rounded-xl border border-base-300 p-4" id="est-details">
+        <summary class="cursor-pointer font-heading text-primary text-sm uppercase tracking-widest">
+          Add site details (optional)
+        </summary>
+        <p class="text-base-content/60 text-sm mt-3">
+          These don't change the range above. They help us understand your project and are
+          included in the summary you can send with your quote request.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-4">
+          <label class="form-control">
+            <span class="text-sm mb-1 block">Vegetation</span>
+            <select id="est-vegetation" class="select select-bordered select-sm w-full">
+              <option value="">Not sure</option>
+              {vegetationOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+            </select>
+          </label>
+          <label class="form-control">
+            <span class="text-sm mb-1 block">Terrain</span>
+            <select id="est-terrain" class="select select-bordered select-sm w-full">
+              <option value="">Not sure</option>
+              {terrainOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+            </select>
+          </label>
+          <label class="form-control">
+            <span class="text-sm mb-1 block">Equipment access</span>
+            <select id="est-access" class="select select-bordered select-sm w-full">
+              <option value="">Not sure</option>
+              {accessOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+            </select>
+          </label>
+          <div>
+            <label for="est-zip" class="text-sm mb-1 block">Property ZIP code</label>
+            <input
+              id="est-zip"
+              type="text"
+              inputmode="numeric"
+              autocomplete="postal-code"
+              maxlength="5"
+              placeholder="33811"
+              class="input input-bordered input-sm w-full"
+              aria-describedby="est-zip-status"
+            />
+            <p id="est-zip-status" class="text-xs mt-1 min-h-4" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+        <label class="flex items-center gap-3 mt-5 cursor-pointer">
+          <input id="est-haul" type="checkbox" class="checkbox checkbox-sm checkbox-secondary" />
+          <span class="text-sm">I need debris hauled away</span>
+        </label>
+      </details>
+
       <div class="text-center border-t border-base-300 mt-8 pt-8">
         <p class="text-base-content/60 text-sm uppercase tracking-widest font-heading mb-2">
           Estimated Range
         </p>
-        <p id="est-result" class="font-heading text-4xl md:text-5xl text-primary">
-          $0&ndash;$0
-        </p>
-        <p id="est-note" class="text-base-content/50 text-xs max-w-md mx-auto mt-4">
-          Ballpark only, based on typical Central Florida jobs. Actual pricing depends on
-          terrain, density, and access. For an exact number, request a free quote.
-        </p>
-        <a href={ctaHref} class="btn btn-primary btn-lg mt-6">
-          Get an Exact Quote
-        </a>
+        <div role="status" aria-live="polite" aria-atomic="true">
+          <p id="est-result" class="font-heading text-4xl md:text-5xl text-primary">{initial.headline}</p>
+          <p id="est-note" class="text-base-content/60 text-sm max-w-md mx-auto mt-3">{initial.note}</p>
+        </div>
+
+        <div id="est-factors-wrap" class="text-left max-w-md mx-auto mt-6">
+          <p class="font-heading text-primary text-xs uppercase tracking-widest mb-2">Factors that affect your price</p>
+          <ul id="est-factors" class="list-disc pl-5 text-sm text-base-content/70 space-y-1"></ul>
+          <p id="est-exclusions-title" class="font-heading text-primary text-xs uppercase tracking-widest mt-4 mb-2 hidden">May not be included</p>
+          <ul id="est-exclusions" class="list-disc pl-5 text-sm text-base-content/70 space-y-1"></ul>
+        </div>
+
+        <p class="text-base-content/50 text-xs max-w-md mx-auto mt-6">{ESTIMATE_DISCLAIMER}</p>
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+          <a id="est-cta" href={ctaHref} class="btn btn-primary btn-lg">Get an Exact Quote</a>
+          <button id="est-copy" type="button" class="btn btn-outline btn-primary btn-lg" hidden>Copy summary</button>
+        </div>
+        <p id="est-copy-status" class="text-xs text-base-content/60 mt-2 min-h-4" role="status" aria-live="polite"></p>
       </div>
     </div>
+
+    <noscript>
+      <p class="text-center text-base-content/70 max-w-md mx-auto mt-6">
+        The interactive calculator needs JavaScript. The figure above is a sample for a one-acre
+        {initialService.label.toLowerCase()} job, not a quote — <a href={ctaHref} class="underline">request a free quote</a> for a real number.
+      </p>
+    </noscript>
   </div>
 </section>
 
-<script define:vars={{ services }}>
-  const serviceSelect = document.getElementById("est-service");
-  const acreageField = document.getElementById("est-acreage-field");
-  const acreageInput = document.getElementById("est-acreage");
-  const acreageValue = document.getElementById("est-acreage-value");
-  const result = document.getElementById("est-result");
-  const note = document.getElementById("est-note");
+<script>
+  import { estimateServices, getEstimateService } from "@data/estimator";
+  import { accessOptions, labelFor, terrainOptions, vegetationOptions } from "@data/projectOptions";
+  import { serviceZips } from "@data/serviceZips";
+  import { calculateEstimate, describeResult, formatAcreage, formatMoney } from "@utils/estimate";
+  import type { EstimateInput } from "@utils/estimate";
+  import { buildQuoteSummary, saveQuoteSummary } from "@utils/quoteSummary";
+  import { checkZip } from "@utils/zip";
+  import type { Access, Terrain, Vegetation } from "@data/projectOptions";
 
-  const DEFAULT_NOTE =
-    "Ballpark only, based on typical Central Florida jobs. Actual pricing depends on " +
-    "terrain, density, and access. For an exact number, request a free quote.";
-  const FLAT_RATE_NOTE =
-    "Ballpark only, based on typical Central Florida projects. This service is quoted " +
-    "per project rather than by lot size. For an exact number, request a free quote.";
-  const CONTACT_NOTE =
-    "This service has too many variables (materials, access, disposal, permitting) to " +
-    "ballpark online. Request a free quote and we'll get you an exact number.";
+  const root = document.querySelector<HTMLElement>("[data-estimate-calculator]");
+  if (root) {
+    const $ = <T extends HTMLElement>(id: string) => root.querySelector<T>(`#${id}`)!;
+    const serviceSelect = $<HTMLSelectElement>("est-service");
+    const acreageField = $("est-acreage-field");
+    const acreageInput = $<HTMLInputElement>("est-acreage");
+    const acreageValue = $("est-acreage-value");
+    const vegetation = $<HTMLSelectElement>("est-vegetation");
+    const terrain = $<HTMLSelectElement>("est-terrain");
+    const access = $<HTMLSelectElement>("est-access");
+    const haul = $<HTMLInputElement>("est-haul");
+    const zip = $<HTMLInputElement>("est-zip");
+    const zipStatus = $("est-zip-status");
+    const result = $("est-result");
+    const note = $("est-note");
+    const factorsList = $("est-factors");
+    const exclusionsList = $("est-exclusions");
+    const exclusionsTitle = $("est-exclusions-title");
+    const cta = $<HTMLAnchorElement>("est-cta");
+    const copyBtn = $<HTMLButtonElement>("est-copy");
+    const copyStatus = $("est-copy-status");
 
-  const format = (n) => `$${Math.round(n).toLocaleString("en-US")}`;
+    const fill = (list: HTMLElement, items: string[]) =>
+      list.replaceChildren(
+        ...items.map((text) => {
+          const li = document.createElement("li");
+          li.textContent = text;
+          return li;
+        }),
+      );
 
-  function formatAcreage(a) {
-    return `${a % 1 === 0 ? a : a.toFixed(2)} acre${a === 1 ? "" : "s"}`;
-  }
+    const readInput = (): EstimateInput => ({
+      acres: Number(acreageInput.value),
+      vegetation: (vegetation.value || undefined) as Vegetation | undefined,
+      terrain: (terrain.value || undefined) as Terrain | undefined,
+      access: (access.value || undefined) as Access | undefined,
+      haulDebris: haul.checked || undefined,
+      zip: zip.value.trim() || undefined,
+    });
 
-  function update() {
-    const service = services.find((s) => s.slug === serviceSelect.value) ?? services[0];
-    const acreage = Number(acreageInput.value);
+    let summary = "";
 
-    acreageValue.textContent = formatAcreage(acreage);
-    acreageField.classList.toggle("hidden", !!service.flatRate || !!service.contactForQuote);
+    function update() {
+      const service = getEstimateService(serviceSelect.value) ?? estimateServices[0];
+      const input = readInput();
+      acreageValue.textContent = formatAcreage(input.acres ?? 0);
+      acreageField.classList.toggle("hidden", !service.usesAcreage);
 
-    if (service.contactForQuote) {
-      note.textContent = CONTACT_NOTE;
-      result.textContent = "Contact Us for a Quote";
-      return;
+      const est = calculateEstimate(service, service.usesAcreage ? input : { ...input, acres: service.minAcres });
+      const text = describeResult(est);
+      result.textContent = text.headline;
+      note.textContent = text.note;
+      result.classList.toggle("text-3xl", est.kind !== "range");
+      fill(factorsList, est.kind === "invalid" ? [] : est.factors);
+      fill(exclusionsList, est.kind === "range" ? est.exclusions : []);
+      exclusionsTitle.classList.toggle("hidden", est.kind !== "range");
+
+      // ZIP feedback reuses the ZIP checker's rules.
+      zipStatus.textContent = "";
+      zipStatus.className = "text-xs mt-1 min-h-4";
+      if (input.zip) {
+        const z = checkZip(input.zip, serviceZips);
+        if (z.kind === "invalid") {
+          if (input.zip.length === 5) {
+            zipStatus.textContent = "Enter a valid 5-digit ZIP code.";
+            zipStatus.classList.add("text-error");
+          }
+        } else if (z.kind === "served") {
+          zipStatus.textContent = `✓ We serve ${z.cityName}.`;
+          zipStatus.classList.add("text-secondary");
+        } else if (z.kind === "likely") {
+          zipStatus.textContent = "You're likely in our service area.";
+        } else {
+          zipStatus.textContent = "Not sure, but we may still be able to help.";
+        }
+      }
+
+      summary = buildQuoteSummary({
+        source: "estimate-calculator",
+        services: [service.label],
+        acreage: service.usesAcreage && input.acres ? formatAcreage(input.acres) : undefined,
+        vegetation: labelFor(vegetationOptions, input.vegetation),
+        terrain: labelFor(terrainOptions, input.terrain),
+        access: labelFor(accessOptions, input.access),
+        haulDebris: input.haulDebris ? true : undefined,
+        zip: input.zip && /^\d{5}$/.test(input.zip) ? input.zip : undefined,
+        estimateRange:
+          est.kind === "range" ? `${formatMoney(est.low)}–${formatMoney(est.high)}` : undefined,
+      });
+      copyBtn.hidden = false;
     }
 
-    note.textContent = service.flatRate ? FLAT_RATE_NOTE : DEFAULT_NOTE;
-
-    const effectiveAcreage = service.flatRate ? 1 : acreage;
-    const low = Math.max(service.ratePerAcreLow * effectiveAcreage, service.minLow);
-    const high = Math.max(service.ratePerAcreHigh * effectiveAcreage, service.minHigh);
-
-    result.textContent = `${format(low)}–${format(high)}`;
+    root.addEventListener("input", update);
+    root.addEventListener("change", update);
+    cta.addEventListener("click", () => saveQuoteSummary(summary));
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(summary);
+        copyStatus.textContent = "Summary copied. Paste it into the quote request form.";
+      } catch {
+        copyStatus.textContent = "Couldn't copy automatically — your summary is saved for the quote page.";
+      }
+      saveQuoteSummary(summary);
+    });
+    update();
   }
-
-  serviceSelect?.addEventListener("change", update);
-  acreageInput?.addEventListener("input", update);
-  update();
 </script>

@@ -1,25 +1,27 @@
 ---
+import { Image, getImage } from "astro:assets";
 import type { GalleryItem } from "@data/gallery";
 import BeforeAfterSlider from "@components/BeforeAfterSlider.astro";
+import { resolveServiceImage } from "@utils/images";
 
 interface Props {
   items: GalleryItem[];
+  /** Filter options as { slug, label }. Hidden when fewer than two are given. */
+  categories?: { slug: string; label: string }[];
 }
 
-const { items } = Astro.props;
+const { items, categories = [] } = Astro.props;
 
 // Only single photos open in the lightbox — before/after tiles are already
 // fully interactive (drag-to-compare) directly in the grid.
-const isViewable = (item: GalleryItem) => item.kind === "photo" && !!item.photo.src;
-
-let viewableCounter = 0;
-const tiles = items.map((item) => {
-  const viewable = isViewable(item);
-  const viewableIndex = viewable ? viewableCounter++ : null;
-  return { item, viewableIndex };
-});
-
-const viewableItems = items.filter(isViewable);
+const tiles = await Promise.all(
+  items.map(async (item) => {
+    if (item.kind !== "photo") return { item, meta: undefined, full: undefined };
+    const meta = resolveServiceImage(item.photo.src);
+    const full = meta ? await getImage({ src: meta, width: 1600, format: "webp" }) : undefined;
+    return { item, meta, full };
+  }),
+);
 
 const placeholderIcon = `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-12 text-base-content/20" aria-hidden="true">
@@ -31,24 +33,43 @@ const placeholderIcon = `
 <section class="bg-base-100 py-20">
   <div class="container mx-auto px-6">
 
+    {categories.length > 1 && (
+      <fieldset class="max-w-6xl mx-auto mb-10 flex flex-wrap justify-center gap-2" data-gallery-filter hidden>
+        <legend class="sr-only">Filter projects by service</legend>
+        {[{ slug: "all", label: "All" }, ...categories].map((c, i) => (
+          <label class="gallery-chip btn btn-sm btn-outline btn-primary has-checked:btn-active has-focus-visible:outline-2 has-focus-visible:outline-offset-2">
+            <input type="radio" name="gallery-category" value={c.slug} class="sr-only" checked={i === 0} />
+            {c.label}
+          </label>
+        ))}
+      </fieldset>
+    )}
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-      {tiles.map(({ item, viewableIndex }) => (
+      {tiles.map(({ item, meta, full }) => (
         item.kind === "photo" ? (
-          viewableIndex !== null ? (
+          meta && full ? (
             <button
               type="button"
               class="overflow-hidden rounded-2xl cursor-zoom-in group relative"
-              data-lightbox-index={viewableIndex}
+              data-gallery-tile
+              data-category={item.category}
+              data-full={full.src}
+              data-alt={item.photo.alt}
+              data-caption={item.caption ?? ""}
             >
-              <img
-                src={item.photo.src}
+              <Image
+                src={meta}
                 alt={item.photo.alt}
-                class="w-full aspect-4/3 object-cover group-hover:scale-105 transition-transform duration-300"
+                width={1000}
+                widths={[400, 700, 1000]}
+                sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 100vw"
+                class="w-full aspect-4/3 object-cover group-hover:scale-105 motion-reduce:transform-none transition-transform duration-300"
                 loading="lazy"
               />
             </button>
           ) : (
-            <div class="overflow-hidden rounded-2xl">
+            <div class="overflow-hidden rounded-2xl" data-gallery-tile data-category={item.category} data-placeholder>
               <div class="w-full aspect-4/3 bg-base-200 border-2 border-dashed border-base-content/10 flex flex-col items-center justify-center gap-3">
                 <Fragment set:html={placeholderIcon} />
                 <p class="font-heading text-sm uppercase tracking-wider text-base-content/30">
@@ -59,7 +80,7 @@ const placeholderIcon = `
             </div>
           )
         ) : (
-          <div class="sm:col-span-2 lg:col-span-1">
+          <div class="sm:col-span-2 lg:col-span-1" data-gallery-tile data-category={item.category}>
             <BeforeAfterSlider
               before={item.before}
               after={item.after}
@@ -70,37 +91,76 @@ const placeholderIcon = `
       ))}
     </div>
 
+    <p class="text-center text-base-content/60 mt-8 hidden" data-gallery-empty>No projects match that filter yet.</p>
+
   </div>
 </section>
 
-<script define:vars={{ viewableItems }}>
-  const dialog = document.getElementById("gallery-lightbox");
+<script>
+  const dialog = document.getElementById("gallery-lightbox") as HTMLDialogElement | null;
   const stage = document.getElementById("lightbox-stage");
   const caption = document.getElementById("lightbox-caption");
+  const tiles = Array.from(document.querySelectorAll<HTMLElement>("[data-gallery-tile]"));
+  const filter = document.querySelector<HTMLElement>("[data-gallery-filter]");
+  const empty = document.querySelector<HTMLElement>("[data-gallery-empty]");
   let current = 0;
 
-  function render(i) {
-    if (viewableItems.length === 0) return;
-    current = ((i % viewableItems.length) + viewableItems.length) % viewableItems.length;
-    const item = viewableItems[current];
+  const visibleButtons = () =>
+    tiles.filter((t) => !t.hidden && t.dataset.full) as HTMLElement[];
 
-    stage.innerHTML = `<img src="${item.photo.src}" alt="${item.photo.alt}" class="max-h-[65vh] rounded-lg object-contain mx-auto" />`;
-
-    caption.textContent = item.caption ?? "";
+  function render(i: number) {
+    const list = visibleButtons();
+    if (!list.length || !stage) return;
+    current = ((i % list.length) + list.length) % list.length;
+    const t = list[current];
+    const img = document.createElement("img");
+    img.src = t.dataset.full ?? "";
+    img.alt = t.dataset.alt ?? "";
+    img.className = "max-h-[65vh] rounded-lg object-contain mx-auto";
+    stage.replaceChildren(img);
+    if (caption) caption.textContent = t.dataset.caption ?? "";
   }
 
-  document.querySelectorAll("[data-lightbox-index]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      render(Number(btn.dataset.lightboxIndex));
+  tiles.forEach((tile) => {
+    if (!tile.dataset.full) return;
+    tile.addEventListener("click", () => {
+      render(visibleButtons().indexOf(tile));
       dialog?.showModal();
     });
   });
 
   document.getElementById("lightbox-prev")?.addEventListener("click", () => render(current - 1));
   document.getElementById("lightbox-next")?.addEventListener("click", () => render(current + 1));
-
   dialog?.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") render(current - 1);
     if (e.key === "ArrowRight") render(current + 1);
   });
+
+  // Category filter — progressive enhancement: without JS every tile stays visible.
+  function applyFilter(slug: string) {
+    let shown = 0;
+    tiles.forEach((tile) => {
+      const match = slug === "all" || tile.dataset.category === slug;
+      // Placeholder ("coming soon") tiles only appear under "All".
+      const hide = !match || (slug !== "all" && "placeholder" in tile.dataset);
+      tile.hidden = hide;
+      if (!hide) shown++;
+    });
+    empty?.classList.toggle("hidden", shown > 0);
+  }
+
+  if (filter) {
+    filter.hidden = false;
+    const radios = Array.from(filter.querySelectorAll<HTMLInputElement>("input[type=radio]"));
+    const fromHash = decodeURIComponent(location.hash.replace(/^#/, ""));
+    const initial = radios.find((r) => r.value === fromHash);
+    if (initial) initial.checked = true;
+    applyFilter(initial ? initial.value : "all");
+    radios.forEach((r) =>
+      r.addEventListener("change", () => {
+        applyFilter(r.value);
+        history.replaceState(null, "", r.value === "all" ? location.pathname : `#${r.value}`);
+      }),
+    );
+  }
 </script>

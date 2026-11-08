@@ -1,9 +1,14 @@
 ---
 import BookingLayout from "@layouts/BookingLayout.astro";
 import JobberForm from "@components/JobberForm.astro";
+import QuoteSummaryCard from "@components/QuoteSummaryCard.astro";
 import Schema from "@components/Schema.astro";
 import { contact } from "@data/contact";
 import { services } from "@data/services";
+import { buildLocalBusinessSchema } from "@utils/schema";
+
+// Same LocalBusiness node as every other page (shared @id), without its own @context.
+const { "@context": _ctx, ...businessNode } = buildLocalBusinessSchema();
 
 const contactPageSchema = {
   "@context": "https://schema.org",
@@ -12,30 +17,7 @@ const contactPageSchema = {
   description:
     "Request a free estimate for land clearing, excavation, site prep, mulching, tree work, and more in Lakeland, FL & Polk County.",
   url: "https://imaginelandworks.com/book/",
-  mainEntity: {
-    "@type": "LocalBusiness",
-    name: contact.legalName,
-    telephone: `+1${contact.phone.raw}`,
-    email: contact.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: contact.address.street,
-      addressLocality: contact.address.city,
-      addressRegion: contact.address.state,
-      postalCode: contact.address.zip,
-      addressCountry: "US",
-    },
-    areaServed: [
-      "Lakeland, FL",
-      "Plant City, FL",
-      "Bartow, FL",
-      "Winter Haven, FL",
-      "Auburndale, FL",
-      "Lake Wales, FL",
-      "Polk County, FL",
-    ],
-    hasMap: "https://maps.google.com/?cid=imaginelandworks",
-  },
+  mainEntity: businessNode,
 };
 ---
 
@@ -163,6 +145,7 @@ const contactPageSchema = {
       <!-- ─── Right: Form Column ─────────────────────────────────── -->
       <div class="lg:sticky lg:top-6">
         <div class="bg-base-100 rounded-2xl shadow-lg border border-base-300 p-2">
+          <QuoteSummaryCard />
           <JobberForm />
         </div>
       </div>

@@ -10,13 +10,6 @@ export interface BeforeAfterPhoto extends ServicePhoto {
   label: "Before" | "After";
 }
 
-export interface PricingInfo {
-  low: number;
-  high: number;
-  unit: string;
-  note: string;
-}
-
 export interface ServiceSectionData {
   anchor: string;
   eyebrow: string;
@@ -37,8 +30,6 @@ export interface ServiceSectionData {
   galleryPhotos?: ServicePhoto[];
   /** Exactly 4 photos (2 before + 2 after) for the BeforeAfterGrid section. */
   beforeAfterPhotos?: [BeforeAfterPhoto, BeforeAfterPhoto, BeforeAfterPhoto, BeforeAfterPhoto];
-  /** Sample pricing range shown via PricingRange.astro. */
-  pricing?: PricingInfo;
 }
 
 export const serviceSections: ServiceSectionData[] = [
@@ -82,11 +73,11 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     relatedServices: ["mulching", "land-clearing", "site-preparation"],
     galleryPhotos: [
-      { src: "/images/services/lawn-care/gallery/job-1.jpg", alt: "Freshly mowed backyard with clean mowing stripes in Lakeland, FL" },
-      { src: "/images/services/lawn-care/gallery/job-2.jpg", alt: "Stand-on mower cutting striped lawn along a tree-lined property" },
-      { src: "/images/services/lawn-care/gallery/job-3.jpg", alt: "Large fenced backyard freshly mowed with a trimmed hedge line" },
-      { src: "/images/services/lawn-care/gallery/job-4.jpg", alt: "Freshly laid sod in a backyard with shade sail posts installed" },
-      { src: "/images/services/lawn-care/gallery/job-5.jpg", alt: "Compact loader delivering a pallet of sod rolls for installation" },
+      { src: "lawn-care/gallery/job-1.jpg", alt: "Freshly mowed backyard with clean mowing stripes in Lakeland, FL" },
+      { src: "lawn-care/gallery/job-2.jpg", alt: "Stand-on mower cutting striped lawn along a tree-lined property" },
+      { src: "lawn-care/gallery/job-3.jpg", alt: "Large fenced backyard freshly mowed with a trimmed hedge line" },
+      { src: "lawn-care/gallery/job-4.jpg", alt: "Freshly laid sod in a backyard with shade sail posts installed" },
+      { src: "lawn-care/gallery/job-5.jpg", alt: "Compact loader delivering a pallet of sod rolls for installation" },
     ],
     faqs: [
       {
@@ -145,13 +136,6 @@ export const serviceSections: ServiceSectionData[] = [
       },
     ],
     relatedServices: ["site-preparation", "excavation", "demolition"],
-    // TODO(client): confirm real pricing — sample range only, not verified against current job costs
-    pricing: {
-      low: 1500,
-      high: 4000,
-      unit: "per acre",
-      note: "Sample pricing based on typical Central Florida land clearing scope. Every property is different — contact us for an exact quote.",
-    },
     faqs: [
       {
         question: "How much does land clearing cost in Lakeland, FL?",
@@ -283,21 +267,14 @@ export const serviceSections: ServiceSectionData[] = [
     ],
     relatedServices: ["land-clearing", "site-preparation", "excavation"],
     galleryPhotos: [
-      { src: "/images/services/demolition/gallery/job-1.jpg", alt: "Collapsed roof and interior debris pile mid-teardown during a mobile home demolition" },
-      { src: "/images/services/demolition/gallery/job-2.jpg", alt: "CAT skid steer with hydraulic breaker attachment demolishing a concrete slab" },
-      { src: "/images/services/demolition/gallery/job-3.jpg", alt: "Dump trailer loaded with structural debris after a demolition job in Lakeland, FL" },
-      { src: "/images/services/demolition/gallery/job-4.jpg", alt: "Excavator demolishing a home's roof framing next to a debris dumpster" },
-      { src: "/images/services/demolition/gallery/job-5.jpg", alt: "Demolition site secured with caution tape as an excavator clears structure debris" },
-      { src: "/images/services/demolition/gallery/job-6.jpg", alt: "Excavator loading concrete block and demolition debris onto a dump trailer" },
-      { src: "/images/services/demolition/gallery/job-7.jpg", alt: "Excavator bucket clearing a pile of broken cinder block from a demolished wall" },
+      { src: "demolition/gallery/job-1.jpg", alt: "Collapsed roof and interior debris pile mid-teardown during a mobile home demolition" },
+      { src: "demolition/gallery/job-2.jpg", alt: "CAT skid steer with hydraulic breaker attachment demolishing a concrete slab" },
+      { src: "demolition/gallery/job-3.jpg", alt: "Dump trailer loaded with structural debris after a demolition job in Lakeland, FL" },
+      { src: "demolition/gallery/job-4.jpg", alt: "Excavator demolishing a home's roof framing next to a debris dumpster" },
+      { src: "demolition/gallery/job-5.jpg", alt: "Demolition site secured with caution tape as an excavator clears structure debris" },
+      { src: "demolition/gallery/job-6.jpg", alt: "Excavator loading concrete block and demolition debris onto a dump trailer" },
+      { src: "demolition/gallery/job-7.jpg", alt: "Excavator bucket clearing a pile of broken cinder block from a demolished wall" },
     ],
-    // TODO(client): confirm real pricing — sample range only, not verified against current job costs
-    pricing: {
-      low: 6000,
-      high: 18000,
-      unit: "per structure",
-      note: "Sample pricing based on typical Central Florida demolition scope. Every property is different — contact us for an exact quote.",
-    },
     faqs: [
       {
         question: "Do I need a permit for demolition in Lakeland, FL?",
@@ -427,13 +404,6 @@ export const serviceSections: ServiceSectionData[] = [
       },
     ],
     relatedServices: ["site-preparation", "land-clearing", "pond-cleaning"],
-    // TODO(client): confirm real pricing — sample range only, not verified against current job costs
-    pricing: {
-      low: 3000,
-      high: 12000,
-      unit: "per project",
-      note: "Sample pricing based on typical Central Florida excavation scope. Every property is different — contact us for an exact quote.",
-    },
     faqs: [
       {
         question: "What types of excavation projects do you handle?",

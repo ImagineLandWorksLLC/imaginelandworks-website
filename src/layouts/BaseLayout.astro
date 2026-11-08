@@ -4,7 +4,7 @@ import SEO, { type PageFrontmatter } from "@components/SEO.astro";
 
 type Props = PageFrontmatter;
 
-const { title, description, image, canonical, noindex } = Astro.props;
+const { title, description, image, canonical, noindex, ogType, publishedTime, modifiedTime } = Astro.props;
 ---
 
 <!doctype html>
@@ -33,6 +33,9 @@ const { title, description, image, canonical, noindex } = Astro.props;
       image={image}
       canonical={canonical}
       noindex={noindex}
+      ogType={ogType}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
     />
     <slot name="head" />
   </head>

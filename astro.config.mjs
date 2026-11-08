@@ -14,7 +14,12 @@ export default defineConfig({
    server: {
       port: 3030,
    },
-   integrations: [mdx(), sitemap(), webmcp()],
+   integrations: [
+      mdx(),
+      // 404/500 are noindex error pages and should not be in the sitemap.
+      sitemap({ filter: (page) => !/[/](404|500)[/]?$/.test(page) }),
+      webmcp(),
+   ],
    vite: {
       resolve: {
          alias: {

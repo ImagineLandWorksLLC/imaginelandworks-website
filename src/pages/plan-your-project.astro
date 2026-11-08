@@ -1,0 +1,420 @@
+---
+import DefaultLayout from "@layouts/DefaultLayout.astro";
+import Breadcrumb from "@components/services/Breadcrumb.astro";
+import Schema from "@components/Schema.astro";
+import { contact } from "@data/contact";
+import { accessOptions, terrainOptions, vegetationOptions } from "@data/projectOptions";
+import { STEP_TITLES, outcomeOptions, propertyTypeOptions } from "@utils/planner";
+import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
+
+const title = "Plan Your Land Project | Free Project Planner";
+const description =
+  "Answer a few questions about your Lakeland-area property and see which land clearing, excavation, or maintenance services may fit. No sign-up needed.";
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: "Home", item: `${SITE_URL}/` },
+  { name: "Plan Your Project", item: `${SITE_URL}/plan-your-project/` },
+]);
+
+const radioCard =
+  "flex items-center gap-3 rounded-xl border border-base-300 bg-base-100 p-4 cursor-pointer has-checked:border-primary has-checked:bg-primary/5 has-focus-visible:outline-2 has-focus-visible:outline-offset-2";
+---
+
+<DefaultLayout title={title} description={description}>
+  <Schema slot="head" schema={breadcrumbSchema} />
+
+  <section class="bg-base-100 py-16">
+    <div class="container mx-auto px-6 text-center max-w-3xl">
+      <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">Project Planner</p>
+      <h1 class="text-primary font-heading leading-tight">Plan Your Land Project</h1>
+      <p class="text-base-content/70 text-lg leading-relaxed mt-4">
+        Answer a few questions to see which services may fit your property. You don't need to share
+        any contact details to see your results.
+      </p>
+    </div>
+  </section>
+
+  <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Plan Your Project" }]} />
+
+  <section class="bg-base-200 py-16">
+    <div class="container mx-auto px-6 max-w-3xl" data-planner>
+
+      <ol class="flex flex-wrap justify-center gap-2 mb-8 text-sm" aria-label="Progress" data-progress hidden>
+        {STEP_TITLES.map((t, i) => (
+          <li>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline btn-primary"
+              data-progress-step={i + 1}
+            >
+              <span class="font-heading">{i + 1}</span>
+              <span class="hidden sm:inline">{t}</span>
+              <span class="sr-only sm:hidden">{t}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+
+      <form class="bg-base-100 rounded-2xl border border-base-300 shadow-md p-6 md:p-10" novalidate data-planner-form>
+
+        <section data-step="1" aria-labelledby="step-title-1">
+          <h2 id="step-title-1" tabindex="-1" class="text-primary font-heading mb-2">1. What type of property is it?</h2>
+          <fieldset class="grid gap-3 mt-4">
+            <legend class="sr-only">Property type</legend>
+            {propertyTypeOptions.map((o) => (
+              <label class={radioCard}>
+                <input type="radio" name="propertyType" value={o.value} class="radio radio-primary" />
+                <span>{o.label}</span>
+              </label>
+            ))}
+          </fieldset>
+          <p class="text-error text-sm mt-3 min-h-5" role="alert" data-error-for="propertyType"></p>
+        </section>
+
+        <section data-step="2" aria-labelledby="step-title-2" class="mt-12">
+          <h2 id="step-title-2" tabindex="-1" class="text-primary font-heading mb-2">2. What do you want to accomplish?</h2>
+          <fieldset class="grid gap-3 mt-4">
+            <legend class="sr-only">Desired outcome</legend>
+            {outcomeOptions.map((o) => (
+              <label class={radioCard}>
+                <input type="radio" name="outcome" value={o.value} class="radio radio-primary" />
+                <span>{o.label}</span>
+              </label>
+            ))}
+          </fieldset>
+          <p class="text-error text-sm mt-3 min-h-5" role="alert" data-error-for="outcome"></p>
+        </section>
+
+        <section data-step="3" aria-labelledby="step-title-3" class="mt-12">
+          <h2 id="step-title-3" tabindex="-1" class="text-primary font-heading mb-2">3. Tell us about the property</h2>
+          <p class="text-base-content/60 text-sm">Everything here is optional. Skip anything you're unsure about.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5">
+            <div>
+              <label for="planner-acres" class="text-sm mb-1 block">Approximate acreage</label>
+              <input id="planner-acres" name="acres" type="number" inputmode="decimal" min="0" step="0.25" class="input input-bordered w-full" aria-describedby="planner-acres-error" />
+              <p id="planner-acres-error" class="text-error text-sm mt-1 min-h-5" role="alert" data-error-for="acres"></p>
+            </div>
+            <div>
+              <label for="planner-zip" class="text-sm mb-1 block">Property ZIP code</label>
+              <input id="planner-zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="33811" class="input input-bordered w-full" aria-describedby="planner-zip-error" />
+              <p id="planner-zip-error" class="text-error text-sm mt-1 min-h-5" role="alert" data-error-for="zip"></p>
+            </div>
+            <div>
+              <label for="planner-terrain" class="text-sm mb-1 block">Terrain</label>
+              <select id="planner-terrain" name="terrain" class="select select-bordered w-full">
+                <option value="">Not sure</option>
+                {terrainOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <label for="planner-vegetation" class="text-sm mb-1 block">Vegetation</label>
+              <select id="planner-vegetation" name="vegetation" class="select select-bordered w-full">
+                <option value="">Not sure</option>
+                {vegetationOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label for="planner-access" class="text-sm mb-1 block">Equipment access</label>
+              <select id="planner-access" name="access" class="select select-bordered w-full">
+                <option value="">Not sure</option>
+                {accessOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label for="planner-notes" class="text-sm mb-1 block">Anything else we should know?</label>
+              <textarea id="planner-notes" name="notes" rows="3" maxlength="300" class="textarea textarea-bordered w-full" aria-describedby="planner-notes-hint"></textarea>
+              <p id="planner-notes-hint" class="text-xs text-base-content/50 mt-1">
+                Please don't include names, phone numbers, or emails here.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section data-step="4" aria-labelledby="step-title-4" class="mt-12">
+          <h2 id="step-title-4" tabindex="-1" class="text-primary font-heading mb-2">4. Services that may fit</h2>
+          <div data-results aria-live="polite">
+            <p class="text-base-content/60 text-sm">Complete the steps above to see recommendations.</p>
+          </div>
+        </section>
+
+        <section data-step="5" aria-labelledby="step-title-5" class="mt-12">
+          <h2 id="step-title-5" tabindex="-1" class="text-primary font-heading mb-2">5. Request a quote</h2>
+          <p class="text-base-content/70">
+            Here's a summary of your project. Copy it into the quote request so we start with the details.
+          </p>
+          <pre class="mt-4 whitespace-pre-wrap break-words text-sm bg-base-200 rounded-lg p-4 border border-base-300" data-summary></pre>
+          <div class="flex flex-col sm:flex-row gap-3 mt-5">
+            <a href="/book/" class="btn btn-primary btn-lg" data-quote-cta>Request a Free Quote</a>
+            <button type="button" class="btn btn-outline btn-primary btn-lg" data-copy>Copy summary</button>
+          </div>
+          <p class="text-xs text-base-content/60 mt-2 min-h-4" role="status" aria-live="polite" data-copy-status></p>
+          <p class="text-xs text-base-content/50 mt-4">
+            Recommendations are preliminary and are not a quote. Prefer to talk?
+            Call <a class="underline" href={`tel:+1${contact.phone.raw}`}>{contact.phone.display}</a>.
+          </p>
+        </section>
+
+        <div class="flex justify-between gap-3 mt-10 pt-6 border-t border-base-300" data-nav hidden>
+          <button type="button" class="btn btn-ghost" data-back>Back</button>
+          <button type="button" class="btn btn-primary" data-next>Next</button>
+        </div>
+      </form>
+
+      <noscript>
+        <p class="text-center text-base-content/70 mt-6">
+          The planner needs JavaScript to give recommendations. You can browse our
+          <a class="underline" href="/services/">services</a> or
+          <a class="underline" href="/book/">request a free quote</a> directly.
+        </p>
+      </noscript>
+    </div>
+  </section>
+</DefaultLayout>
+
+<script>
+  import { services } from "@data/services";
+  import { accessOptions, labelFor, terrainOptions, vegetationOptions } from "@data/projectOptions";
+  import type { Access, Terrain, Vegetation } from "@data/projectOptions";
+  import {
+    STEP_COUNT,
+    goBack,
+    goNext,
+    goTo,
+    outcomeOptions,
+    propertyTypeOptions,
+    recommendServices,
+  } from "@utils/planner";
+  import type { Outcome, PlannerAnswers, PropertyType, StepErrors } from "@utils/planner";
+  import { buildQuoteSummary, saveQuoteSummary } from "@utils/quoteSummary";
+
+  const STORAGE_KEY = "ilw:planner";
+  const root = document.querySelector<HTMLElement>("[data-planner]");
+
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>("[data-planner-form]")!;
+    const progress = root.querySelector<HTMLElement>("[data-progress]")!;
+    const nav = root.querySelector<HTMLElement>("[data-nav]")!;
+    const backBtn = root.querySelector<HTMLButtonElement>("[data-back]")!;
+    const nextBtn = root.querySelector<HTMLButtonElement>("[data-next]")!;
+    const results = root.querySelector<HTMLElement>("[data-results]")!;
+    const summaryEl = root.querySelector<HTMLElement>("[data-summary]")!;
+    const copyBtn = root.querySelector<HTMLButtonElement>("[data-copy]")!;
+    const copyStatus = root.querySelector<HTMLElement>("[data-copy-status]")!;
+    const quoteCta = root.querySelector<HTMLAnchorElement>("[data-quote-cta]")!;
+    const sections = Array.from(root.querySelectorAll<HTMLElement>("[data-step]"));
+
+    let step = 1;
+    let furthest = 1;
+    let answers: PlannerAnswers = {};
+
+    // ── State (sessionStorage only) ───────────────────────────────────────────
+    function save() {
+      try {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ answers, step, furthest }));
+      } catch {
+        /* storage unavailable — the planner still works for this page view */
+      }
+    }
+
+    function restore() {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const saved = JSON.parse(raw) as { answers?: PlannerAnswers; step?: number; furthest?: number };
+        answers = saved.answers ?? {};
+        step = Math.min(Math.max(Number(saved.step) || 1, 1), STEP_COUNT);
+        furthest = Math.min(Math.max(Number(saved.furthest) || step, step), STEP_COUNT);
+      } catch {
+        answers = {};
+      }
+    }
+
+    // ── Form <-> answers ─────────────────────────────────────────────────────
+    function fieldValue(name: string): string {
+      const el = form.elements.namedItem(name);
+      if (el instanceof RadioNodeList) return el.value;
+      return (el as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null)?.value ?? "";
+    }
+
+    function readForm() {
+      const acresRaw = fieldValue("acres").trim();
+      const zip = fieldValue("zip").trim();
+      const notes = fieldValue("notes").trim();
+      answers = {
+        propertyType: (fieldValue("propertyType") || undefined) as PropertyType | undefined,
+        outcome: (fieldValue("outcome") || undefined) as Outcome | undefined,
+        acres: acresRaw === "" ? undefined : Number(acresRaw),
+        zip: zip || undefined,
+        terrain: (fieldValue("terrain") || undefined) as Terrain | undefined,
+        vegetation: (fieldValue("vegetation") || undefined) as Vegetation | undefined,
+        access: (fieldValue("access") || undefined) as Access | undefined,
+        notes: notes || undefined,
+      };
+    }
+
+    function writeForm() {
+      const set = (name: string, value: string | number | undefined) => {
+        const el = form.elements.namedItem(name);
+        const v = value === undefined ? "" : String(value);
+        if (el instanceof RadioNodeList) {
+          el.forEach((r) => ((r as HTMLInputElement).checked = (r as HTMLInputElement).value === v));
+        } else if (el) {
+          (el as HTMLInputElement).value = v;
+        }
+      };
+      set("propertyType", answers.propertyType);
+      set("outcome", answers.outcome);
+      set("acres", answers.acres);
+      set("zip", answers.zip);
+      set("terrain", answers.terrain);
+      set("vegetation", answers.vegetation);
+      set("access", answers.access);
+      set("notes", answers.notes);
+    }
+
+    // ── Rendering ────────────────────────────────────────────────────────────
+    function showErrors(errors: StepErrors) {
+      root!.querySelectorAll<HTMLElement>("[data-error-for]").forEach((el) => {
+        el.textContent = errors[el.dataset.errorFor as keyof PlannerAnswers] ?? "";
+      });
+    }
+
+    const serviceTitle = (slug: string) => services.find((s) => s.anchor === slug)?.title ?? slug;
+
+    function renderResults() {
+      const { recommendations, notes } = recommendServices(answers);
+      results.replaceChildren();
+
+      if (recommendations.length === 0) {
+        const p = document.createElement("p");
+        p.className = "text-base-content/70";
+        p.textContent =
+          "We couldn't narrow this down from your answers. Request a quote and we'll talk it through with you.";
+        results.append(p);
+      } else {
+        const list = document.createElement("ul");
+        list.className = "grid gap-4 mt-4";
+        for (const rec of recommendations) {
+          const li = document.createElement("li");
+          li.className = "rounded-xl border border-base-300 p-5";
+
+          const head = document.createElement("div");
+          head.className = "flex flex-wrap items-center gap-3";
+          const link = document.createElement("a");
+          link.href = `/services/${rec.slug}/`;
+          link.className = "font-heading text-primary text-xl underline";
+          link.textContent = serviceTitle(rec.slug);
+          const badge = document.createElement("span");
+          badge.className = `badge ${rec.confidence === "likely" ? "badge-secondary" : "badge-outline"}`;
+          badge.textContent = rec.confidence === "likely" ? "Likely fit" : "Possible fit";
+          head.append(link, badge);
+
+          const reasons = document.createElement("ul");
+          reasons.className = "list-disc pl-5 mt-2 text-sm text-base-content/70 space-y-1";
+          for (const r of rec.reasons) {
+            const rli = document.createElement("li");
+            rli.textContent = r;
+            reasons.append(rli);
+          }
+          li.append(head, reasons);
+          list.append(li);
+        }
+        results.append(list);
+      }
+
+      const noteList = document.createElement("ul");
+      noteList.className = "mt-6 space-y-2 text-sm text-base-content/70 list-disc pl-5";
+      for (const n of notes) {
+        const li = document.createElement("li");
+        li.textContent = n;
+        noteList.append(li);
+      }
+      results.append(noteList);
+    }
+
+    function buildSummary(): string {
+      const { recommendations } = recommendServices(answers);
+      return buildQuoteSummary({
+        source: "project-planner",
+        services: recommendations.map((r) => serviceTitle(r.slug)),
+        propertyType: labelFor(propertyTypeOptions, answers.propertyType),
+        outcome: labelFor(outcomeOptions, answers.outcome),
+        acreage: answers.acres !== undefined ? `${answers.acres} acres` : undefined,
+        vegetation: labelFor(vegetationOptions, answers.vegetation),
+        terrain: labelFor(terrainOptions, answers.terrain),
+        access: labelFor(accessOptions, answers.access),
+        zip: answers.zip,
+        notes: answers.notes,
+      });
+    }
+
+    function render(focusHeading: boolean) {
+      sections.forEach((s) => (s.hidden = Number(s.dataset.step) !== step));
+      progress.querySelectorAll<HTMLButtonElement>("[data-progress-step]").forEach((b) => {
+        const n = Number(b.dataset.progressStep);
+        b.classList.toggle("btn-active", n === step);
+        b.disabled = n > furthest;
+        if (n === step) b.setAttribute("aria-current", "step");
+        else b.removeAttribute("aria-current");
+      });
+      backBtn.hidden = step === 1;
+      nextBtn.hidden = step === STEP_COUNT;
+      nextBtn.textContent = step === 3 ? "See recommendations" : step === 4 ? "Request a quote" : "Next";
+
+      if (step === 4) renderResults();
+      if (step === 5) summaryEl.textContent = buildSummary();
+
+      if (focusHeading) root!.querySelector<HTMLElement>(`#step-title-${step}`)?.focus();
+      save();
+    }
+
+    function move(result: { step: number; errors: StepErrors }) {
+      showErrors(result.errors);
+      const changed = result.step !== step;
+      step = result.step;
+      furthest = Math.max(furthest, step);
+      render(changed);
+    }
+
+    // ── Events ───────────────────────────────────────────────────────────────
+    form.addEventListener("input", () => {
+      readForm();
+      save();
+    });
+    form.addEventListener("change", readForm);
+    form.addEventListener("submit", (e) => e.preventDefault());
+    nextBtn.addEventListener("click", () => {
+      readForm();
+      move(goNext(step, answers));
+    });
+    backBtn.addEventListener("click", () => move(goBack(step)));
+    progress.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-progress-step]");
+      if (!btn) return;
+      readForm();
+      move(goTo(Number(btn.dataset.progressStep), answers));
+    });
+
+    quoteCta.addEventListener("click", () => saveQuoteSummary(buildSummary()));
+    copyBtn.addEventListener("click", async () => {
+      const text = buildSummary();
+      saveQuoteSummary(text);
+      try {
+        await navigator.clipboard.writeText(text);
+        copyStatus.textContent = "Summary copied. Paste it into the quote request form.";
+      } catch {
+        copyStatus.textContent = "Couldn't copy automatically — select the summary above and copy it.";
+      }
+    });
+
+    // Enhance: without this script every step stays visible and nothing breaks.
+    restore();
+    writeForm();
+    progress.hidden = false;
+    nav.hidden = false;
+    // Never restore past a step whose answers are missing.
+    const guard = goTo(step, answers);
+    step = guard.step;
+    render(false);
+  }
+</script>

@@ -8,9 +8,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev       # Start dev server at localhost:4321 (uses polling for WSL2 compatibility)
 npm run build     # Build production site to ./dist/
 npm run preview   # Preview the production build locally
+npm run lint      # ESLint (src/)
+npm test          # Vitest: unit tests + build-output checks (run `npm run build` first for the latter)
 ```
 
-There are no lint or test commands configured.
+Build-output tests in `tests/build.test.ts` read `dist/` and are skipped when it does not exist.
 
 ## Architecture
 
@@ -78,12 +80,16 @@ All site content is driven by TypeScript data files in `src/data/`:
 | `metrics.ts` | "By the Numbers" statistics |
 | `valueProps.ts` | Value proposition cards |
 | `processSteps.ts` | "How It Works" steps |
+| `estimator.ts` | Calculator rates and `pricingStatus` (only `approved` rates are ever shown as dollars; also feeds service-page price ranges) |
+| `projectOptions.ts` | Shared vegetation/terrain/access options for the calculator and planner |
+| `projects.ts` | Verified project case studies (ships empty; see `docs/ADDING-PROJECTS.md`) |
+| `resources.ts` | Resource articles (`category`, `draft`); see `docs/ADDING-ARTICLES.md` |
 
 ### Structured data (JSON-LD)
 
 - **Wrapper component:** `src/components/Schema.astro` — outputs a `<script type="application/ld+json">` block.
-- **Utility:** `src/utils/schema.ts` — exports `buildBreadcrumbSchema()` and `SITE_URL`.
-- **Where schemas live:** inline in `src/pages/index.mdx`, `src/pages/book.astro`, `src/pages/services/[slug].astro`, `src/pages/service-area/index.astro`, `src/pages/service-area/[city].astro`.
+- **Utility:** `src/utils/schema.ts` — exports `buildBreadcrumbSchema()`, `buildLocalBusinessSchema()` (the single LocalBusiness definition; do not hand-write copies), and `SITE_URL`.
+- **Where schemas live:** `buildLocalBusinessSchema()` is used in `src/pages/index.mdx`, `src/pages/book.astro`, `services/[slug].astro`, and `service-area/[city].astro`; other schemas are inline in `src/pages/index.mdx`, `src/pages/book.astro`, `src/pages/services/[slug].astro`, `src/pages/service-area/index.astro`, `src/pages/service-area/[city].astro`.
 
 ### Do NOT edit these files
 
@@ -109,3 +115,25 @@ All site content is driven by TypeScript data files in `src/data/`:
 | Edit heading/body font sizes | `src/assets/css/app.css` (`@layer base` block) |
 | Change the OG share image | Replace `src/assets/images/og-default.png` (keep dimensions 1200×630) |
 | Add JSON-LD schema to a page | Import `Schema.astro`, pass a schema object; use `buildBreadcrumbSchema` from `@utils/schema` |
+
+### Pure logic modules (unit-tested in `tests/`)
+
+| Module | Purpose |
+|---|---|
+| `src/utils/estimate.ts` | `calculateEstimate()` — never returns a $0 range; unapproved/quote-only services return a custom-estimate result |
+| `src/utils/planner.ts` | Rule table + `recommendServices()` and step navigation for `/plan-your-project/` |
+| `src/utils/projects.ts` | `validateProject()`, `getPublishedProjects()` (throws on invalid published projects), `filterProjects()` |
+| `src/utils/resources.ts` | Published/related article helpers |
+| `src/utils/quoteSummary.ts` | Builds the project summary kept in `sessionStorage` and shown on `/book/` (never in URLs or analytics) |
+
+### Images
+
+Service and project photos live in `src/assets/images/{services,projects}/` and are resolved with `resolveServiceImage()` (`src/utils/images.ts`) so Astro optimizes them. Do not put photos in `public/`.
+
+### Extra docs
+
+`docs/ADDING-PROJECTS.md`, `docs/ADDING-ARTICLES.md`, `docs/JOBBER.md`, `docs/OWNER-DECISIONS.md`, `docs/content-backlog.md`.
+
+### Client-side scripts
+
+Interactive scripts follow the existing pattern: a bundled `<script>` in the `.astro` file that imports typed helpers from `src/utils/`. Avoid `define:vars` for new code.

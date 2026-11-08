@@ -1,6 +1,6 @@
 # Service Images
 
-Photos for each service page, organized by service and type.
+Photos for each service page, organized by service and type. They live in `src/assets/` so Astro optimizes them at build time. Paths in `serviceSections.ts` are relative to this folder.
 
 ## Folder Structure
 
@@ -27,7 +27,7 @@ The before/after section requires **exactly 4 photos** — 2 before + 2 after �
 
 - **Format:** JPG or WebP
 - **Dimensions:** 800×600 px minimum (4:3 ratio matches the gallery grid cells)
-- **File size:** Keep under 300 KB per image — compress before dropping in
+- **File size:** Originals up to a few MB are fine: Astro resizes and converts them to WebP at build time
 
 ## Wiring Up Photos
 
@@ -36,16 +36,16 @@ After adding files, update `src/data/serviceSections.ts` for the relevant servic
 ```ts
 // Any number of general photos
 galleryPhotos: [
-  { src: "/images/services/land-clearing/gallery/job-1.jpg", alt: "Land clearing on a 2-acre lot in Lakeland" },
-  { src: "/images/services/land-clearing/gallery/job-2.jpg", alt: "Stump removal and brush clearing" },
+  { src: "/land-clearing/gallery/job-1.jpg", alt: "Land clearing on a 2-acre lot in Lakeland" },
+  { src: "/land-clearing/gallery/job-2.jpg", alt: "Stump removal and brush clearing" },
 ],
 
 // Exactly 4: before, after, before, after
 beforeAfterPhotos: [
-  { src: "/images/services/land-clearing/before-after/before-1.jpg", alt: "Overgrown lot before clearing",   label: "Before" },
-  { src: "/images/services/land-clearing/before-after/after-1.jpg",  alt: "Cleared lot ready for build",    label: "After"  },
-  { src: "/images/services/land-clearing/before-after/before-2.jpg", alt: "Dense brush on property edge",   label: "Before" },
-  { src: "/images/services/land-clearing/before-after/after-2.jpg",  alt: "Clean finish after clearing",    label: "After"  },
+  { src: "/land-clearing/before-after/before-1.jpg", alt: "Overgrown lot before clearing",   label: "Before" },
+  { src: "/land-clearing/before-after/after-1.jpg",  alt: "Cleared lot ready for build",    label: "After"  },
+  { src: "/land-clearing/before-after/before-2.jpg", alt: "Dense brush on property edge",   label: "Before" },
+  { src: "/land-clearing/before-after/after-2.jpg",  alt: "Clean finish after clearing",    label: "After"  },
 ],
 ```
 

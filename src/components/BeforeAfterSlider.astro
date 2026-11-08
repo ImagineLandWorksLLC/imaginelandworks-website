@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import { resolveServiceImage } from "@utils/images";
 interface Photo {
   src?: string;
   alt?: string;
@@ -12,7 +14,9 @@ interface Props {
 }
 
 const { before, after, caption, class: className } = Astro.props;
-const hasBoth = !!before.src && !!after.src;
+const beforeMeta = resolveServiceImage(before.src);
+const afterMeta = resolveServiceImage(after.src);
+const hasBoth = !!beforeMeta && !!afterMeta;
 
 const placeholderIcon = `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-12 text-base-content/20" aria-hidden="true">
@@ -23,17 +27,23 @@ const placeholderIcon = `
 
 {hasBoth ? (
   <div class:list={["ba-slider relative overflow-hidden rounded-2xl select-none", className]}>
-    <img
-      src={after.src}
+    <Image
+      src={afterMeta!}
       alt={after.alt ?? "After"}
       class="ba-img ba-after w-full h-full object-cover"
       loading="lazy"
+      width={1000}
+      widths={[600, 1000]}
+      sizes="(min-width: 1024px) 380px, 100vw"
     />
-    <img
-      src={before.src}
+    <Image
+      src={beforeMeta!}
       alt={before.alt ?? "Before"}
       class="ba-img ba-before w-full h-full object-cover"
       loading="lazy"
+      width={1000}
+      widths={[600, 1000]}
+      sizes="(min-width: 1024px) 380px, 100vw"
       style="clip-path: inset(0 50% 0 0);"
     />
 
@@ -79,7 +89,7 @@ const placeholderIcon = `
   </p>
 )}
 
-<style>
+<style is:global>
   .ba-slider {
     aspect-ratio: 4 / 3;
     touch-action: pan-y;

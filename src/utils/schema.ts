@@ -1,4 +1,7 @@
 import type { Review } from "@data/reviews";
+import { contact } from "@data/contact";
+import { serviceCities } from "@data/serviceArea";
+import type { ServiceCity } from "@data/serviceArea";
 
 /** Site origin — mirrors the `site` value in astro.config.mjs. */
 export const SITE_URL = "https://imaginelandworks.com";
@@ -57,4 +60,72 @@ export function buildReviewSchema(reviews: Review[]) {
     reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5, worstRating: 1 },
     reviewBody: r.text,
   }));
+}
+
+/** Stable @id so every page's LocalBusiness node refers to the same entity. */
+export const BUSINESS_ID = `${SITE_URL}/#business`;
+
+const BUSINESS_DESCRIPTION =
+  "Imagine Land Works provides professional land clearing, excavation, site preparation, demolition, and more across Lakeland and Polk County, FL.";
+
+// Approximate coordinates of the Lakeland shop (matches the address in contact.ts).
+const BUSINESS_GEO = { latitude: 27.9887, longitude: -81.962 };
+
+/**
+ * Build the LocalBusiness node. NAP, hours, and social links come from contact.ts,
+ * and service areas from serviceArea.ts, so no page needs to hand-write its own copy.
+ *
+ * Pass `city` on a city page to limit areaServed to that city (and its county).
+ * The business address and geo always stay the Lakeland shop: we do not claim an
+ * office in other cities.
+ */
+export function buildLocalBusinessSchema(opts: { reviews?: Review[]; city?: ServiceCity } = {}) {
+  const { reviews = [], city } = opts;
+  const rating = buildAggregateRating(reviews);
+
+  const areaServed = city
+    ? [
+        {
+          "@type": "City",
+          name: city.name,
+          geo: { "@type": "GeoCoordinates", latitude: city.lat, longitude: city.lng },
+        },
+        ...(city.county ? [{ "@type": "AdministrativeArea", name: city.county }] : []),
+      ]
+    : serviceCities.filter((c) => c.showOnMap !== false).map((c) => ({ "@type": "City", name: c.name }));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "LandscapingBusiness"],
+    "@id": BUSINESS_ID,
+    name: "Imagine Land Works",
+    legalName: contact.legalName,
+    url: `${SITE_URL}/`,
+    telephone: `+1${contact.phone.raw}`,
+    email: contact.email,
+    image: `${SITE_URL}/images/ImagineLandWorks.png`,
+    description: BUSINESS_DESCRIPTION,
+    foundingDate: String(contact.founding),
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: contact.address.street,
+      addressLocality: contact.address.city,
+      addressRegion: contact.address.state,
+      postalCode: contact.address.zip,
+      addressCountry: "US",
+    },
+    geo: { "@type": "GeoCoordinates", ...BUSINESS_GEO },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "07:00",
+        closes: "18:00",
+      },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "15:00" },
+    ],
+    areaServed,
+    sameAs: contact.social.map((s) => s.href),
+    ...(rating && { aggregateRating: rating, review: buildReviewSchema(reviews) }),
+  };
 }

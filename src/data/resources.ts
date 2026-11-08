@@ -5,9 +5,21 @@ export interface ResourceSection {
   paragraphs: string[];
 }
 
+export type ResourceCategory = "pricing-planning" | "regulations-permitting" | "building-tips" | "maintenance";
+
+export const resourceCategoryLabels: Record<ResourceCategory, string> = {
+  "pricing-planning": "Pricing & Planning",
+  "regulations-permitting": "Regulations & Permitting",
+  "building-tips": "Building Tips",
+  maintenance: "Property Maintenance",
+};
+
 export interface Resource {
   slug: string;
   eyebrow: string;
+  category: ResourceCategory;
+  /** Drafts are excluded from pages, the index, and the sitemap. New articles should start as drafts until fact-checked. */
+  draft?: boolean;
   title: string;
   shortDescription: string;
   seoTitle: string;
@@ -23,6 +35,7 @@ export const resources: Resource[] = [
   {
     slug: "land-clearing-cost-florida",
     eyebrow: "Pricing & Planning",
+    category: "pricing-planning",
     title: "How Much Does Land Clearing Cost in Florida?",
     shortDescription:
       "The main factors that drive land clearing pricing in Florida, and how to get an accurate estimate for your property.",
@@ -79,6 +92,7 @@ export const resources: Resource[] = [
   {
     slug: "land-clearing-permits-florida",
     eyebrow: "Regulations & Permitting",
+    category: "regulations-permitting",
     title: "Do You Need Permits to Clear Land in Florida?",
     shortDescription:
       "Permit requirements for land clearing vary by county and property type in Florida. Here's what to check before you start.",
@@ -134,6 +148,7 @@ export const resources: Resource[] = [
   {
     slug: "land-prep-mistakes-home-build",
     eyebrow: "Building Tips",
+    category: "building-tips",
     title: "5 Mistakes to Avoid When Prepping Land for a Home Build",
     shortDescription:
       "Common, costly mistakes property owners make when prepping raw land for a home build, and how to avoid them.",

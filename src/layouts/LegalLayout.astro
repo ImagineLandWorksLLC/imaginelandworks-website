@@ -22,6 +22,7 @@ const hasToc = tocHeadings.length > 0;
 ---
 
 <BaseLayout title={title} description={description} image={image} canonical={canonical} noindex={noindex}>
+  <slot name="head" slot="head" />
   <header>
     <Navbar />
   </header>

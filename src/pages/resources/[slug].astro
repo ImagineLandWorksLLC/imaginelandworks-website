@@ -5,13 +5,14 @@ import RelatedServices from "@components/services/RelatedServices.astro";
 import FAQSection from "@components/FAQSection.astro";
 import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
 import Schema from "@components/Schema.astro";
-import { resources } from "@data/resources";
+import { resources, resourceCategoryLabels } from "@data/resources";
+import { formatResourceDate, getPublishedResources, getRelatedResources } from "@utils/resources";
 import { serviceSections } from "@data/serviceSections";
 import { contact } from "@data/contact";
 import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
 
 export function getStaticPaths() {
-  return resources.map((resource) => ({
+  return getPublishedResources(resources).map((resource) => ({
     params: { slug: resource.slug },
     props: { resource },
   }));
@@ -35,6 +36,8 @@ const articleSchema = {
   mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/resources/${resource.slug}/` },
 };
 
+const related = getRelatedResources(resource, resources);
+
 const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "Home",      item: `${SITE_URL}/` },
   { name: "Resources", item: `${SITE_URL}/resources/` },
@@ -57,7 +60,13 @@ const faqSchema = resource.faqs && resource.faqs.length > 0
   : null;
 ---
 
-<DefaultLayout title={resource.seoTitle} description={resource.seoDescription}>
+<DefaultLayout
+  title={resource.seoTitle}
+  description={resource.seoDescription}
+  ogType="article"
+  publishedTime={resource.publishDate}
+  modifiedTime={resource.updatedDate ?? resource.publishDate}
+>
   <Schema slot="head" schema={articleSchema} />
   <Schema slot="head" schema={breadcrumbSchema} />
   {faqSchema && <Schema slot="head" schema={faqSchema} />}
@@ -65,11 +74,19 @@ const faqSchema = resource.faqs && resource.faqs.length > 0
   <section class="bg-base-100 py-16">
     <div class="container mx-auto px-6 max-w-3xl">
       <p class="text-secondary font-heading text-xl uppercase tracking-widest mb-2">
-        {resource.eyebrow}
+        {resourceCategoryLabels[resource.category]}
       </p>
       <h1 class="text-primary font-heading leading-tight">
         {resource.title}
       </h1>
+      <p class="text-base-content/60 text-sm mt-4">
+        Published <time datetime={resource.publishDate}>{formatResourceDate(resource.publishDate)}</time>
+        {resource.updatedDate && (
+          <>
+            &middot; Updated <time datetime={resource.updatedDate}>{formatResourceDate(resource.updatedDate)}</time>
+          </>
+        )}
+      </p>
     </div>
   </section>
 
@@ -95,6 +112,25 @@ const faqSchema = resource.faqs && resource.faqs.length > 0
       ))}
     </div>
   </section>
+
+  {related.length > 0 && (
+    <section class="bg-base-200 py-16" aria-labelledby="related-articles">
+      <div class="container mx-auto px-6 max-w-3xl">
+        <h2 id="related-articles" class="text-primary font-heading text-2xl mb-6">Related Articles</h2>
+        <ul class="grid gap-4">
+          {related.map((r) => (
+            <li>
+              <a href={`/resources/${r.slug}/`} class="block rounded-xl bg-base-100 p-5 shadow-sm hover:shadow-md no-underline">
+                <span class="text-secondary font-heading text-xs uppercase tracking-widest">{resourceCategoryLabels[r.category]}</span>
+                <span class="block font-heading text-primary text-lg mt-1">{r.title}</span>
+                <span class="block text-sm text-base-content/70 mt-1">{r.shortDescription}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 
   {resource.faqs && resource.faqs.length > 0 && (
     <FAQSection faqs={resource.faqs} />

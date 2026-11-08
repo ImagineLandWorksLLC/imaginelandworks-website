@@ -1,0 +1,44 @@
+---
+// Shows the project summary saved by the estimate calculator, project planner, or
+// maintenance page (sessionStorage only — never in the URL). Hidden when there is none.
+---
+
+<section class="hidden bg-base-200 rounded-xl p-5 m-2 mb-4" data-quote-summary aria-labelledby="quote-summary-title">
+  <h2 id="quote-summary-title" class="font-heading text-primary text-lg">Your project summary</h2>
+  <p class="text-sm text-base-content/70 mt-1">
+    Copy this into the "Tell us about your project" box below so we have the details from your estimate.
+  </p>
+  <pre class="mt-3 whitespace-pre-wrap break-words text-sm bg-base-100 rounded-lg p-3 border border-base-300" data-quote-summary-text></pre>
+  <div class="flex flex-wrap gap-3 mt-3">
+    <button type="button" class="btn btn-primary btn-sm" data-quote-summary-copy>Copy summary</button>
+    <button type="button" class="btn btn-ghost btn-sm" data-quote-summary-clear>Clear</button>
+  </div>
+  <p class="text-xs text-base-content/60 mt-2 min-h-4" role="status" aria-live="polite" data-quote-summary-status></p>
+</section>
+
+<script>
+  import { clearQuoteSummary, loadQuoteSummary } from "@utils/quoteSummary";
+
+  const card = document.querySelector<HTMLElement>("[data-quote-summary]");
+  const text = card?.querySelector<HTMLElement>("[data-quote-summary-text]");
+  const status = card?.querySelector<HTMLElement>("[data-quote-summary-status]");
+  const summary = loadQuoteSummary();
+
+  if (card && text && summary) {
+    text.textContent = summary;
+    card.classList.remove("hidden");
+
+    card.querySelector("[data-quote-summary-copy]")?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(summary);
+        if (status) status.textContent = "Copied.";
+      } catch {
+        if (status) status.textContent = "Couldn't copy automatically — select the text above and copy it.";
+      }
+    });
+    card.querySelector("[data-quote-summary-clear]")?.addEventListener("click", () => {
+      clearQuoteSummary();
+      card.classList.add("hidden");
+    });
+  }
+</script>

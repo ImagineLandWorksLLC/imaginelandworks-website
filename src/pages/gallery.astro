@@ -3,6 +3,8 @@ import DefaultLayout from "@layouts/DefaultLayout.astro";
 import Breadcrumb from "@components/services/Breadcrumb.astro";
 import GalleryGrid from "@components/gallery/GalleryGrid.astro";
 import GalleryLightbox from "@components/gallery/GalleryLightbox.astro";
+import ProjectCard from "@components/projects/ProjectCard.astro";
+import { publishedProjects } from "@utils/siteProjects";
 import FreeEstimateCTA from "@components/FreeEstimateCTA.astro";
 import Schema from "@components/Schema.astro";
 import type { GalleryItem } from "@data/gallery";
@@ -22,25 +24,31 @@ const galleryItems: GalleryItem[] = serviceSections.flatMap((service) => {
         kind: "photo",
         photo,
         caption: service.title,
+        category: service.anchor,
       }))
     : [
         {
           kind: "photo",
           photo: { alt: `${service.title} project in Lakeland, FL` },
           caption: service.title,
+          category: service.anchor,
         },
       ];
 
   if (service.beforeAfterPhotos) {
     const [before1, after1, before2, after2] = service.beforeAfterPhotos;
     items.push(
-      { kind: "before-after", before: before1, after: after1, caption: `${service.title} — Before & After` },
-      { kind: "before-after", before: before2, after: after2, caption: `${service.title} — Before & After` },
+      { kind: "before-after", before: before1, after: after1, caption: `${service.title} — Before & After`, category: service.anchor },
+      { kind: "before-after", before: before2, after: after2, caption: `${service.title} — Before & After`, category: service.anchor },
     );
   }
 
   return items;
 });
+
+const categories = serviceSections
+  .filter((s) => s.galleryPhotos?.length || s.beforeAfterPhotos)
+  .map((s) => ({ slug: s.anchor, label: s.title }));
 
 const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "Home",    item: `${SITE_URL}/` },
@@ -72,7 +80,18 @@ const breadcrumbSchema = buildBreadcrumbSchema([
     ]}
   />
 
-  <GalleryGrid items={galleryItems} />
+  {publishedProjects.length > 0 && (
+    <section class="bg-base-200 py-16">
+      <div class="container mx-auto px-6 max-w-6xl">
+        <h2 class="text-primary font-heading text-center mb-10">Project Case Studies</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {publishedProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <GalleryGrid items={galleryItems} categories={categories} />
   <GalleryLightbox />
 
   <FreeEstimateCTA

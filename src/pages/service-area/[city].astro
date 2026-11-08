@@ -11,7 +11,7 @@ import { services } from "@data/services";
 import { reviews } from "@data/reviews";
 import { contact, getSocialHref } from "@data/contact";
 import { defaultValueProps } from "@data/valueProps";
-import { buildBreadcrumbSchema, SITE_URL } from "@utils/schema";
+import { buildBreadcrumbSchema, buildLocalBusinessSchema, SITE_URL } from "@utils/schema";
 
 export function getStaticPaths() {
   return serviceCities.map((city) => ({
@@ -29,28 +29,7 @@ const seoDescription = `Professional land clearing, excavation, and site prepara
 
 const pageUrl = `${SITE_URL}/service-area/${city.slug}/`;
 
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "LandscapingBusiness"],
-  name: "Imagine Land Works",
-  legalName: contact.legalName,
-  url: `${SITE_URL}/`,
-  telephone: contact.phone.display,
-  email: contact.email,
-  image: `${SITE_URL}/images/ImagineLandWorks.png`,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: contact.address.street,
-    addressLocality: contact.address.city,
-    addressRegion: contact.address.state,
-    postalCode: contact.address.zip,
-    addressCountry: "US",
-  },
-  areaServed: [
-    { "@type": "City", name: city.name },
-    ...(city.county ? [{ "@type": "AdministrativeArea", name: city.county }] : []),
-  ],
-};
+const localBusinessSchema = buildLocalBusinessSchema({ city });
 
 const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "Home",         item: `${SITE_URL}/` },
@@ -81,7 +60,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
         {city.county ? `${city.county}, FL` : "Florida"}
       </p>
       <h1 class="text-primary font-heading leading-tight mb-6">
-        Land Clearing Services in {city.county ? `${city.county}, FL` : "Florida"}
+        Land Clearing Services in {city.slug === "central-florida" ? "Central Florida" : `${city.name}, FL`}
       </h1>
       <p class="text-base-content/70 text-lg leading-relaxed max-w-2xl mb-8">
         {city.blurb}

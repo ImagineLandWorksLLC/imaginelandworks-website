@@ -16,3 +16,11 @@ import ServiceSection from "@components/services/ServiceSection.astro";
 {serviceSections.map((section, i) => (
   <ServiceSection section={section} reversed={i % 2 !== 0} />
 ))}
+
+<section class="bg-base-200 py-12">
+  <div class="container mx-auto px-6 text-center max-w-2xl">
+    <h2 class="text-primary font-heading mb-3">Not sure which service you need?</h2>
+    <p class="text-base-content/70 mb-6">Answer a few questions about your property and see which services may fit. No sign-up needed.</p>
+    <a href="/plan-your-project/" class="btn btn-primary btn-lg">Plan Your Project</a>
+  </div>
+</section>
