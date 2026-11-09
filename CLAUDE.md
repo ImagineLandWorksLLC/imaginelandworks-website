@@ -63,6 +63,7 @@ FontAwesome icons (`@fortawesome/free-solid-svg-icons`) are used without a React
 ### External integrations
 
 - **Jobber** — booking/work-request form embedded via `JobberForm.astro`. The form is injected by a third-party script from `d3ey4dbjkt2f6s.cloudfront.net` using a `clienthub_id`. Used on the home page and `/book`.
+- **Map** — `ServiceAreaMap.astro` is Leaflet with an OpenFreeMap vector basemap (MapLibre GL via `@maplibre/maplibre-gl-leaflet`, all from unpkg, no API key). Falls back to CARTO raster tiles without WebGL. The CSP in `netlify.toml` allows `tiles.openfreemap.org` and `worker-src blob:`.
 - **Sitemap** — generated automatically by `@astrojs/sitemap` at build time; `site` is set to `https://imaginelandworks.com` in `astro.config.mjs`.
 
 ### Data layer

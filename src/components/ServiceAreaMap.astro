@@ -55,6 +55,42 @@ const pins = cities
 <script is:inline define:vars={{ mapId, pins, centerLat, centerLng }}>
 (function () {
   const LEAFLET_JS = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+  const MAPLIBRE_CSS = "https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css";
+  const MAPLIBRE_JS = "https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js";
+  const MAPLIBRE_LEAFLET_JS = "https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js";
+
+  function webglSupported() {
+    try {
+      const c = document.createElement("canvas");
+      return !!(c.getContext("webgl2") || c.getContext("webgl"));
+    } catch {
+      return false;
+    }
+  }
+
+  // Resolves once the script has loaded (immediately if already present and
+  // finished); rejects on network error so the caller can fall back.
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      let s = document.querySelector(`script[src="${src}"]`);
+      if (!s) {
+        s = document.createElement("script");
+        s.src = src;
+        document.head.appendChild(s);
+      }
+      if (s.dataset.loaded) return resolve();
+      s.addEventListener("load", () => { s.dataset.loaded = "1"; resolve(); });
+      s.addEventListener("error", () => reject(new Error(src)));
+    });
+  }
+
+  function loadStyle(href) {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = href;
+    document.head.appendChild(l);
+  }
 
   function initMap() {
     const el = document.getElementById(mapId);
@@ -69,16 +105,26 @@ const pins = cities
       zoomControl: true,
     });
 
-    // CartoDB Positron — clean, light basemap, free
-    L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-      {
+    // OpenFreeMap "positron" vector style (open source, no API key) rendered
+    // through MapLibre GL. Falls back to CARTO raster tiles when WebGL or the
+    // MapLibre scripts are unavailable.
+    if (window.maplibregl && L.maplibreGL && webglSupported()) {
+      L.maplibreGL({
+        style: "https://tiles.openfreemap.org/styles/positron",
         attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: "abcd",
-        maxZoom: 19,
-      }
-    ).addTo(map);
+          '<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a> Data from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
+      }).addTo(map);
+    } else {
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          subdomains: "abcd",
+          maxZoom: 19,
+        }
+      ).addTo(map);
+    }
 
     // Service-area shaded circle (~50-mile radius from Lakeland)
     const home = pins.find((p) => p.primary) ?? pins[0];
@@ -129,17 +175,18 @@ const pins = cities
   }
 
   function loadLeafletThenInit() {
-    if (window.L) {
-      initMap();
-    } else if (!document.querySelector(`script[src="${LEAFLET_JS}"]`)) {
-      const s = document.createElement("script");
-      s.src = LEAFLET_JS;
-      s.onload = initMap;
-      document.head.appendChild(s);
-    } else {
-      // Script tag already exists but may still be loading
-      document.querySelector(`script[src="${LEAFLET_JS}"]`).addEventListener("load", initMap);
-    }
+    // Leaflet is required; MapLibre is an enhancement — if it fails to load
+    // (blocked, offline, no WebGL) initMap falls back to raster tiles.
+    loadScript(LEAFLET_JS)
+      .then(() => {
+        if (!webglSupported()) return;
+        loadStyle(MAPLIBRE_CSS);
+        return loadScript(MAPLIBRE_JS).then(() => loadScript(MAPLIBRE_LEAFLET_JS));
+      })
+      .catch(() => {})
+      .then(() => {
+        if (window.L) initMap();
+      });
   }
 
   // Defer loading Leaflet (and the map init) until the map is near the viewport,
